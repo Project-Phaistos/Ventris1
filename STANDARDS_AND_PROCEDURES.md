@@ -207,9 +207,348 @@ These are restated from the README and must be checked at every review:
 
 ---
 
-## 7. Code and Implementation Standards
+## 7. Data Extraction and Ingestion Standards
 
-*(To be defined when implementation begins. For now, PRD design is the focus.)*
+All data in this project traces back to the Linear A corpus and candidate language corpora. These standards ensure the data pipeline is auditable, reproducible, and free from contamination.
+
+### 7.1 Cardinal rule: no fabricated data
+
+Data must NEVER be manually written, AI-generated, or hallucinated. Every data point must be traceable to a published, peer-reviewed, or institutionally curated source via a scripted pipeline. If a value cannot be sourced, it is marked as missing — never filled in.
+
+### 7.2 Source registry
+
+Every external data source used by any pillar must be registered in `data/SOURCES.md` with:
+
+| Field | Description |
+|-------|-------------|
+| **Name** | Human-readable name (e.g., "SigLA corpus", "GORILA sign list") |
+| **URL** | Permanent link to source repository or publication |
+| **Version/Date** | Specific version, commit hash, or access date |
+| **License** | License type and any usage restrictions |
+| **Maintainer** | Institution or individual responsible |
+| **Peer review** | Publication status, citation count, or academic standing |
+| **Known limitations** | Any documented biases, gaps, or quality issues |
+| **Cross-references** | Other sources that can verify this one |
+
+### 7.3 Ingestion pipeline requirements
+
+Every ingestion script must:
+
+1. **Read from a declared source** — the script's input must point to a registered source, not a local file of unknown provenance.
+2. **Be deterministic** — same source version → same output, always. No random sampling during ingestion.
+3. **Produce a provenance record** — a machine-readable JSON sidecar file recording: source URL, source version/hash, ingestion timestamp, script path, script git hash, row counts, any filtering applied.
+4. **Validate on ingest** — schema validation (expected columns, types, non-null constraints), row count sanity checks, and at least 3 spot-checked entries verified against the original source.
+5. **Never modify source data silently** — if the pipeline normalizes, filters, or transforms data, each transformation must be logged in the provenance record with rationale.
+
+### 7.4 Corpus versioning
+
+The Linear A corpus is the foundation of the entire project. It must be versioned and checksummed:
+
+- A single canonical corpus file (or directory) with a SHA-256 hash recorded in `data/CORPUS_MANIFEST.json`.
+- Any modification to the corpus (adding inscriptions, correcting readings, updating sign values) creates a new version with a new hash and a changelog entry.
+- Every experiment log (Section 9) records which corpus version was used.
+- The held-out set (Knossos ivory scepter) is stored in a separate file, never co-mingled with the training corpus, and its hash is independently tracked.
+
+### 7.5 Candidate language data
+
+For each candidate language used in Pillar 5 (and earlier for validation):
+
+- IPA transcriptions must come from published dictionaries or peer-reviewed databases, never from automated IPA converters unless the converter's error rate is documented and acceptable.
+- The source's coverage (% of reconstructed vocabulary included) must be documented.
+- Known romanization/IPA inconsistencies across sources must be flagged.
+
+---
+
+## 8. Adversarial Agent Audit System
+
+Every module that gets built must survive adversarial review before its outputs are trusted. This is not optional quality assurance — it is a structural part of the pipeline.
+
+### 8.1 Purpose
+
+PhaiPhon taught us that subtle bugs compound silently. FDR rubber-stamping 558/559 pairs (PhaiPhon 3.4.5), mass leakage in JSD computation (PhaiPhon4 v5), mean-vs-sum aggregation errors (PhaiPhon 3.4.5), and inventory-size confounds driving rankings instead of linguistics (PhaiPhon 3.5.1) — these were all cases where the module appeared to work, produced plausible-looking outputs, and passed basic tests, but was fundamentally broken in ways that only adversarial scrutiny uncovered.
+
+The adversarial audit system exists to catch exactly these failures.
+
+### 8.2 Audit structure
+
+For each module (not just each pillar — each significant component within a pillar), an adversarial audit is triggered after the module passes its own go/no-go gates. The audit is performed by a separate agent/review process with an explicitly adversarial mandate.
+
+**The auditor's job is to BREAK the module, not validate it.**
+
+### 8.3 Audit checklist
+
+Every audit must attempt ALL of the following:
+
+#### A. Known-answer tests
+- Feed the module inputs where the correct output is independently known.
+- Example (Pillar 1): Run the phonological engine on Linear B data (where we know the answer is Greek phonology). Does it recover the right vowel count? The right consonant groupings?
+- Example (Pillar 2): Run morphological decomposition on a well-understood inflected language (Latin, Greek). Does it recover known declension classes?
+- **If no known-answer test exists for a module, that is a design flaw. Fix the design.**
+
+#### B. Null/degenerate input tests
+- What happens with an empty corpus? A corpus of one word? A corpus of random signs?
+- The module must either fail gracefully with a clear error or produce explicitly flagged "insufficient data" output. It must NEVER produce confident-looking garbage.
+
+#### C. Invariance tests
+- Does the output change when it shouldn't?
+- Permuting the order of inscriptions should not change results (order invariance).
+- Duplicating the corpus should not change results (scale invariance for normalized metrics).
+- Adding a small amount of noise should not dramatically change results (stability).
+
+#### D. Confound analysis
+- Is the output driven by the signal we care about, or by a confound?
+- PhaiPhon lesson: rankings were driven by phoneme inventory size, not linguistic affinity. The auditor must check for equivalent confounds in every module.
+- For each output, ask: "What ELSE could explain this result besides the intended signal?" Test that alternative explanation.
+
+#### E. Sensitivity analysis
+- Vary key hyperparameters across a reasonable range. Does the output remain qualitatively stable, or does it flip?
+- If the output is fragile (changes qualitatively with small parameter changes), the module is not trustworthy and needs redesign.
+
+#### F. Edge case / boundary tests
+- Test at the extremes of every input dimension: shortest inscriptions, longest inscriptions, rarest signs, most common signs, signs that appear only once (hapax legomena).
+- Hapax handling is critical in a 7,400-token corpus — many signs may appear only 1-3 times.
+
+#### G. Cross-validation against independent methods
+- Where possible, compare the module's output against a completely different algorithmic approach to the same question.
+- If two independent methods agree, confidence is high. If they disagree, investigate why before trusting either.
+
+### 8.4 Audit output
+
+Each audit produces a short report filed in `docs/audits/`:
+
+```markdown
+# Audit: [Module Name]
+
+**Date:** YYYY-MM-DD
+**Auditor:** [name/agent]
+**Module version:** [git hash]
+**Verdict:** PASS | CONDITIONAL PASS | FAIL
+
+## Known-answer tests
+[results]
+
+## Null/degenerate tests
+[results]
+
+## Invariance tests
+[results]
+
+## Confound analysis
+[results]
+
+## Sensitivity analysis
+[results]
+
+## Edge cases
+[results]
+
+## Cross-validation
+[results]
+
+## Issues found
+[list with severity: CRITICAL / HIGH / MEDIUM / LOW]
+
+## Recommendation
+[pass / fix issues and re-audit / redesign module]
+```
+
+### 8.5 Audit gates
+
+- A module with any CRITICAL issue does not ship. Period.
+- A module with HIGH issues may ship only if the issues are documented in the module's limitations section and downstream consumers are aware.
+- The audit report is linked from the module's go/no-go gate results.
+
+---
+
+## 9. Experiment and Run Logging Standards
+
+Every experiment, run, module test, or diagnostic produces a log entry. These are not optional developer notes — they are the scientific record of the project.
+
+### 9.1 Log location and structure
+
+```
+docs/
+├── RUN_LOG.md                    # Master log (reverse chronological)
+├── experiments/
+│   ├── EXP-001_description.md    # Individual experiment reports
+│   ├── EXP-002_description.md
+│   └── ...
+└── audits/
+    ├── AUDIT_pillar1_phonotactics.md
+    └── ...
+```
+
+### 9.2 RUN_LOG.md format
+
+The master log is reverse chronological (newest first). Each entry follows this format:
+
+```markdown
+## YYYY-MM-DD — [Short descriptive title]
+
+**Type:** Experiment | Module Test | Diagnostic | Production Run | Audit
+**Pillar:** 1 | 2 | 3 | 4 | 5 | Cross-pillar
+**Module:** [specific module name]
+**Commit:** [git hash]
+**Corpus version:** [SHA-256 hash from CORPUS_MANIFEST.json]
+**Duration:** [wall clock time]
+**Platform:** [e.g., Windows 11 local, Vast.ai 16-vCPU, Lambda A100]
+
+### Objective
+What was this run trying to determine or validate?
+
+### Configuration
+Key parameters, config file path, any deviations from defaults.
+```yaml
+parameter: value
+parameter: value
+```
+
+### Results
+Concrete numbers. Tables preferred over prose. Include:
+- Primary metric(s) with values
+- Comparison to baseline or previous run (with delta)
+- Statistical significance where applicable (confidence intervals, p-values)
+
+### Interpretation
+What do the results mean? One paragraph maximum.
+- Was the objective met?
+- Any surprises or anomalies?
+- Does this change the plan?
+
+### Artifacts
+Links to output files, figures, saved models.
+
+### Next steps
+What follows from this result? Be specific.
+```
+
+### 9.3 Individual experiment reports (EXP-NNN)
+
+For experiments that are too detailed for a RUN_LOG entry (multi-day runs, complex diagnostics, parameter sweeps), write a full report in `docs/experiments/`. The RUN_LOG entry should link to it.
+
+Full experiment reports follow this template:
+
+```markdown
+# EXP-NNN: [Title]
+
+**Date:** YYYY-MM-DD
+**Authors:** [names]
+**Pillar:** N
+**Status:** Planned | Running | Complete | Failed | Superseded
+
+## 1. Hypothesis
+What specific claim is being tested? Phrased as a falsifiable statement.
+
+## 2. Method
+Step-by-step procedure. Detailed enough that someone else could reproduce it.
+Include: code entry points, config files, environment setup.
+
+## 3. Data
+Which corpus version. Which subset. Any filtering or preprocessing.
+Provenance record reference.
+
+## 4. Results
+Tables, figures, raw numbers. Primary and secondary metrics.
+
+## 5. Analysis
+Statistical analysis. Confound checks. Comparison to known-answer baselines.
+
+## 6. Conclusion
+Was the hypothesis supported, refuted, or inconclusive?
+If inconclusive, what additional evidence would resolve it?
+
+## 7. Failures and surprises
+What went wrong? What was unexpected?
+This section is MANDATORY even if everything went well — write "None" explicitly.
+Lessons learned from PhaiPhon: failures that aren't documented get repeated.
+
+## 8. Impact on plan
+Does this result change any PRD, interface contract, or approach?
+If yes, file a decision log entry (DEC-NNN) and link it here.
+```
+
+### 9.4 What gets logged
+
+**Always log:**
+- Any run that produces results used in a decision (even negative results)
+- Any parameter sweep or sensitivity analysis
+- Any diagnostic run (pre-run GO/NO-GO, post-run analysis)
+- Any adversarial audit
+- Any run that fails unexpectedly (with root cause analysis)
+
+**Don't log:**
+- Interactive debugging sessions (unless they reveal a bug worth documenting)
+- Repeated identical runs for timing purposes (log once with note "N=5, mean=X, std=Y")
+
+### 9.5 Commit discipline for runs
+
+- Every completed run is committed with its log entry in the same commit (or immediately after).
+- Result artifacts (output files, figures) are committed alongside the log.
+- Commit message references the experiment: `"EXP-003: Pillar 1 vowel count sensitivity analysis"`.
+- Results are pushed to GitHub. Unpushed results don't exist.
+
+---
+
+## 10. Lessons from PhaiPhon: Rigorous Experimentation Practices
+
+These are hard-won lessons from the PhaiPhon1-5 development cycle. They are codified here so they are never re-learned.
+
+### 10.1 Pre-run diagnostics (GO/NO-GO gates)
+
+Before any production run, execute a pre-run diagnostic that verifies:
+
+- **Known-answer sanity**: Run the pipeline on a case where you know the answer. If it gets the known answer wrong, do not proceed. (PhaiPhon lesson: the known-answer tests on Linear B/Greek caught bugs that production runs on Linear A would have missed.)
+- **Numerical sanity**: Check for NaN, Inf, degenerate distributions, zero gradients, collapsed outputs. These should be automated tests that run in <1 minute.
+- **Scale sanity**: Run on a tiny subset first (smoke test). If the smoke test output is qualitatively wrong, the full run will be too — but 100x more expensive.
+
+### 10.2 Post-run diagnostics
+
+After any production run, before interpreting results:
+
+- **Confound check**: Is the primary result explained by a confound? (PhaiPhon 3.4.5: inventory size drove rankings. PhaiPhon 3.5.1: vocab size drove rankings.) For every result, identify the top 3 potential confounds and test whether they explain the signal.
+- **Selectivity check**: Did the pipeline actually discriminate, or did it accept/reject everything? (PhaiPhon 3.4.5: FDR accepted 558/559 pairs = no discrimination = rubber stamp.) If a filter accepts >90% or <10%, it's not filtering — investigate why.
+- **Stability check**: How sensitive is the result to random seed, parameter perturbation, or data subsetting? If changing the seed flips the ranking, the result is noise.
+
+### 10.3 Root cause analysis for failures
+
+When a run produces unexpected results:
+
+1. **Do not patch and re-run.** Diagnose the root cause first. (PhaiPhon lesson: 5 successive versions tried to fix symptoms of what turned out to be a single architectural issue — the phonetic prior model doesn't discriminate between languages when the FDR null is too permissive.)
+2. **Spawn parallel diagnostic agents** if the failure is complex. Independent agents analyzing the same failure from different angles catches things that a single linear investigation misses. (PhaiPhon 3.4.5 post-run diagnostic used 5 parallel agents and identified the root cause.)
+3. **Write the root cause into the log** with enough detail that someone reading it in 6 months can understand what went wrong and why the fix works.
+
+### 10.4 Baseline and control requirements
+
+Every experiment must include:
+
+- **A positive control**: An input where you expect a strong signal. If the positive control fails, your pipeline is broken.
+- **A negative control**: An input where you expect NO signal. If the negative control produces a signal, your pipeline is detecting noise. (PhaiPhon lesson: IsolateControl was the negative control — a synthetic unrelated language. It correctly ranked last in most runs, validating the pipeline's ability to reject non-signal.)
+- **A baseline comparison**: What does the simplest possible approach give you? If your sophisticated model doesn't beat random chance or a trivial heuristic, it's not working.
+
+### 10.5 Avoiding silent bias accumulation
+
+Biases compound across pillar boundaries. A small systematic error in Pillar 1 (e.g., miscounting vowels by 1) propagates into Pillar 2 (wrong syllable boundaries → wrong morpheme segmentation) and cascades into Pillar 3 (wrong word classes) and Pillar 5 (wrong cognate matches). To catch this:
+
+- **End-to-end smoke tests**: Run the entire pipeline (all pillars) on a known-answer language. If the end-to-end result degrades relative to individual pillar accuracy, there's a compounding error at an interface boundary.
+- **Interface contract validation tests**: At every pillar boundary, verify that the upstream output meets the downstream's expectations — not just schema-level (correct types, correct shapes) but semantically (the C-V grid from Pillar 1 actually captures consonant/vowel distinctions, not just random clusters).
+- **Periodic bias audits**: After every 3rd experiment, step back and ask: "Are we drifting toward confirming a preconception?" Specifically check for single-cognate assumption creep — the tendency to interpret mixed results as evidence for one dominant language rather than multiple sources.
+
+### 10.6 Reporting negative results
+
+Negative results (this approach didn't work, this hypothesis was refuted) are EQUALLY important as positive results. They must be:
+
+- Logged with the same rigor as positive results
+- Kept in the experiment log permanently (never deleted or hidden)
+- Analyzed for WHY the approach failed, not just that it failed
+- Used to constrain future approaches (if X didn't work because of Y, future approaches must account for Y)
+
+PhaiPhon lesson: PhaiPhon 3.5.0 (z-score cross-language null) failed completely — accepted 0 pairs for all 20 languages. This negative result was more informative than many positive results, because it revealed that best-of-500 subsampling compresses score distributions below the z-score detection threshold. This directly informed the design of 3.5.1's rank-based approach.
+
+---
+
+## 11. Code and Implementation Standards
+
+*(To be fully defined when implementation begins. For now, PRD design is the focus.)*
 
 Preliminary notes:
 - Pure Python with NumPy/scipy preferred (consistent with PhaiPhon4-5 stack)
@@ -220,7 +559,7 @@ Preliminary notes:
 
 ---
 
-## 8. Working Process
+## 12. Working Process
 
 ### Current phase: PRD design
 We are in the PRD design phase. No code is being written. The process is:
