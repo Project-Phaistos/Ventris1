@@ -1,0 +1,6373 @@
+{
+  "metadata": {
+    "title": "Linear B Test Corpus",
+    "description": "Representative Linear B test corpus based on published Mycenaean Greek tablet readings (Ventris & Chadwick 1956, Chadwick 1958). Formatted to match SigLA corpus structure for Pillar 1 pipeline validation.",
+    "version": "1.0",
+    "date_compiled": "2026-03-23",
+    "sources": {
+      "ventris_chadwick": "Documents in Mycenaean Greek (2nd ed., 1973)",
+      "chadwick": "The Decipherment of Linear B (1958)"
+    },
+    "purpose": "Tier-2 known-answer test for Pillar 1.",
+    "statistics": {
+      "total_inscriptions": 142,
+      "total_words": 448,
+      "unique_words": 116,
+      "unique_signs": 56,
+      "total_sign_tokens": 1249
+    }
+  },
+  "sign_inventory": {
+    "a": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "a",
+      "count": 36,
+      "ab_codes": [
+        "AB08"
+      ]
+    },
+    "e": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "e",
+      "count": 36,
+      "ab_codes": [
+        "AB38"
+      ]
+    },
+    "i": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "i",
+      "count": 28,
+      "ab_codes": [
+        "AB28"
+      ]
+    },
+    "o": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "o",
+      "count": 28,
+      "ab_codes": [
+        "AB61"
+      ]
+    },
+    "u": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "u",
+      "count": 28,
+      "ab_codes": [
+        "AB10"
+      ]
+    },
+    "da": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "da",
+      "count": 27,
+      "ab_codes": [
+        "AB01"
+      ]
+    },
+    "de": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "de",
+      "count": 7,
+      "ab_codes": [
+        "AB45"
+      ]
+    },
+    "di": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "di",
+      "count": 17,
+      "ab_codes": [
+        "AB07"
+      ]
+    },
+    "do": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "do",
+      "count": 10,
+      "ab_codes": [
+        "AB14"
+      ]
+    },
+    "du": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "du",
+      "count": 3,
+      "ab_codes": [
+        "AB51"
+      ]
+    },
+    "ja": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ja",
+      "count": 24,
+      "ab_codes": [
+        "AB57"
+      ]
+    },
+    "je": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "je",
+      "count": 0,
+      "ab_codes": [
+        "AB46"
+      ]
+    },
+    "jo": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "jo",
+      "count": 20,
+      "ab_codes": [
+        "AB36"
+      ]
+    },
+    "ka": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ka",
+      "count": 65,
+      "ab_codes": [
+        "AB77"
+      ]
+    },
+    "ke": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ke",
+      "count": 30,
+      "ab_codes": [
+        "AB44"
+      ]
+    },
+    "ki": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ki",
+      "count": 14,
+      "ab_codes": [
+        "AB67"
+      ]
+    },
+    "ko": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ko",
+      "count": 50,
+      "ab_codes": [
+        "AB70"
+      ]
+    },
+    "ku": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ku",
+      "count": 7,
+      "ab_codes": [
+        "AB81"
+      ]
+    },
+    "ma": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ma",
+      "count": 16,
+      "ab_codes": [
+        "AB80"
+      ]
+    },
+    "me": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "me",
+      "count": 21,
+      "ab_codes": [
+        "AB13"
+      ]
+    },
+    "mi": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "mi",
+      "count": 7,
+      "ab_codes": [
+        "AB73"
+      ]
+    },
+    "mo": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "mo",
+      "count": 6,
+      "ab_codes": [
+        "AB15"
+      ]
+    },
+    "mu": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "mu",
+      "count": 8,
+      "ab_codes": [
+        "AB23"
+      ]
+    },
+    "na": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "na",
+      "count": 47,
+      "ab_codes": [
+        "AB06"
+      ]
+    },
+    "ne": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ne",
+      "count": 16,
+      "ab_codes": [
+        "AB24"
+      ]
+    },
+    "ni": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ni",
+      "count": 26,
+      "ab_codes": [
+        "AB30"
+      ]
+    },
+    "no": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "no",
+      "count": 50,
+      "ab_codes": [
+        "AB52"
+      ]
+    },
+    "nu": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "nu",
+      "count": 3,
+      "ab_codes": [
+        "AB55"
+      ]
+    },
+    "pa": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "pa",
+      "count": 52,
+      "ab_codes": [
+        "AB03"
+      ]
+    },
+    "pe": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "pe",
+      "count": 16,
+      "ab_codes": [
+        "AB72"
+      ]
+    },
+    "pi": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "pi",
+      "count": 16,
+      "ab_codes": [
+        "AB39"
+      ]
+    },
+    "po": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "po",
+      "count": 27,
+      "ab_codes": [
+        "AB11"
+      ]
+    },
+    "pu": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "pu",
+      "count": 6,
+      "ab_codes": [
+        "AB50"
+      ]
+    },
+    "qa": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "qa",
+      "count": 0,
+      "ab_codes": [
+        "AB16"
+      ]
+    },
+    "qe": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "qe",
+      "count": 8,
+      "ab_codes": [
+        "AB78"
+      ]
+    },
+    "qo": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "qo",
+      "count": 3,
+      "ab_codes": [
+        "AB90"
+      ]
+    },
+    "ra": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ra",
+      "count": 56,
+      "ab_codes": [
+        "AB60"
+      ]
+    },
+    "re": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "re",
+      "count": 40,
+      "ab_codes": [
+        "AB27"
+      ]
+    },
+    "ri": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ri",
+      "count": 41,
+      "ab_codes": [
+        "AB53"
+      ]
+    },
+    "ro": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ro",
+      "count": 20,
+      "ab_codes": [
+        "AB02"
+      ]
+    },
+    "ru": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ru",
+      "count": 6,
+      "ab_codes": [
+        "AB26"
+      ]
+    },
+    "sa": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "sa",
+      "count": 11,
+      "ab_codes": [
+        "AB31"
+      ]
+    },
+    "se": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "se",
+      "count": 4,
+      "ab_codes": [
+        "AB09"
+      ]
+    },
+    "si": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "si",
+      "count": 12,
+      "ab_codes": [
+        "AB41"
+      ]
+    },
+    "so": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "so",
+      "count": 28,
+      "ab_codes": [
+        "AB12"
+      ]
+    },
+    "su": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "su",
+      "count": 8,
+      "ab_codes": [
+        "AB58"
+      ]
+    },
+    "ta": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ta",
+      "count": 62,
+      "ab_codes": [
+        "AB59"
+      ]
+    },
+    "te": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "te",
+      "count": 42,
+      "ab_codes": [
+        "AB04"
+      ]
+    },
+    "ti": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ti",
+      "count": 19,
+      "ab_codes": [
+        "AB37"
+      ]
+    },
+    "to": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "to",
+      "count": 56,
+      "ab_codes": [
+        "AB05"
+      ]
+    },
+    "tu": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "tu",
+      "count": 11,
+      "ab_codes": [
+        "AB69"
+      ]
+    },
+    "wa": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "wa",
+      "count": 36,
+      "ab_codes": [
+        "AB54"
+      ]
+    },
+    "we": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "we",
+      "count": 5,
+      "ab_codes": [
+        "AB75"
+      ]
+    },
+    "wi": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "wi",
+      "count": 6,
+      "ab_codes": [
+        "AB40"
+      ]
+    },
+    "wo": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "wo",
+      "count": 20,
+      "ab_codes": [
+        "AB42"
+      ]
+    },
+    "za": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "za",
+      "count": 3,
+      "ab_codes": [
+        "AB17"
+      ]
+    },
+    "ze": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "ze",
+      "count": 2,
+      "ab_codes": [
+        "AB74"
+      ]
+    },
+    "zo": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "zo",
+      "count": 3,
+      "ab_codes": [
+        "AB20"
+      ]
+    }
+  },
+  "inscriptions": [
+    {
+      "id": "LB-PY-001",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "na"
+          ],
+          "ab_codes": "AB08-AB59-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "no",
+            "so"
+          ],
+          "ab_codes": "AB70-AB52-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-002",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "no"
+          ],
+          "ab_codes": "AB08-AB59-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB08-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ri",
+            "so"
+          ],
+          "ab_codes": "AB69-AB53-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-003",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB08-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "mi",
+            "ni",
+            "so"
+          ],
+          "ab_codes": "AB08-AB73-AB30-AB12",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ku",
+            "do",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB81-AB14-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "ta"
+          ],
+          "ab_codes": "AB07-AB77-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-004",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "re"
+          ],
+          "ab_codes": "AB08-AB70-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "jo"
+          ],
+          "ab_codes": "AB08-AB30-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB07-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-005",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "pi",
+            "qo",
+            "ro"
+          ],
+          "ab_codes": "AB08-AB39-AB90-AB02",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wo"
+          ],
+          "ab_codes": "AB70-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-006",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "na"
+          ],
+          "ab_codes": "AB08-AB59-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "no"
+          ],
+          "ab_codes": "AB08-AB59-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wa"
+          ],
+          "ab_codes": "AB70-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "to",
+            "so"
+          ],
+          "ab_codes": "AB05-AB12",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-007",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB08-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB08-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "to",
+            "sa"
+          ],
+          "ab_codes": "AB05-AB31",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-008",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "mi",
+            "ni",
+            "so"
+          ],
+          "ab_codes": "AB08-AB73-AB30-AB12",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "re"
+          ],
+          "ab_codes": "AB08-AB70-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "te"
+          ],
+          "ab_codes": "AB03-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-009",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "jo"
+          ],
+          "ab_codes": "AB08-AB30-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "pi",
+            "qo",
+            "ro"
+          ],
+          "ab_codes": "AB08-AB39-AB90-AB02",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB03-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ti"
+          ],
+          "ab_codes": "AB03-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-010",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "na"
+          ],
+          "ab_codes": "AB08-AB59-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "te"
+          ],
+          "ab_codes": "AB80-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-011",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "no"
+          ],
+          "ab_codes": "AB08-AB59-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB08-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ta"
+          ],
+          "ab_codes": "AB80-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-012",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB08-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "mi",
+            "ni",
+            "so"
+          ],
+          "ab_codes": "AB08-AB73-AB30-AB12",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka"
+          ],
+          "ab_codes": "AB54-AB06-AB77",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-013",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "re"
+          ],
+          "ab_codes": "AB08-AB70-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ni",
+            "jo"
+          ],
+          "ab_codes": "AB08-AB30-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-014",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "pi",
+            "qo",
+            "ro"
+          ],
+          "ab_codes": "AB08-AB39-AB90-AB02",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "si",
+            "to"
+          ],
+          "ab_codes": "AB41-AB05",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-015",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ra",
+            "wo"
+          ],
+          "ab_codes": "AB38-AB60-AB42",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "me",
+            "ri"
+          ],
+          "ab_codes": "AB13-AB53",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-016",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB70",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-017",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "re"
+          ],
+          "ab_codes": "AB38-AB77-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ko",
+            "to"
+          ],
+          "ab_codes": "AB38-AB70-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mi"
+          ],
+          "ab_codes": "AB01-AB73",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-018",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB38-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "pi",
+            "ke"
+          ],
+          "ab_codes": "AB38-AB39-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "me",
+            "ne"
+          ],
+          "ab_codes": "AB11-AB13-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-019",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ra",
+            "wo"
+          ],
+          "ab_codes": "AB38-AB60-AB42",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-020",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "ja"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ti",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB11-AB37-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-021",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "re"
+          ],
+          "ab_codes": "AB38-AB77-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ko",
+            "to"
+          ],
+          "ab_codes": "AB38-AB70-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-022",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB38-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "pi",
+            "ke"
+          ],
+          "ab_codes": "AB38-AB39-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "to"
+          ],
+          "ab_codes": "AB70-AB27-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-023",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ra",
+            "wo"
+          ],
+          "ab_codes": "AB38-AB60-AB42",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "ta"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "to"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-024",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "te",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB04-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-025",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "re"
+          ],
+          "ab_codes": "AB38-AB77-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ko",
+            "to"
+          ],
+          "ab_codes": "AB38-AB70-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "ta"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-026",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "pa"
+          ],
+          "ab_codes": "AB38-AB27-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "pi",
+            "ke"
+          ],
+          "ab_codes": "AB38-AB39-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "to"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB02-AB03-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-027",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ra",
+            "wo"
+          ],
+          "ab_codes": "AB38-AB60-AB42",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "to"
+          ],
+          "ab_codes": "AB02-AB03-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-028",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "na"
+          ],
+          "ab_codes": "AB23-AB53-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-029",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "da"
+          ],
+          "ab_codes": "AB28-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "jo"
+          ],
+          "ab_codes": "AB28-AB36",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB23-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-030",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "ta"
+          ],
+          "ab_codes": "AB28-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "ke"
+          ],
+          "ab_codes": "AB28-AB44",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "sa",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB31-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-031",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "na"
+          ],
+          "ab_codes": "AB28-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "pa"
+          ],
+          "ab_codes": "AB28-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ni",
+            "ka",
+            "no"
+          ],
+          "ab_codes": "AB30-AB77-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "ra",
+            "si",
+            "ja"
+          ],
+          "ab_codes": "AB59-AB60-AB41-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-032",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "da"
+          ],
+          "ab_codes": "AB28-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "jo"
+          ],
+          "ab_codes": "AB28-AB36",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "po"
+          ],
+          "ab_codes": "AB37-AB53-AB11",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-033",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "ta"
+          ],
+          "ab_codes": "AB28-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "ke"
+          ],
+          "ab_codes": "AB28-AB44",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "pa"
+          ],
+          "ab_codes": "AB37-AB53-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-034",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "na"
+          ],
+          "ab_codes": "AB28-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "pa"
+          ],
+          "ab_codes": "AB28-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "de",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB45-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "du",
+            "wo",
+            "pi"
+          ],
+          "ab_codes": "AB51-AB42-AB39",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-035",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "da"
+          ],
+          "ab_codes": "AB28-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "jo"
+          ],
+          "ab_codes": "AB28-AB36",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "za",
+            "we",
+            "te"
+          ],
+          "ab_codes": "AB17-AB75-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-036",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "ta"
+          ],
+          "ab_codes": "AB28-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "ke"
+          ],
+          "ab_codes": "AB28-AB44",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "zo",
+            "wa",
+            "de"
+          ],
+          "ab_codes": "AB20-AB54-AB45",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-037",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "na"
+          ],
+          "ab_codes": "AB28-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "pa"
+          ],
+          "ab_codes": "AB28-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "nu",
+            "wa",
+            "ja"
+          ],
+          "ab_codes": "AB55-AB54-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ku",
+            "ru",
+            "so"
+          ],
+          "ab_codes": "AB81-AB26-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-038",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "da"
+          ],
+          "ab_codes": "AB28-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "jo"
+          ],
+          "ab_codes": "AB28-AB36",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "na",
+            "wi",
+            "jo"
+          ],
+          "ab_codes": "AB06-AB40-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-039",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "ta"
+          ],
+          "ab_codes": "AB28-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "ke"
+          ],
+          "ab_codes": "AB28-AB44",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "wi",
+            "ja",
+            "na",
+            "ko"
+          ],
+          "ab_codes": "AB40-AB57-AB06-AB70",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-040",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "na"
+          ],
+          "ab_codes": "AB28-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "pa"
+          ],
+          "ab_codes": "AB28-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ke"
+          ],
+          "ab_codes": "AB11-AB30-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ki"
+          ],
+          "ab_codes": "AB11-AB30-AB67",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-041",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "da"
+          ],
+          "ab_codes": "AB28-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "jo"
+          ],
+          "ab_codes": "AB28-AB36",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wo"
+          ],
+          "ab_codes": "AB24-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-042",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "i",
+            "ta"
+          ],
+          "ab_codes": "AB28-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "i",
+            "ke"
+          ],
+          "ab_codes": "AB28-AB44",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wa"
+          ],
+          "ab_codes": "AB24-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-043",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pa"
+          ],
+          "ab_codes": "AB61-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "pe",
+            "ro"
+          ],
+          "ab_codes": "AB61-AB72-AB02",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB69-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-044",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "no"
+          ],
+          "ab_codes": "AB61-AB52",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB61-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB69-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-045",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pi"
+          ],
+          "ab_codes": "AB61-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "da"
+          ],
+          "ab_codes": "AB61-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "na"
+          ],
+          "ab_codes": "AB78-AB60-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB78-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-046",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pa"
+          ],
+          "ab_codes": "AB61-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "pe",
+            "ro"
+          ],
+          "ab_codes": "AB61-AB72-AB02",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pa"
+          ],
+          "ab_codes": "AB59-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-047",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "no"
+          ],
+          "ab_codes": "AB61-AB52",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB61-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pe"
+          ],
+          "ab_codes": "AB59-AB72",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-048",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pi"
+          ],
+          "ab_codes": "AB61-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "da"
+          ],
+          "ab_codes": "AB61-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pe",
+            "ma"
+          ],
+          "ab_codes": "AB72-AB80",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "re",
+            "wo",
+            "to",
+            "ro",
+            "ko"
+          ],
+          "ab_codes": "AB27-AB42-AB05-AB02-AB70",
+          "has_damage": false,
+          "sign_count": 5,
+          "known_phonetic_count": 5
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-049",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pa"
+          ],
+          "ab_codes": "AB61-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "pe",
+            "ro"
+          ],
+          "ab_codes": "AB61-AB72-AB02",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "se",
+            "to",
+            "ja"
+          ],
+          "ab_codes": "AB09-AB05-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-050",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "no"
+          ],
+          "ab_codes": "AB61-AB52",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB61-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ru",
+            "ki",
+            "to"
+          ],
+          "ab_codes": "AB26-AB67-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-051",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pi"
+          ],
+          "ab_codes": "AB61-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "da"
+          ],
+          "ab_codes": "AB61-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "na",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB06-AB70",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pu",
+            "te"
+          ],
+          "ab_codes": "AB50-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-052",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pa"
+          ],
+          "ab_codes": "AB61-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "pe",
+            "ro"
+          ],
+          "ab_codes": "AB61-AB72-AB02",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pu",
+            "ti"
+          ],
+          "ab_codes": "AB50-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-053",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "no"
+          ],
+          "ab_codes": "AB61-AB52",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB61-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "sa",
+            "ma",
+            "ri",
+            "jo"
+          ],
+          "ab_codes": "AB31-AB80-AB53-AB36",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-054",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pi"
+          ],
+          "ab_codes": "AB61-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "da"
+          ],
+          "ab_codes": "AB61-AB01",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ri",
+            "ne"
+          ],
+          "ab_codes": "AB80-AB53-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ra",
+            "te",
+            "ra"
+          ],
+          "ab_codes": "AB77-AB60-AB04-AB60",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-055",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "pa"
+          ],
+          "ab_codes": "AB61-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "pe",
+            "ro"
+          ],
+          "ab_codes": "AB61-AB72-AB02",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "pe",
+            "se"
+          ],
+          "ab_codes": "AB77-AB72-AB09",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-056",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "o",
+            "no"
+          ],
+          "ab_codes": "AB61-AB52",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "o",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB61-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ze",
+            "ke",
+            "si"
+          ],
+          "ab_codes": "AB74-AB44-AB41",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-057",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "po",
+            "jo"
+          ],
+          "ab_codes": "AB10-AB11-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "do",
+            "no"
+          ],
+          "ab_codes": "AB10-AB14-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "na"
+          ],
+          "ab_codes": "AB12-AB01-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-058",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ta"
+          ],
+          "ab_codes": "AB10-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "u",
+            "pa"
+          ],
+          "ab_codes": "AB10-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "no"
+          ],
+          "ab_codes": "AB12-AB01-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-059",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB10-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "na"
+          ],
+          "ab_codes": "AB10-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "jo",
+            "do",
+            "so",
+            "si"
+          ],
+          "ab_codes": "AB36-AB14-AB12-AB41",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "we",
+            "da",
+            "ne"
+          ],
+          "ab_codes": "AB75-AB01-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-060",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "po",
+            "jo"
+          ],
+          "ab_codes": "AB10-AB11-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "do",
+            "no"
+          ],
+          "ab_codes": "AB10-AB14-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "wo"
+          ],
+          "ab_codes": "AB07-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-061",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ta"
+          ],
+          "ab_codes": "AB10-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "u",
+            "pa"
+          ],
+          "ab_codes": "AB10-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "di",
+            "pa"
+          ],
+          "ab_codes": "AB07-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-062",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB10-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "na"
+          ],
+          "ab_codes": "AB10-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "di",
+            "pi"
+          ],
+          "ab_codes": "AB07-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "na",
+            "pe"
+          ],
+          "ab_codes": "AB77-AB06-AB72",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-063",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "po",
+            "jo"
+          ],
+          "ab_codes": "AB10-AB11-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "do",
+            "no"
+          ],
+          "ab_codes": "AB10-AB14-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ro",
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB11-AB02-AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 5,
+          "known_phonetic_count": 5
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-064",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ta"
+          ],
+          "ab_codes": "AB10-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "u",
+            "pa"
+          ],
+          "ab_codes": "AB10-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "no",
+            "so"
+          ],
+          "ab_codes": "AB70-AB52-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-065",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB10-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "na"
+          ],
+          "ab_codes": "AB10-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ri",
+            "so"
+          ],
+          "ab_codes": "AB69-AB53-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ku",
+            "do",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB81-AB14-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-066",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "po",
+            "jo"
+          ],
+          "ab_codes": "AB10-AB11-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "do",
+            "no"
+          ],
+          "ab_codes": "AB10-AB14-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "ta"
+          ],
+          "ab_codes": "AB07-AB77-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-067",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ta"
+          ],
+          "ab_codes": "AB10-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "u",
+            "pa"
+          ],
+          "ab_codes": "AB10-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB07-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-068",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB10-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "na"
+          ],
+          "ab_codes": "AB10-AB06",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wo"
+          ],
+          "ab_codes": "AB70-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wa"
+          ],
+          "ab_codes": "AB70-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-069",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "po",
+            "jo"
+          ],
+          "ab_codes": "AB10-AB11-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "u",
+            "do",
+            "no"
+          ],
+          "ab_codes": "AB10-AB14-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "to",
+            "so"
+          ],
+          "ab_codes": "AB05-AB12",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-070",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "ta"
+          ],
+          "ab_codes": "AB10-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "u",
+            "pa"
+          ],
+          "ab_codes": "AB10-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "to",
+            "sa"
+          ],
+          "ab_codes": "AB05-AB31",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-071",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "ta"
+          ],
+          "ab_codes": "AB07-AB77-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB07-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "te"
+          ],
+          "ab_codes": "AB03-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-072",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "ta"
+          ],
+          "ab_codes": "AB07-AB77-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB07-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB03-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-073",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "wo"
+          ],
+          "ab_codes": "AB70-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wa"
+          ],
+          "ab_codes": "AB70-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ti"
+          ],
+          "ab_codes": "AB03-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-074",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "wo"
+          ],
+          "ab_codes": "AB70-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wa"
+          ],
+          "ab_codes": "AB70-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "te"
+          ],
+          "ab_codes": "AB80-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-075",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "to",
+            "so"
+          ],
+          "ab_codes": "AB05-AB12",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "to",
+            "sa"
+          ],
+          "ab_codes": "AB05-AB31",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ta"
+          ],
+          "ab_codes": "AB80-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-076",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "to",
+            "so"
+          ],
+          "ab_codes": "AB05-AB12",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "to",
+            "sa"
+          ],
+          "ab_codes": "AB05-AB31",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka"
+          ],
+          "ab_codes": "AB54-AB06-AB77",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-077",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "pa",
+            "te"
+          ],
+          "ab_codes": "AB03-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB03-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ti"
+          ],
+          "ab_codes": "AB03-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-078",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "pa",
+            "te"
+          ],
+          "ab_codes": "AB03-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB03-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "ti"
+          ],
+          "ab_codes": "AB03-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-079",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ma",
+            "te"
+          ],
+          "ab_codes": "AB80-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ta"
+          ],
+          "ab_codes": "AB80-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "si",
+            "to"
+          ],
+          "ab_codes": "AB41-AB05",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-080",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ma",
+            "te"
+          ],
+          "ab_codes": "AB80-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ta"
+          ],
+          "ab_codes": "AB80-AB59",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "me",
+            "ri"
+          ],
+          "ab_codes": "AB13-AB53",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-081",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB70",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-082",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB54-AB06-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-083",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "to"
+          ],
+          "ab_codes": "AB70-AB27-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mi"
+          ],
+          "ab_codes": "AB01-AB73",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-084",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "to"
+          ],
+          "ab_codes": "AB70-AB27-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "me",
+            "ne"
+          ],
+          "ab_codes": "AB11-AB13-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-085",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "ta"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "to"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-086",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "ta"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "to"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "ja"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-087",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "ta"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "to"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ti",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB11-AB37-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-088",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "ta"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "to"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-089",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB02-AB03-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "to"
+          ],
+          "ab_codes": "AB02-AB03-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "re",
+            "to"
+          ],
+          "ab_codes": "AB70-AB27-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-090",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB02-AB03-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "to"
+          ],
+          "ab_codes": "AB02-AB03-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "ta"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-091",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "na"
+          ],
+          "ab_codes": "AB23-AB53-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB23-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ra",
+            "wa",
+            "ke",
+            "to"
+          ],
+          "ab_codes": "AB60-AB54-AB44-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-092",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "na"
+          ],
+          "ab_codes": "AB23-AB53-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB23-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "te",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB04-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-093",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "ja"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "ta"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB59",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-094",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ke",
+            "ra",
+            "me",
+            "ja"
+          ],
+          "ab_codes": "AB44-AB60-AB13-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "su",
+            "ki",
+            "ri",
+            "to"
+          ],
+          "ab_codes": "AB58-AB67-AB53-AB05",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-095",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "po"
+          ],
+          "ab_codes": "AB37-AB53-AB11",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "pa"
+          ],
+          "ab_codes": "AB37-AB53-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "ta"
+          ],
+          "ab_codes": "AB02-AB03-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-096",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "po"
+          ],
+          "ab_codes": "AB37-AB53-AB11",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "pa"
+          ],
+          "ab_codes": "AB37-AB53-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ro",
+            "pa",
+            "to"
+          ],
+          "ab_codes": "AB02-AB03-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-097",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ke"
+          ],
+          "ab_codes": "AB11-AB30-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ki"
+          ],
+          "ab_codes": "AB11-AB30-AB67",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "na"
+          ],
+          "ab_codes": "AB23-AB53-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-098",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ke"
+          ],
+          "ab_codes": "AB11-AB30-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ki"
+          ],
+          "ab_codes": "AB11-AB30-AB67",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "mu",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB23-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-099",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ne",
+            "wo"
+          ],
+          "ab_codes": "AB24-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wa"
+          ],
+          "ab_codes": "AB24-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "sa",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB31-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-100",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ne",
+            "wo"
+          ],
+          "ab_codes": "AB24-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wa"
+          ],
+          "ab_codes": "AB24-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ni",
+            "ka",
+            "no"
+          ],
+          "ab_codes": "AB30-AB77-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-101",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB69-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB69-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "ra",
+            "si",
+            "ja"
+          ],
+          "ab_codes": "AB59-AB60-AB41-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-102",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB69-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB69-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "po"
+          ],
+          "ab_codes": "AB37-AB53-AB11",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-103",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "na"
+          ],
+          "ab_codes": "AB78-AB60-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB78-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "pa"
+          ],
+          "ab_codes": "AB37-AB53-AB03",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-104",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "na"
+          ],
+          "ab_codes": "AB78-AB60-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB78-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "de",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB45-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-105",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ta",
+            "pa"
+          ],
+          "ab_codes": "AB59-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pe"
+          ],
+          "ab_codes": "AB59-AB72",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "du",
+            "wo",
+            "pi"
+          ],
+          "ab_codes": "AB51-AB42-AB39",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-106",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ta",
+            "pa"
+          ],
+          "ab_codes": "AB59-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pe"
+          ],
+          "ab_codes": "AB59-AB72",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "za",
+            "we",
+            "te"
+          ],
+          "ab_codes": "AB17-AB75-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-107",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "na"
+          ],
+          "ab_codes": "AB12-AB01-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "no"
+          ],
+          "ab_codes": "AB12-AB01-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "zo",
+            "wa",
+            "de"
+          ],
+          "ab_codes": "AB20-AB54-AB45",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-108",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "na"
+          ],
+          "ab_codes": "AB12-AB01-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "so",
+            "da",
+            "no"
+          ],
+          "ab_codes": "AB12-AB01-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "nu",
+            "wa",
+            "ja"
+          ],
+          "ab_codes": "AB55-AB54-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-109",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "di",
+            "pa"
+          ],
+          "ab_codes": "AB07-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "di",
+            "pi"
+          ],
+          "ab_codes": "AB07-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ku",
+            "ru",
+            "so"
+          ],
+          "ab_codes": "AB81-AB26-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-110",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "di",
+            "pa"
+          ],
+          "ab_codes": "AB07-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "di",
+            "pi"
+          ],
+          "ab_codes": "AB07-AB39",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "na",
+            "wi",
+            "jo"
+          ],
+          "ab_codes": "AB06-AB40-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-111",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "pu",
+            "te"
+          ],
+          "ab_codes": "AB50-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pu",
+            "ti"
+          ],
+          "ab_codes": "AB50-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "wi",
+            "ja",
+            "na",
+            "ko"
+          ],
+          "ab_codes": "AB40-AB57-AB06-AB70",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-112",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "pu",
+            "te"
+          ],
+          "ab_codes": "AB50-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "pu",
+            "ti"
+          ],
+          "ab_codes": "AB50-AB37",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ke"
+          ],
+          "ab_codes": "AB11-AB30-AB44",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-113",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mi"
+          ],
+          "ab_codes": "AB01-AB73",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ni",
+            "ki"
+          ],
+          "ab_codes": "AB11-AB30-AB67",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-114",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mi"
+          ],
+          "ab_codes": "AB01-AB73",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wo"
+          ],
+          "ab_codes": "AB24-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-115",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "na"
+          ],
+          "ab_codes": "AB08-AB59-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "no"
+          ],
+          "ab_codes": "AB08-AB59-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ne",
+            "wa"
+          ],
+          "ab_codes": "AB24-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-116",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "na"
+          ],
+          "ab_codes": "AB08-AB59-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ta",
+            "no"
+          ],
+          "ab_codes": "AB08-AB59-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "te"
+          ],
+          "ab_codes": "AB69-AB77-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-117",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "tu",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB69-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-118",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "ta"
+          ],
+          "ab_codes": "AB38-AB27-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB38-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "na"
+          ],
+          "ab_codes": "AB78-AB60-AB06",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-119",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "re"
+          ],
+          "ab_codes": "AB08-AB70-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "qe",
+            "ra",
+            "no"
+          ],
+          "ab_codes": "AB78-AB60-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-120",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "ra"
+          ],
+          "ab_codes": "AB08-AB70-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "a",
+            "ko",
+            "re"
+          ],
+          "ab_codes": "AB08-AB70-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pa"
+          ],
+          "ab_codes": "AB59-AB03",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-121",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "re"
+          ],
+          "ab_codes": "AB38-AB77-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ta",
+            "pe"
+          ],
+          "ab_codes": "AB59-AB72",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-122",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "ra"
+          ],
+          "ab_codes": "AB38-AB77-AB60",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "e",
+            "ka",
+            "re"
+          ],
+          "ab_codes": "AB38-AB77-AB27",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pe",
+            "ma"
+          ],
+          "ab_codes": "AB72-AB80",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-123",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "no",
+            "so"
+          ],
+          "ab_codes": "AB70-AB52-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "si",
+            "to"
+          ],
+          "ab_codes": "AB41-AB05",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "me",
+            "ri"
+          ],
+          "ab_codes": "AB13-AB53",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-124",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka"
+          ],
+          "ab_codes": "AB54-AB06-AB77",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB70",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-125",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "po",
+            "me",
+            "ne"
+          ],
+          "ab_codes": "AB11-AB13-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "te",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB04-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "sa",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB31-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-126",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ku",
+            "ru",
+            "so"
+          ],
+          "ab_codes": "AB81-AB26-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "nu",
+            "wa",
+            "ja"
+          ],
+          "ab_codes": "AB55-AB54-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "na",
+            "wi",
+            "jo"
+          ],
+          "ab_codes": "AB06-AB40-AB36",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-127",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ta",
+            "ra",
+            "si",
+            "ja"
+          ],
+          "ab_codes": "AB59-AB60-AB41-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ti",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB11-AB37-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "me",
+            "ri"
+          ],
+          "ab_codes": "AB13-AB53",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-128",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "de",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB45-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "du",
+            "wo",
+            "pi"
+          ],
+          "ab_codes": "AB51-AB42-AB39",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "za",
+            "we",
+            "te"
+          ],
+          "ab_codes": "AB17-AB75-AB04",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-129",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "zo",
+            "wa",
+            "de"
+          ],
+          "ab_codes": "AB20-AB54-AB45",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "wi",
+            "ja",
+            "na",
+            "ko"
+          ],
+          "ab_codes": "AB40-AB57-AB06-AB70",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "no",
+            "so"
+          ],
+          "ab_codes": "AB70-AB52-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-130",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "se",
+            "to",
+            "ja"
+          ],
+          "ab_codes": "AB09-AB05-AB57",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ru",
+            "ki",
+            "to"
+          ],
+          "ab_codes": "AB26-AB67-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "na",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB06-AB70",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-131",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "re",
+            "wo",
+            "to",
+            "ro",
+            "ko"
+          ],
+          "ab_codes": "AB27-AB42-AB05-AB02-AB70",
+          "has_damage": false,
+          "sign_count": 5,
+          "known_phonetic_count": 5
+        },
+        {
+          "sign_readings": [
+            "pe",
+            "ma"
+          ],
+          "ab_codes": "AB72-AB80",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "pe",
+            "se"
+          ],
+          "ab_codes": "AB77-AB72-AB09",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-132",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ze",
+            "ke",
+            "si"
+          ],
+          "ab_codes": "AB74-AB44-AB41",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "ri",
+            "ne"
+          ],
+          "ab_codes": "AB80-AB53-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ra",
+            "te",
+            "ra"
+          ],
+          "ab_codes": "AB77-AB60-AB04-AB60",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-133",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "jo",
+            "do",
+            "so",
+            "si"
+          ],
+          "ab_codes": "AB36-AB14-AB12-AB41",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "we",
+            "da",
+            "ne"
+          ],
+          "ab_codes": "AB75-AB01-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "po",
+            "ro",
+            "ko",
+            "re",
+            "te"
+          ],
+          "ab_codes": "AB11-AB02-AB70-AB27-AB04",
+          "has_damage": false,
+          "sign_count": 5,
+          "known_phonetic_count": 5
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-134",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "sa",
+            "ma",
+            "ri",
+            "jo"
+          ],
+          "ab_codes": "AB31-AB80-AB53-AB36",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "na",
+            "pe"
+          ],
+          "ab_codes": "AB77-AB06-AB72",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "wo"
+          ],
+          "ab_codes": "AB07-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-135",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "ko",
+            "no",
+            "so"
+          ],
+          "ab_codes": "AB70-AB52-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka"
+          ],
+          "ab_codes": "AB54-AB06-AB77",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "pa",
+            "te"
+          ],
+          "ab_codes": "AB03-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-136",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "si",
+            "to"
+          ],
+          "ab_codes": "AB41-AB05",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "me",
+            "ri"
+          ],
+          "ab_codes": "AB13-AB53",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ka",
+            "ko"
+          ],
+          "ab_codes": "AB77-AB70",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-137",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "da",
+            "mo"
+          ],
+          "ab_codes": "AB01-AB15",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "to",
+            "so"
+          ],
+          "ab_codes": "AB05-AB12",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wo"
+          ],
+          "ab_codes": "AB70-AB42",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-138",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "po",
+            "me",
+            "ne"
+          ],
+          "ab_codes": "AB11-AB13-AB24",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "te",
+            "me",
+            "no"
+          ],
+          "ab_codes": "AB04-AB13-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ko",
+            "wa"
+          ],
+          "ab_codes": "AB70-AB54",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-TH-139",
+      "type": "Tablet",
+      "site": "Thebes",
+      "words": [
+        {
+          "sign_readings": [
+            "tu",
+            "ri",
+            "so"
+          ],
+          "ab_codes": "AB69-AB53-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ku",
+            "do",
+            "ni",
+            "ja"
+          ],
+          "ab_codes": "AB81-AB14-AB30-AB57",
+          "has_damage": false,
+          "sign_count": 4,
+          "known_phonetic_count": 4
+        },
+        {
+          "sign_readings": [
+            "to",
+            "sa"
+          ],
+          "ab_codes": "AB05-AB31",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-KN-140",
+      "type": "Tablet",
+      "site": "Knossos",
+      "words": [
+        {
+          "sign_readings": [
+            "ni",
+            "ka",
+            "no"
+          ],
+          "ab_codes": "AB30-AB77-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "sa",
+            "ri",
+            "no"
+          ],
+          "ab_codes": "AB31-AB53-AB52",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "ma",
+            "te"
+          ],
+          "ab_codes": "AB80-AB04",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    },
+    {
+      "id": "LB-PY-141",
+      "type": "Tablet",
+      "site": "Pylos",
+      "words": [
+        {
+          "sign_readings": [
+            "ti",
+            "ri",
+            "po"
+          ],
+          "ab_codes": "AB37-AB53-AB11",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "de",
+            "ka",
+            "to"
+          ],
+          "ab_codes": "AB45-AB77-AB05",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "wa",
+            "na",
+            "ka"
+          ],
+          "ab_codes": "AB54-AB06-AB77",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        }
+      ]
+    },
+    {
+      "id": "LB-MY-142",
+      "type": "Tablet",
+      "site": "Mycenae",
+      "words": [
+        {
+          "sign_readings": [
+            "ku",
+            "ru",
+            "so"
+          ],
+          "ab_codes": "AB81-AB26-AB12",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "di",
+            "ka",
+            "ta"
+          ],
+          "ab_codes": "AB07-AB77-AB59",
+          "has_damage": false,
+          "sign_count": 3,
+          "known_phonetic_count": 3
+        },
+        {
+          "sign_readings": [
+            "si",
+            "to"
+          ],
+          "ab_codes": "AB41-AB05",
+          "has_damage": false,
+          "sign_count": 2,
+          "known_phonetic_count": 2
+        }
+      ]
+    }
+  ]
+}
