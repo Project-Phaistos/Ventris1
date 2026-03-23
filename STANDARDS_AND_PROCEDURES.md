@@ -862,7 +862,136 @@ Preliminary notes (to be fully expanded when implementation begins):
 
 ---
 
-## 17. Working Process
+## 17. Session Handoff Protocol
+
+Claude sessions are ephemeral — context is lost between conversations. PhaiPhon relied on memory files and session briefs, which was fragile (memory could be stale, session briefs could be incomplete, new sessions sometimes repeated work or contradicted previous decisions). Ventris1 formalizes the handoff.
+
+### 17.1 What a new session must read (in order)
+
+When a new Claude session starts work on Ventris1, it MUST read these files before doing anything:
+
+```
+1. README.md                           — ground truth (high-level approach, axioms)
+2. STANDARDS_AND_PROCEDURES.md         — how we work (this file)
+3. docs/decisions/DECISION_LOG.md      — what has changed since README was written
+4. docs/RUN_LOG.md (last 3 entries)    — what happened most recently
+5. The PRD for the pillar being worked on — current design spec
+6. The relevant test suite               — what's passing/failing
+```
+
+The session must NOT proceed with substantive work until it has confirmed it understands:
+- Which pillar is currently active
+- What the current status is (PRD phase? Implementation? Testing?)
+- What the last session accomplished
+- What the next step is
+
+### 17.2 What every session must leave behind
+
+Before a session ends (or when a significant milestone is reached), it must:
+
+1. **Commit and push all work** — uncommitted work doesn't exist. If the session is interrupted, at minimum a WIP commit captures the state.
+2. **Update RUN_LOG.md** — log what was done, what results were obtained, and what the next step is.
+3. **Update the decision log** — if any design decisions were made during the session.
+4. **Do NOT rely on Claude memory as the primary handoff mechanism.** Memory is supplementary. The repo itself must contain everything the next session needs. Memory is for user preferences, project context, and cross-project patterns — not for tracking the current state of Ventris1 work.
+
+### 17.3 Session brief (in-repo, not in memory)
+
+Each pillar directory contains a `SESSION_BRIEF.md` that is updated at the end of every session:
+
+```markdown
+# Session Brief: Pillar N — [Name]
+
+**Last updated:** YYYY-MM-DD
+**Last session by:** [human/agent name]
+
+## Current status
+[One sentence: where are we?]
+
+## What was done last session
+[Bullet list: 3-5 items max]
+
+## What to do next
+[Bullet list: 3-5 items max, in priority order]
+
+## Blockers
+[Anything that prevents progress, or "None"]
+
+## Key files modified
+[List of files changed in last session]
+```
+
+### 17.4 Detecting stale state
+
+A new session must verify that the repo state matches expectations before acting:
+- Run the test suite. If tests that should pass are failing, investigate before proceeding.
+- Check `git log` against the RUN_LOG. If commits exist that aren't logged, something was done without documentation.
+- Check that interface contracts are still met (upstream output files exist and match expected schema).
+
+---
+
+## 18. Kill Criteria — When to Stop Iterating
+
+PhaiPhon went through 6 versions (3.0 → 3.2 → 3.4 → 3.4.5 → 3.5.0 → 3.5.1) before concluding the fundamental approach had structural issues that no amount of patching could fix. Each version addressed a symptom while leaving the root cause intact. This consumed weeks of effort and compute budget.
+
+**Iteration is not progress if each iteration fixes a symptom but not the cause.**
+
+### 18.1 Pre-defined kill criteria (set BEFORE starting)
+
+Every pillar PRD must include a **kill criteria** section that defines, in advance, the conditions under which the approach should be abandoned rather than iterated:
+
+```markdown
+## Kill Criteria
+
+This approach should be ABANDONED (not iterated) if any of:
+
+1. [Specific falsifiable condition — e.g., "known-answer test on Greek fails
+   to recover >3 of 5 vowels after 3 implementation attempts"]
+2. [Specific falsifiable condition — e.g., "confound correlation |rho| > 0.6
+   persists after 2 correction attempts"]
+3. [Resource limit — e.g., "more than N person-hours spent without passing
+   the go/no-go gate"]
+```
+
+These are set during PRD design, not after a failure. They cannot be retroactively loosened without a decision log entry.
+
+### 18.2 The three-strike rule
+
+If a module fails its go/no-go gate:
+
+- **Strike 1**: Diagnose root cause. Fix. Re-run. Log the fix.
+- **Strike 2**: Different root cause? Fix. Re-run. If same root cause as strike 1, the fix from strike 1 didn't work — escalate to approach review.
+- **Strike 3**: The approach is structurally flawed. Do NOT attempt a fourth fix. Instead:
+  1. Write a post-mortem (what was tried, why it failed, what the root causes were)
+  2. File a decision log entry (DEC-NNN) documenting the abandonment
+  3. Propose an alternative approach in a new PRD revision
+  4. The post-mortem and all failed experiments remain in the log permanently
+
+### 18.3 Symptom-chasing detection
+
+Warning signs that you're chasing symptoms rather than fixing root causes:
+
+| Warning sign | What it means |
+|-------------|---------------|
+| Each fix introduces a new failure in a different metric | The fixes are shifting the problem, not solving it |
+| The fix is a special case / hardcoded threshold | You're overfitting to the test, not fixing the algorithm |
+| The same module has been modified >3 times without passing its gate | The design is wrong, not just the implementation |
+| You're adding complexity (more parameters, more stages) to fix something that should be simple | The approach doesn't fit the problem |
+| Post-run diagnostics keep finding NEW confounds | The signal-to-noise ratio is too low for this method |
+| Results improve on the known-answer test but degrade on new data | You're overfitting to the validation set |
+
+When 2+ of these are present simultaneously, invoke the three-strike rule regardless of which strike you're on.
+
+### 18.4 Sunk cost protocol
+
+When deciding whether to abandon an approach:
+
+- **Do NOT consider** time already spent, code already written, or compute already consumed. These are sunk costs. They are irrelevant to whether the approach will work going forward.
+- **DO consider** only: (a) Is there a plausible fix that addresses the root cause (not a symptom)? (b) Has a similar fix already been tried and failed? (c) Is there an alternative approach that avoids the structural issue entirely?
+- **The hardest part is admitting an approach is wrong.** PhaiPhon 3.x iterated for weeks partly because each version showed "partial improvement" — Hattic moved from #1 to #3, Greek moved up, IsolateControl stayed last. These incremental movements felt like progress but were noise around a broken signal. Improvement in noise is not signal.
+
+---
+
+## 19. Working Process
 
 ### Current phase: PRD design
 We are in the PRD design phase. No code is being written. The process is:
@@ -883,3 +1012,5 @@ At each step, verify:
 - [ ] Are the go/no-go gates falsifiable?
 - [ ] Is there any implicit single-cognate assumption?
 - [ ] Does the approach work with ~7,400 tokens?
+- [ ] Are kill criteria defined before starting?
+- [ ] Is the session brief up to date?
