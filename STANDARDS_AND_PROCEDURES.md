@@ -762,6 +762,89 @@ Regression tests are named after the bug they prevent, not the feature they test
 # GOOD: test_ipa_features_uses_all_61_dimensions_not_36()
 ```
 
+### 13.4 Deep correctness testing (mandatory for every module)
+
+Surface-level regression tests ("does it run without error") are necessary but NOT sufficient. PhaiPhon's mean-vs-sum bug, coverage penalty sign error, and IPA feature dimension error all produced code that ran, returned plausible numbers, and passed basic smoke tests — while being fundamentally wrong.
+
+Every module must have three tiers of tests. All three are mandatory. A module missing any tier is not shippable.
+
+#### Tier 1: Formula-level mathematical correctness tests
+
+Every function that implements a mathematical formula gets a test with a **hand-computed expected value**. Not "does it return a float" — "does it return THIS specific float for THIS specific input?"
+
+```python
+# TIER 1 example: verify the binomial test computation
+def test_binomial_enrichment_hand_computed():
+    """AB08 with 83 initial out of 90 total, global rate 0.339.
+    Hand-computed: P(X >= 83 | Bin(90, 0.339)) = scipy.stats.binom.sf(82, 90, 0.339)
+    Expected: < 1e-20 (astronomically significant)."""
+    p = binom.sf(82, 90, 0.339)
+    assert p < 1e-20
+
+def test_enrichment_score_formula():
+    """E = (k/n) / p0 = (83/90) / 0.339 = 2.720."""
+    E = (83 / 90) / 0.339
+    assert abs(E - 2.720) < 0.01
+```
+
+**Minimum coverage:** Every equation cited in the code (from PRD or paper) must have at least one Tier 1 test. Count the equations → count the tests. If there are 8 equations, there must be ≥ 8 Tier 1 tests.
+
+#### Tier 2: Known-language end-to-end tests (real data, known answers)
+
+Run the module on a **real corpus from a known language** where the correct answer is independently established by decades of scholarship. This is not synthetic data — it is real attested text from a deciphered language.
+
+**Requirements:**
+- At least ONE known-language corpus must be maintained in the test suite for each module.
+- The corpus must be a real historical script/language (Linear B, Cuneiform, Latin, etc.) — not a modern language, not generated data.
+- Expected results must be cited from published scholarship (e.g., "Linear B has 5 vowels — Ventris & Chadwick 1956").
+- The test must verify specific quantitative outputs against the known answer, not just "did it produce something."
+
+**Examples per pillar:**
+
+| Module | Known-language test corpus | Expected result | Source |
+|--------|--------------------------|-----------------|--------|
+| Vowel identifier | Linear B sign frequency data | V = 5 (a, e, i, o, u) | Ventris & Chadwick 1956 |
+| Alternation detector | Linear B inflected forms | Recovers known consonant alternations (e.g., -to/-ta/-te series) | Chadwick 1958 |
+| Grid constructor | Linear B corpus | Grid matches published syllabary grid (ARI > 0.5) | Bennett 1951 |
+| Morphological decomp | Latin corpus | Recovers 5 declension classes | Any Latin grammar |
+| Distributional grammar | Latin or Greek corpus | Identifies nouns vs. verbs with >70% accuracy | Any reference grammar |
+| Multi-source vocab | English (known mixed etymology) | Identifies Latin/French/Germanic strata | OED |
+
+**Failure of a known-language test is a CRITICAL gate.** If the module can't get the right answer on a deciphered language, it will not get the right answer on an undeciphered one.
+
+#### Tier 3: Random/null data tests (anti-hallucination)
+
+Run the module on data where there is **no signal**, and verify it finds **no signal**. This catches methods that detect patterns in noise.
+
+Three mandatory variants:
+
+1. **Random permutation null:** Take the real Linear A corpus and randomly permute sign assignments within each word (destroying positional/inflectional structure but preserving word-length distribution and sign frequencies). The module should produce NO significant results (no vowels, no alternation pairs, no grid structure, ARI ≈ 0).
+
+2. **Uniform random corpus:** Generate a synthetic corpus where signs are drawn uniformly at random (destroying both structure AND frequency distribution). The module should produce NO significant results AND should flag "insufficient structure" or similar.
+
+3. **Known-negative control:** Run on a real corpus that is known to lack the structure being tested. For a CV syllabary detector: run on an alphabetic script (Hebrew, Arabic). It should NOT detect CV syllabary structure. For inflectional paradigms: run on an isolating language (Mandarin). It should NOT find rich inflection.
+
+**If any Tier 3 test produces a false positive (significant result from null data), the module has a methodological flaw. This is a CRITICAL failure — do not attempt to fix by adjusting thresholds. Redesign the method.**
+
+### 13.5 Test tier summary and enforcement
+
+```
+┌──────────┬─────────────────────────────────┬──────────┬───────────┐
+│ Tier     │ What it tests                   │ Minimum  │ Severity  │
+├──────────┼─────────────────────────────────┼──────────┼───────────┤
+│ Tier 1   │ Formula-level math correctness  │ 1 per    │ CRITICAL  │
+│          │ (hand-computed expected values)  │ equation │           │
+├──────────┼─────────────────────────────────┼──────────┼───────────┤
+│ Tier 2   │ Known-language end-to-end       │ 1 per    │ CRITICAL  │
+│          │ (real data, published answers)   │ module   │           │
+├──────────┼─────────────────────────────────┼──────────┼───────────┤
+│ Tier 3   │ Null/random data               │ 3 per    │ CRITICAL  │
+│          │ (must find no signal in noise)   │ module   │           │
+└──────────┴─────────────────────────────────┴──────────┴───────────┘
+```
+
+A module is not shippable unless ALL three tiers pass. A failure in any tier blocks the module — no exceptions, no "we'll add it later."
+
 ---
 
 ## 14. Statistical Rigor Standards
