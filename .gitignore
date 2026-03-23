@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+results/
+*.egg-info/
+# Large data files — download via data/README.md instructions
+data/sigla_full_corpus.json
