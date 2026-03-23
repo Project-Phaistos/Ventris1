@@ -653,20 +653,216 @@ PhaiPhon lesson: PhaiPhon 3.5.0 (z-score cross-language null) failed completely 
 
 ---
 
-## 11. Code and Implementation Standards
+## 11. Paper/Reference Implementation Fidelity
 
-*(To be fully defined when implementation begins. For now, PRD design is the focus.)*
+When implementing algorithms from published papers, a specific class of bugs arises from misreading or misimplementing the paper's equations. PhaiPhon had at least 6 of these, and each one was silent — the code ran, produced numbers, and looked plausible.
 
-Preliminary notes:
+### 11.1 Parameter audit table (mandatory)
+
+For every paper-derived algorithm, create a **parameter audit table** before writing any code. This table maps every parameter in the paper to its code location, default value, and verification status.
+
+```markdown
+| Paper param | Paper value | Paper reference | Code variable | Code default | Match? | Verified by |
+|-------------|-------------|-----------------|---------------|-------------|--------|-------------|
+| T           | 0.2         | Appendix A.3    | config.temperature | 0.2    | YES    | unit test   |
+| α           | 3.5         | Appendix A.3    | config.alpha       | 3.5    | YES    | unit test   |
+| emb_dim     | 700         | Section 3.1     | config.embedding_dim | ???   | ???    | ???         |
+```
+
+PhaiPhon lesson: The reproduction had `embedding_dim=64` instead of 700, `dropout=0.0` instead of 0.5, 36/61 IPA features, `.mean()` instead of `.sum()` for Omega_loss, and wrong sign on the coverage penalty. Each was a one-value error that silently degraded results. The audit table catches these BEFORE the first run.
+
+### 11.2 Equation-to-code traceability
+
+Every equation from a paper must have a comment in the code citing the exact equation number. The comment must include the equation itself (in ASCII math or a simplified form) so a reviewer can verify the implementation matches without having the paper open.
+
+```python
+# Eq. 10: S = Σ Q(X) - λ_cov · Ω_cov - λ_loss · Ω_loss
+# Note: we MAXIMIZE S, so loss = -S
+objective = quality - lambda_cov * omega_cov - lambda_loss * omega_loss
+```
+
+### 11.3 Unit tests at the FUNCTION level, not just pipeline level
+
+PhaiPhon's mean-vs-sum bug (`mean*sqrt(n_eff/n)` vs `return total_log_bf`) was a single-line error in one function. End-to-end tests didn't catch it because the pipeline still produced plausible rankings — just wrong ones. The function-level unit test with a known answer would have caught it instantly.
+
+**Rule:** Every function that implements a mathematical formula gets a unit test with a hand-computed expected value. Not "does it run without error" — "does it produce the RIGHT number for this specific input?"
+
+---
+
+## 12. Configuration and Reproducibility Standards
+
+### 12.1 All hyperparameters in config files
+
+No hyperparameters hardcoded in source code. Every tunable value lives in a YAML config file. The config file is committed with every experiment result.
+
+```
+configs/
+├── pillar1_default.yaml
+├── pillar1_sensitivity_sweep.yaml
+└── pillar2_default.yaml
+```
+
+PhaiPhon lesson: Hardcoded defaults that diverged from paper values were not caught because reviewers looked at the config file (which didn't include them) rather than the source code (which had wrong defaults baked in).
+
+### 12.2 Config-to-result binding
+
+Every result artifact must include or reference the exact config that produced it. The config is either:
+- Embedded in the result file's header/metadata, OR
+- Referenced by SHA-256 hash in the result file, with the config committed alongside
+
+**No "I think I used the default config" situations.** If the config isn't recorded, the result is unreproducible and should be treated as suspect.
+
+### 12.3 Determinism requirements
+
+- All random operations use explicit seeds recorded in the config.
+- Running the same code + same config + same data = identical output, byte-for-byte.
+- If an algorithm is inherently non-deterministic (e.g., MCMC), the seed, chain length, and convergence diagnostics are recorded.
+- **No implicit randomness**: `random.seed()` without an argument, unseeded `numpy.random`, or `torch.manual_seed()` called in some runs but not others.
+
+### 12.4 Environment pinning
+
+The Python environment is pinned with exact versions:
+- `requirements.txt` with `==` pins (not `>=`)
+- Or `pyproject.toml` with locked dependencies
+- The environment file is committed with results
+
+PhaiPhon lesson: "Library/runtime differences from the original 2021 environment" was cited as a possible cause for reproduction mismatches. Don't leave this to chance.
+
+---
+
+## 13. Regression Prevention
+
+### 13.1 Every bug fix includes a regression test
+
+When a bug is found and fixed, the fix commit MUST include a test that:
+- Would have FAILED before the fix
+- PASSES after the fix
+- Is named descriptively (e.g., `test_omega_loss_uses_sum_not_mean`)
+
+This test lives in the test suite permanently. It can never be deleted without a decision log entry explaining why.
+
+### 13.2 Test suite runs before every commit
+
+No code is committed without the test suite passing. If a test fails, the commit is blocked until:
+- The test is fixed, OR
+- The test is explicitly marked as `@pytest.mark.skip(reason="...")` with a linked issue
+
+### 13.3 Regression test naming convention
+
+Regression tests are named after the bug they prevent, not the feature they test:
+
+```python
+# BAD: test_aggregation()
+# GOOD: test_log_bf_aggregation_uses_sum_not_mean()
+
+# BAD: test_coverage()
+# GOOD: test_coverage_penalty_is_max_rcov_minus_cov_not_soft_reward()
+
+# BAD: test_features()
+# GOOD: test_ipa_features_uses_all_61_dimensions_not_36()
+```
+
+---
+
+## 14. Statistical Rigor Standards
+
+### 14.1 Every ranking must be checked for confounds
+
+When any module produces a ranking (of signs, paradigms, candidate languages, etc.), the FIRST analysis is:
+
+1. Compute Spearman correlation between the ranking and every known confound variable (inventory size, corpus frequency, word length, etc.)
+2. If |rho| > 0.5 for any confound, the ranking is suspect. Report the confound correlation alongside the ranking.
+3. If the confound explains more variance than the intended signal, redesign the module.
+
+PhaiPhon lesson: Rankings correlated rho=0.667 with inventory size. This was discovered only in post-mortem. It should have been the first thing checked.
+
+### 14.2 Every filter must report its selectivity
+
+When a statistical test, threshold, or filter is applied:
+
+- Report what fraction of inputs pass (acceptance rate)
+- If acceptance rate > 90%: the filter is a rubber stamp — it's not doing its job
+- If acceptance rate < 10%: the filter is too aggressive — either the threshold is wrong or the data doesn't contain the signal
+
+PhaiPhon lesson: FDR accepted 558/559 pairs (99.8%) for 17/20 languages. This rubber-stamping was the root cause of meaningless rankings but wasn't flagged until the post-run diagnostic.
+
+### 14.3 Confidence intervals, not just point estimates
+
+Every reported metric includes a confidence interval or credible interval. Methods:
+- Bootstrap CI (percentile method) for non-parametric quantities
+- Profile likelihood CI for model parameters
+- Posterior credible interval for Bayesian quantities
+
+A result reported as "P@10 = 0.86" is incomplete. Report "P@10 = 0.86, 95% CI [0.79, 0.91]".
+
+### 14.4 Effect sizes, not just significance
+
+Statistical significance (p < 0.05) is not enough. Report effect sizes:
+- For comparisons: Cohen's d or rank-biserial correlation
+- For rankings: Kendall's tau or Spearman's rho between predicted and expected
+- For classifications: precision, recall, F1 — not just accuracy
+
+A "significant" result with a tiny effect size is a real but useless signal.
+
+### 14.5 Multiple comparisons correction
+
+When testing multiple hypotheses (e.g., "is each of 20 languages related to Linear A?"), apply correction:
+- Benjamini-Hochberg FDR for exploratory analyses
+- Bonferroni for confirmatory analyses
+- Report BOTH corrected and uncorrected p-values
+
+But also check that the correction actually filters (see 14.2 — FDR that accepts everything is not correction).
+
+---
+
+## 15. Multi-Agent Workspace Hygiene
+
+### 15.1 File ownership boundaries
+
+When multiple agents or workstreams operate on the same repo:
+- Each agent/workstream owns specific directories. Ownership is declared in a `CODEOWNERS`-style comment at the top of the repo or in this document.
+- **No touching files owned by another workstream** without explicit coordination.
+- If two workstreams need to modify the same file, one of them is mis-scoped.
+
+PhaiPhon lesson: Two parallel Claude instances shared the repo. One owned `PhaiPhon/`, the other owned `repro_decipher_phonetic_prior/`. The boundary was documented in memory but should have been in the repo itself.
+
+### 15.2 Resource profiling before renting compute
+
+Before renting cloud compute (Lambda, Vast.ai, etc.):
+- Profile the workload locally to determine whether it's CPU-bound or GPU-bound
+- Estimate wall-clock time and cost for the target instance type
+- If the workload is CPU-bound, rent CPU instances (not GPU instances at 10x the cost)
+
+PhaiPhon lesson: Lambda A100 GPU ran at 0% GPU utilization because the DP alignment bottleneck was entirely CPU-bound. ~$69.50 spent before discovering local Windows CPU was actually faster (14x with vectorized DP).
+
+### 15.3 Cost tracking
+
+Maintain a running cost log for any paid compute:
+
+```markdown
+| Date | Platform | Instance type | Duration | Cost | Task | Was GPU used? |
+|------|----------|--------------|----------|------|------|---------------|
+```
+
+Before any cloud run, estimate cost and compare to remaining budget. If estimated cost > 50% of remaining budget, get explicit approval.
+
+---
+
+## 16. Code and Implementation Standards
+
+Preliminary notes (to be fully expanded when implementation begins):
 - Pure Python with NumPy/scipy preferred (consistent with PhaiPhon4-5 stack)
 - No PyTorch unless a specific pillar's algorithm requires gradient-based optimization
 - Each pillar is an independent Python package/module with a clean API matching its interface contract
 - Tests mirror go/no-go gates: every gate has a corresponding test
 - All results are reproducible: fixed seeds, deterministic algorithms, versioned corpus
+- No dead code: if code is removed, it's removed — no commenting out, no `_unused` variables, no "keeping for reference"
+- Functions do one thing: if a function has an `if mode == ...` branch that changes its behavior, split it into separate functions
+- Error handling is loud: `raise`, don't `print` and continue. Silent failures are how bugs compound across pillars
 
 ---
 
-## 12. Working Process
+## 17. Working Process
 
 ### Current phase: PRD design
 We are in the PRD design phase. No code is being written. The process is:
