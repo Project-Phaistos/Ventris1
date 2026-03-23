@@ -211,11 +211,104 @@ These are restated from the README and must be checked at every review:
 
 All data in this project traces back to the Linear A corpus and candidate language corpora. These standards ensure the data pipeline is auditable, reproducible, and free from contamination.
 
-### 7.1 Cardinal rule: no fabricated data
+### 7.1 The Iron Law
 
-Data must NEVER be manually written, AI-generated, or hallucinated. Every data point must be traceable to a published, peer-reviewed, or institutionally curated source via a scripted pipeline. If a value cannot be sourced, it is marked as missing — never filled in.
+```
+┌─────────────────────────────────────────────────────────┐
+│  DATA MAY ONLY ENTER THE PROJECT THROUGH CODE THAT       │
+│  DOWNLOADS IT FROM AN EXTERNAL SOURCE.                   │
+│                                                          │
+│  NO EXCEPTIONS. NO "JUST THIS ONCE." NO "IT'S FASTER."  │
+└─────────────────────────────────────────────────────────┘
+```
 
-### 7.2 Source registry
+This means:
+- **YES**: Write a script with `urllib`, `requests`, `curl`, API calls that fetches and parses
+- **YES**: Parse HTML/JSON/XML/CSV from downloaded content
+- **YES**: Apply deterministic transformations (transliteration, normalization) with cited rules
+- **NO**: Write data rows directly into files from memory
+- **NO**: Hardcode word lists "from WebFetch results" without reproducible fetch code
+- **NO**: "I know this word means X" → write it into the dataset
+- **NO**: Fill in missing fields with plausible guesses
+- **NO**: Pad entries to reach a target count — target counts are aspirational, never quotas
+
+If a data field cannot be extracted from the source, it must be left empty or marked as unknown. NEVER fill in plausible values.
+
+### 7.2 Dual-agent adversarial extraction pipeline
+
+Data extraction uses a **dual-agent architecture** with adversarial integrity enforcement:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   EACH EXTRACTION STEP                    │
+│                                                          │
+│  Team A (Extractor) ──→ Step Output ──→ Team B (Auditor) │
+│                                         │                │
+│                              PASS → Next Step            │
+│                              FAIL → Block + Log          │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Team A (Extraction Agent)** writes and runs extraction code. Team A NEVER writes data directly.
+
+**Team B (Adversarial Auditor)** runs AFTER each step with VETO power. Team A and Team B MUST be separate agents with separate context. The auditor exists because extraction without verification is worthless.
+
+### 7.3 The 7 modular extraction steps
+
+Each step gets its own audit. Steps 2-4 can be combined into a single script, but the auditor must check all aspects.
+
+| Step | Team A does | Team B checks |
+|------|-------------|---------------|
+| **1. Source Discovery** | Identifies URLs, APIs, databases | URLs are real (HTTP 200), source is authoritative, license permits extraction |
+| **2. Data Download** | Writes code that downloads raw content | Code contains actual HTTP requests, raw content saved to intermediate file |
+| **3. Parsing** | Parses downloaded content into structured records | Parsed entries appear in raw source; no entries present that DON'T appear in source |
+| **4. Transformation** | Applies deterministic transforms (transliteration→IPA, normalization) | Every transformation rule cites a published academic reference; sample 10 manual checks match |
+| **5. Output Writing** | Writes final structured data file | Schema matches spec, no silent empty fields, entry count is non-round and plausible |
+| **6. Integration** | Updates metadata, manifests, indexes | Metadata counts match actual file counts, existing entries unchanged |
+| **7. Cross-Validation** | — | Random sample 20 entries, trace EACH back through: output → transform → parse → download → source URL. Every entry must have complete provenance chain |
+
+### 7.4 Red flags — STOP immediately
+
+| Red Flag | What It Means |
+|----------|---------------|
+| No `urllib`/`requests`/`curl` in extraction code | Agent is authoring data, not extracting |
+| Entry count is exactly round (100, 200, 500) | Likely padded to hit a target |
+| >90% of entries have empty required fields | Extraction didn't actually get the data |
+| Script contains `f.write("word\tipa\t...")` with literal data | Direct data authoring violation |
+| Agent says "I know this word means..." | LLM knowledge substituted for source data |
+| Transformation output == input for >80% of entries WITHOUT a cited reference explaining why | Transformation wasn't applied |
+| Agent proposes to "manually compile" a word list | Data authoring, not extraction |
+| Intermediate files not saved | Audit trail destroyed |
+| Download step has no error handling | Silent failures will produce garbage |
+| Agent says "I'll add the fetch code later" | No. Code first, data second. Always. |
+
+### 7.5 The cached-fetch pattern (acceptable compromise)
+
+Many sources require interactive browsing (CAPTCHAs, JavaScript, session cookies) that automated scripts can't handle. The **cached-fetch pattern** is acceptable:
+
+1. Use WebFetch or manual browsing to access the source
+2. Save the raw source content to an intermediate file (e.g., `raw/{source}_{iso}_{date}.html`)
+3. Write a parsing script that reads from the intermediate file
+4. The auditor verifies the intermediate file against the live source (spot-check 5 entries)
+
+This is acceptable because the intermediate file IS a verifiable artifact. A hardcoded Python list is not.
+
+### 7.6 Rationalization table
+
+Every excuse has already been tried. None are acceptable.
+
+| Excuse | Reality |
+|--------|---------|
+| "I fetched it with WebFetch so it's extracted" | WebFetch in conversation ≠ reproducible extraction code. Write a script. |
+| "The data is well-known, I don't need to fetch it" | Your knowledge is not a source. Fetch it. |
+| "It's faster to hardcode the list" | Speed doesn't matter. Provenance does. |
+| "The source is down, I'll use my knowledge" | Log the failure. Return empty. Never substitute. |
+| "I'm just filling in obvious glosses" | "Obvious" to an LLM is still hallucination. Extract or leave empty. |
+| "The transliteration is trivial, I don't need a reference" | Cite the reference anyway. No exceptions. |
+| "This is a small dataset, adversarial checking is overkill" | Small datasets are MORE vulnerable to hallucination. Check harder. |
+| "I already verified this mentally" | Mental verification by an LLM is not verification. Run the auditor. |
+
+### 7.7 Source registry
 
 Every external data source used by any pillar must be registered in `data/SOURCES.md` with:
 
@@ -230,17 +323,7 @@ Every external data source used by any pillar must be registered in `data/SOURCE
 | **Known limitations** | Any documented biases, gaps, or quality issues |
 | **Cross-references** | Other sources that can verify this one |
 
-### 7.3 Ingestion pipeline requirements
-
-Every ingestion script must:
-
-1. **Read from a declared source** — the script's input must point to a registered source, not a local file of unknown provenance.
-2. **Be deterministic** — same source version → same output, always. No random sampling during ingestion.
-3. **Produce a provenance record** — a machine-readable JSON sidecar file recording: source URL, source version/hash, ingestion timestamp, script path, script git hash, row counts, any filtering applied.
-4. **Validate on ingest** — schema validation (expected columns, types, non-null constraints), row count sanity checks, and at least 3 spot-checked entries verified against the original source.
-5. **Never modify source data silently** — if the pipeline normalizes, filters, or transforms data, each transformation must be logged in the provenance record with rationale.
-
-### 7.4 Corpus versioning
+### 7.8 Corpus versioning
 
 The Linear A corpus is the foundation of the entire project. It must be versioned and checksummed:
 
@@ -249,13 +332,37 @@ The Linear A corpus is the foundation of the entire project. It must be versione
 - Every experiment log (Section 9) records which corpus version was used.
 - The held-out set (Knossos ivory scepter) is stored in a separate file, never co-mingled with the training corpus, and its hash is independently tracked.
 
-### 7.5 Candidate language data
+### 7.9 Candidate language data
 
 For each candidate language used in Pillar 5 (and earlier for validation):
 
 - IPA transcriptions must come from published dictionaries or peer-reviewed databases, never from automated IPA converters unless the converter's error rate is documented and acceptable.
 - The source's coverage (% of reconstructed vocabulary included) must be documented.
 - Known romanization/IPA inconsistencies across sources must be flagged.
+- Every transformation rule (romanization → IPA, normalization) must cite a published academic reference. No "common knowledge" or "standard" mappings without citation.
+
+### 7.10 Auditor report format
+
+Each extraction audit step produces a structured report:
+
+```markdown
+# Extraction Audit: {Step Name} — {Dataset/Source} ({identifier})
+
+## Step: {1-7}
+## Agent Action: {what Team A did}
+## Audit Checks:
+- [ ] Check 1: {description} → PASS/FAIL
+- [ ] Check 2: {description} → PASS/FAIL
+...
+
+## Evidence:
+{specific entries examined, URLs verified, code inspected}
+
+## Verdict: PASS / WARN / FAIL
+## Blocking: {YES if FAIL — pipeline stops here}
+```
+
+**WARN accumulation rule:** 3+ WARNs on one dataset = effective FAIL. WARNs are not soft passes — they are tracked problems that compound.
 
 ---
 
