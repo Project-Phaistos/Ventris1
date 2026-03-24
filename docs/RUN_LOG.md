@@ -2,6 +2,66 @@
 
 Reverse chronological. Newest first.
 
+## 2026-03-23 — Pillar 3 Initial Production Run
+
+**Type:** Production Run
+**Pillar:** 3
+**Module:** Full pipeline (all 9 steps)
+**Commit:** (this commit)
+**Corpus version:** sigla_full_corpus.json v2.0.0
+**Pillar 1 version:** results/pillar1_output.json (commit e7a9c02)
+**Pillar 2 version:** results/pillar2_output.json (commit a195932)
+**Duration:** 0.1s
+**Platform:** Windows 11 local, Python 3.13
+
+### Objective
+
+First end-to-end run of the Pillar 3 distributional grammar pipeline on the full SigLA Linear A corpus.
+
+### Results
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Stems profiled | 147 | With min_frequency ≥ 2 |
+| Feature dimensions | 50 | PPMI context + positional + morphological + inscription-type |
+| Word classes | 7 | 1 large (141 members) + 6 singletons — weak distributional signal |
+| Silhouette score | 0.712 | High but misleading — dominated by one large cluster |
+| Significant word orderings | 0 | Inconclusive — expected for list-structured tablets |
+| Significant agreement patterns | 0 | Expected with V=1 from Pillar 1 |
+| Functional words | 24 | 17 structural markers, 6 determiners, 1 particle |
+| Top functional word | ku-ro (AB81-AB02) | final_rate=55.9%, freq=34, 31 inscriptions |
+| Grammar sketch: inflected | Yes | 67.3% declining stems |
+| Tests passing | 45 Pillar 3, 206 total | All pass |
+
+### Top Functional Words
+
+| Word | Classification | Freq | Inscriptions | Final Rate |
+|------|---------------|------|-------------|------------|
+| ku-ro | structural_marker | 34 | 31 | 55.9% |
+| sa-ra2 | structural_marker | 17 | 17 | 41.2% |
+| ki-ro | structural_marker | 16 | 12 | 37.5% |
+| ku | determiner | 10 | 10 | 30.0% |
+| si | structural_marker | 10 | 9 | 80.0% |
+
+### Interpretation
+
+1. **Functional word identification is the strongest result.** ku-ro (total), ki-ro (deficit/owed), and sa-ra2 are all independently identified as structural markers from positional statistics alone. si (80% final rate, high frequency) is a new finding worth investigating — it may be a sentence-final particle or a variant totaling marker.
+
+2. **Word class induction is underperforming.** With 147 stems and 50 features, the distributional signal is too diffuse for fine-grained clustering. The SVD correctly captures the main variation but most stems land in one large undifferentiated class. This is a known risk from the PRD (Section 8, Risk 3: "distributional profiles are too sparse").
+
+3. **Word order is genuinely inconclusive.** This is not a failure — it's an accurate finding. Administrative tablets have list structure (name-commodity-quantity), not natural sentence order. The 19 multi-word libation inscriptions alone are too few for statistical power. We cannot claim SOV, SVO, or VSO from this data.
+
+4. **Agreement detection requires V>1 from Pillar 1.** With V=1, all endings are trivially in the same vowel class, so the suffix-match test has no resolving power for vowel-based agreement. This will improve if Pillar 1 is rerun with V=4.
+
+### Next Steps
+
+1. **Improve word class induction**: Try fewer SVD dimensions (5 instead of 15), or use paradigm class as the primary clustering feature rather than distributional context. The morphological signal from Pillar 2 (39 paradigm classes, 28 inflectional suffixes) is much stronger than the distributional signal.
+2. **Separate tablet vs. libation analysis**: Word order analysis on libation tables only, where clause structure is more natural.
+3. **Investigate si**: Is si (AB41) a sentence-final particle? Cross-reference with inscription types and co-occurring ideograms.
+4. **Re-run after Pillar 1 V=4 override**: Agreement detection and word class induction will both benefit from richer phonological information.
+
+---
+
 ## 2026-03-23 — Pillar 2 Initial Production Run
 
 **Type:** Production Run

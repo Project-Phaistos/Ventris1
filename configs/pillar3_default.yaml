@@ -1,0 +1,35 @@
+# Pillar 3: Distributional Grammar — Default Configuration
+
+# --- Inputs ---
+corpus_path: "data/sigla_full_corpus.json"
+pillar1_output_path: "results/pillar1_output.json"
+pillar2_output_path: "results/pillar2_output.json"
+
+# --- Distributional Profiles (Step 1) ---
+min_stem_frequency: 2            # Minimum occurrences for a stem to get a profile
+context_window: 1                # Left/right context window (in words)
+n_top_contexts: 20               # Top context features by PMI to retain per direction
+
+# --- Word Class Induction (Step 2) ---
+svd_n_components: 15             # Number of SVD dimensions
+svd_variance_threshold: 0.80     # Minimum explained variance (if n_components is auto)
+min_word_classes: 3              # Minimum k for model selection
+max_word_classes: 10             # Maximum k for model selection
+morphological_coherence_weight: 0.3   # Weight for morph coherence in model selection
+
+# --- Word Order (Step 3) ---
+min_inscription_words: 3         # Minimum words per inscription for word-order analysis
+word_order_alpha: 0.01           # Significance threshold for directionality test
+
+# --- Agreement Detection (Step 4) ---
+min_adjacent_pairs: 5            # Minimum adjacent occurrences for a class pair to be tested
+agreement_alpha: 0.01            # Significance threshold (before Bonferroni)
+
+# --- Functional Words (Step 5) ---
+max_functional_word_length: 2    # Maximum signs for a functional word
+min_functional_word_freq: 5      # Minimum corpus frequency
+min_functional_word_inscriptions: 5  # Minimum distinct inscriptions
+
+# --- General ---
+seed: 1234
+output_path: "results/pillar3_output.json"
