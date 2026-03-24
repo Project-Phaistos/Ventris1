@@ -1,0 +1,2794 @@
+{
+  "metadata": {
+    "title": "Latin CV Syllabary Test Corpus",
+    "description": "Latin nouns transliterated into an artificial CV syllabary for Pillar 2 known-answer testing. Five declension classes with case endings.",
+    "version": "1.0.0",
+    "date_compiled": "2026-03-23",
+    "statistics": {
+      "total_documents": 90,
+      "total_unique_signs": 22,
+      "known_syllabograms": 22
+    },
+    "latin_sign_mapping": {
+      "a": "LA01",
+      "b": "LA02",
+      "c": "LA03",
+      "d": "LA04",
+      "e": "LA05",
+      "f": "LA06",
+      "g": "LA07",
+      "h": "LA08",
+      "i": "LA09",
+      "k": "LA10",
+      "l": "LA11",
+      "m": "LA12",
+      "n": "LA13",
+      "o": "LA14",
+      "p": "LA15",
+      "q": "LA16",
+      "r": "LA17",
+      "s": "LA18",
+      "t": "LA19",
+      "u": "LA20",
+      "v": "LA21",
+      "x": "LA22"
+    }
+  },
+  "sign_inventory": {
+    "LA01": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "a",
+      "count": 80
+    },
+    "LA02": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "b",
+      "count": 15
+    },
+    "LA03": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "c",
+      "count": 20
+    },
+    "LA04": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "d",
+      "count": 18
+    },
+    "LA05": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "e",
+      "count": 60
+    },
+    "LA06": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "f",
+      "count": 10
+    },
+    "LA07": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "g",
+      "count": 12
+    },
+    "LA08": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "h",
+      "count": 5
+    },
+    "LA09": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "i",
+      "count": 40
+    },
+    "LA10": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "k",
+      "count": 8
+    },
+    "LA11": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "l",
+      "count": 50
+    },
+    "LA12": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "m",
+      "count": 30
+    },
+    "LA13": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "n",
+      "count": 35
+    },
+    "LA14": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "o",
+      "count": 45
+    },
+    "LA15": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "p",
+      "count": 25
+    },
+    "LA16": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "q",
+      "count": 5
+    },
+    "LA17": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "r",
+      "count": 30
+    },
+    "LA18": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "s",
+      "count": 55
+    },
+    "LA19": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "t",
+      "count": 40
+    },
+    "LA20": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "u",
+      "count": 60
+    },
+    "LA21": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "v",
+      "count": 10
+    },
+    "LA22": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "x",
+      "count": 5
+    }
+  },
+  "inscriptions": [
+    {
+      "id": "LAT-0001",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "u",
+            "e",
+            "l",
+            "l",
+            "a"
+          ],
+          "ab_codes": "LA15-LA20-LA05-LA11-LA11-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "u",
+            "e",
+            "l",
+            "l",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA15-LA20-LA05-LA11-LA11-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0002",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "u",
+            "e",
+            "l",
+            "l",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA15-LA20-LA05-LA11-LA11-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "u",
+            "e",
+            "l",
+            "l",
+            "a"
+          ],
+          "ab_codes": "LA15-LA20-LA05-LA11-LA11-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0003",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "t",
+            "e",
+            "l",
+            "l",
+            "a"
+          ],
+          "ab_codes": "LA18-LA19-LA05-LA11-LA11-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "t",
+            "e",
+            "l",
+            "l",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA18-LA19-LA05-LA11-LA11-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0004",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "t",
+            "e",
+            "l",
+            "l",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA18-LA19-LA05-LA11-LA11-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "t",
+            "e",
+            "l",
+            "l",
+            "a"
+          ],
+          "ab_codes": "LA18-LA19-LA05-LA11-LA11-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0005",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0006",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0007",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "r",
+            "r",
+            "a"
+          ],
+          "ab_codes": "LA19-LA05-LA17-LA17-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "r",
+            "r",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA19-LA05-LA17-LA17-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0008",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "r",
+            "r",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA19-LA05-LA17-LA17-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "q",
+            "u",
+            "a"
+          ],
+          "ab_codes": "LA01-LA16-LA20-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0009",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "q",
+            "u",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA01-LA16-LA20-LA01-LA05",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "q",
+            "u",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA01-LA16-LA20-LA01-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0010",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "v",
+            "i",
+            "t",
+            "a"
+          ],
+          "ab_codes": "LA21-LA09-LA19-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "v",
+            "i",
+            "t",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA21-LA09-LA19-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0011",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "v",
+            "i",
+            "t",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA21-LA09-LA19-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "r",
+            "m",
+            "a"
+          ],
+          "ab_codes": "LA06-LA14-LA17-LA12-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0012",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "r",
+            "m",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA06-LA14-LA17-LA12-LA01-LA05",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "r",
+            "m",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA06-LA14-LA17-LA12-LA01-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0013",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "u",
+            "r",
+            "a"
+          ],
+          "ab_codes": "LA03-LA20-LA17-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "u",
+            "r",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA03-LA20-LA17-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0014",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "u",
+            "r",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA03-LA20-LA17-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "u",
+            "r",
+            "a"
+          ],
+          "ab_codes": "LA03-LA20-LA17-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0015",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "i"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0016",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "o"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0017",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "p",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA11-LA20-LA15-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "p",
+            "i"
+          ],
+          "ab_codes": "LA11-LA20-LA15-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0018",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "p",
+            "o"
+          ],
+          "ab_codes": "LA11-LA20-LA15-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "p",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA11-LA20-LA15-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0019",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "e",
+            "r",
+            "v",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA18-LA05-LA17-LA21-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "e",
+            "r",
+            "v",
+            "i"
+          ],
+          "ab_codes": "LA18-LA05-LA17-LA21-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0020",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "e",
+            "r",
+            "v",
+            "o"
+          ],
+          "ab_codes": "LA18-LA05-LA17-LA21-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "e",
+            "r",
+            "v",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA18-LA05-LA17-LA21-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0021",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "u",
+            "r",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA12-LA20-LA17-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "u",
+            "r",
+            "i"
+          ],
+          "ab_codes": "LA12-LA20-LA17-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0022",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "u",
+            "r",
+            "o"
+          ],
+          "ab_codes": "LA12-LA20-LA17-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "u",
+            "r",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA12-LA20-LA17-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0023",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "m",
+            "p",
+            "l",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA19-LA05-LA12-LA15-LA11-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "m",
+            "p",
+            "l",
+            "i"
+          ],
+          "ab_codes": "LA19-LA05-LA12-LA15-LA11-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0024",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "m",
+            "p",
+            "l",
+            "o"
+          ],
+          "ab_codes": "LA19-LA05-LA12-LA15-LA11-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "m",
+            "p",
+            "l",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA19-LA05-LA12-LA15-LA11-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0025",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "f",
+            "i",
+            "l",
+            "i",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA06-LA09-LA11-LA09-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "i",
+            "l",
+            "i",
+            "i"
+          ],
+          "ab_codes": "LA06-LA09-LA11-LA09-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0026",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "f",
+            "i",
+            "l",
+            "i",
+            "o"
+          ],
+          "ab_codes": "LA06-LA09-LA11-LA09-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "i",
+            "l",
+            "i",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA06-LA09-LA11-LA09-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0027",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "o",
+            "p",
+            "u",
+            "l",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA15-LA14-LA15-LA20-LA11-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "o",
+            "p",
+            "u",
+            "l",
+            "i"
+          ],
+          "ab_codes": "LA15-LA14-LA15-LA20-LA11-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0028",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "o",
+            "p",
+            "u",
+            "l",
+            "o"
+          ],
+          "ab_codes": "LA15-LA14-LA15-LA20-LA11-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "o",
+            "p",
+            "u",
+            "l",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA15-LA14-LA15-LA20-LA11-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0029",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "x"
+          ],
+          "ab_codes": "LA17-LA05-LA22",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "g",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA17-LA05-LA07-LA09-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0030",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "g",
+            "i"
+          ],
+          "ab_codes": "LA17-LA05-LA07-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "g",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA17-LA05-LA07-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0031",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "u",
+            "x"
+          ],
+          "ab_codes": "LA04-LA20-LA22",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "d",
+            "u",
+            "c",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA04-LA20-LA03-LA09-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0032",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "u",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA04-LA20-LA03-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "d",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA04-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0033",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "e",
+            "x"
+          ],
+          "ab_codes": "LA11-LA05-LA22",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "e",
+            "g",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA11-LA05-LA07-LA09-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0034",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "e",
+            "g",
+            "i"
+          ],
+          "ab_codes": "LA11-LA05-LA07-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "e",
+            "g",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA11-LA05-LA07-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0035",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "i",
+            "v",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA03-LA09-LA21-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "i",
+            "v",
+            "i"
+          ],
+          "ab_codes": "LA03-LA09-LA21-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0036",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "i",
+            "v",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA03-LA09-LA21-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "r",
+            "s"
+          ],
+          "ab_codes": "LA15-LA01-LA17-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0037",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "r",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA15-LA01-LA17-LA19-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "r",
+            "t",
+            "i"
+          ],
+          "ab_codes": "LA15-LA01-LA17-LA19-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0038",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "r",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA15-LA01-LA17-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "n",
+            "o",
+            "x"
+          ],
+          "ab_codes": "LA13-LA14-LA22",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0039",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "n",
+            "o",
+            "c",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA13-LA14-LA03-LA19-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "n",
+            "o",
+            "c",
+            "t",
+            "i"
+          ],
+          "ab_codes": "LA13-LA14-LA03-LA19-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0040",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "n",
+            "o",
+            "c",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA13-LA14-LA03-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "u",
+            "r",
+            "b",
+            "s"
+          ],
+          "ab_codes": "LA20-LA17-LA02-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0041",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "r",
+            "b",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA20-LA17-LA02-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "u",
+            "r",
+            "b",
+            "i"
+          ],
+          "ab_codes": "LA20-LA17-LA02-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0042",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "r",
+            "b",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA20-LA17-LA02-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "v",
+            "o",
+            "x"
+          ],
+          "ab_codes": "LA21-LA14-LA22",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0043",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "v",
+            "o",
+            "c",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA21-LA14-LA03-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "v",
+            "o",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA21-LA14-LA03-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0044",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "v",
+            "o",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA21-LA14-LA03-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "s"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0045",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA19-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "t",
+            "i"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA19-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0046",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "n",
+            "s"
+          ],
+          "ab_codes": "LA06-LA14-LA13-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0047",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "n",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA06-LA14-LA13-LA19-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "n",
+            "t",
+            "i"
+          ],
+          "ab_codes": "LA06-LA14-LA13-LA19-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0048",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "n",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA06-LA14-LA13-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "r",
+            "s"
+          ],
+          "ab_codes": "LA01-LA17-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0049",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "r",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA01-LA17-LA19-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "r",
+            "t",
+            "i"
+          ],
+          "ab_codes": "LA01-LA17-LA19-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0050",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "r",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA01-LA17-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "x"
+          ],
+          "ab_codes": "LA11-LA20-LA22",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0051",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "c",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA11-LA20-LA03-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA11-LA20-LA03-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0052",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA11-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "r",
+            "u",
+            "x"
+          ],
+          "ab_codes": "LA03-LA17-LA20-LA22",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0053",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "r",
+            "u",
+            "c",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA03-LA17-LA20-LA03-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "r",
+            "u",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA03-LA17-LA20-LA03-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0054",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "r",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA03-LA17-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "x"
+          ],
+          "ab_codes": "LA15-LA01-LA22",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0055",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "c",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA15-LA01-LA03-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA15-LA01-LA03-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0056",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA15-LA01-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0057",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "a",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA12-LA01-LA13-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "a",
+            "n",
+            "u",
+            "i"
+          ],
+          "ab_codes": "LA12-LA01-LA13-LA20-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0058",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "a",
+            "n",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA12-LA01-LA13-LA20-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "g",
+            "e",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA07-LA05-LA13-LA20-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0059",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "g",
+            "e",
+            "n",
+            "u",
+            "i"
+          ],
+          "ab_codes": "LA07-LA05-LA13-LA20-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "g",
+            "e",
+            "n",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA07-LA05-LA13-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0060",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "s"
+          ],
+          "ab_codes": "LA17-LA05-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "i"
+          ],
+          "ab_codes": "LA17-LA05-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0061",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "n",
+            "a",
+            "u",
+            "t",
+            "a"
+          ],
+          "ab_codes": "LA13-LA01-LA20-LA19-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "n",
+            "a",
+            "u",
+            "t",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA13-LA01-LA20-LA19-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0062",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "n",
+            "a",
+            "u",
+            "t",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA13-LA01-LA20-LA19-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "n",
+            "a",
+            "u",
+            "t",
+            "a"
+          ],
+          "ab_codes": "LA13-LA01-LA20-LA19-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0063",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "i",
+            "n",
+            "g",
+            "u",
+            "a"
+          ],
+          "ab_codes": "LA11-LA09-LA13-LA07-LA20-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "i",
+            "n",
+            "g",
+            "u",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA11-LA09-LA13-LA07-LA20-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0064",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "i",
+            "n",
+            "g",
+            "u",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA11-LA09-LA13-LA07-LA20-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "i",
+            "n",
+            "g",
+            "u",
+            "a"
+          ],
+          "ab_codes": "LA11-LA09-LA13-LA07-LA20-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0065",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "i",
+            "l",
+            "v",
+            "a"
+          ],
+          "ab_codes": "LA18-LA09-LA11-LA21-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "i",
+            "l",
+            "v",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA18-LA09-LA11-LA21-LA01-LA05",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0066",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "i",
+            "l",
+            "v",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA18-LA09-LA11-LA21-LA01-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "i",
+            "l",
+            "v",
+            "a"
+          ],
+          "ab_codes": "LA18-LA09-LA11-LA21-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0067",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "n",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA01-LA13-LA13-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "n",
+            "n",
+            "i"
+          ],
+          "ab_codes": "LA01-LA13-LA13-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0068",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "n",
+            "n",
+            "o"
+          ],
+          "ab_codes": "LA01-LA13-LA13-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "a",
+            "n",
+            "n",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA01-LA13-LA13-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0069",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "o",
+            "c",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA11-LA14-LA03-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "o",
+            "c",
+            "i"
+          ],
+          "ab_codes": "LA11-LA14-LA03-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0070",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "o",
+            "c",
+            "o"
+          ],
+          "ab_codes": "LA11-LA14-LA03-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "o",
+            "c",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA11-LA14-LA03-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0071",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "a",
+            "m",
+            "p",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA03-LA01-LA12-LA15-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "a",
+            "m",
+            "p",
+            "i"
+          ],
+          "ab_codes": "LA03-LA01-LA12-LA15-LA09",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0072",
+      "type": "votive",
+      "site": "rome",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "a",
+            "m",
+            "p",
+            "o"
+          ],
+          "ab_codes": "LA03-LA01-LA12-LA15-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "a",
+            "m",
+            "p",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA03-LA01-LA12-LA15-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0073",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "u",
+            "e",
+            "l",
+            "l",
+            "a"
+          ],
+          "ab_codes": "LA15-LA20-LA05-LA11-LA11-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0074",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "s",
+            "t",
+            "e",
+            "l",
+            "l",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA18-LA19-LA05-LA11-LA11-LA01-LA05",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "r",
+            "r",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA19-LA05-LA17-LA17-LA01-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0075",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "q",
+            "u",
+            "a",
+            "e"
+          ],
+          "ab_codes": "LA01-LA16-LA20-LA01-LA05",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "v",
+            "i",
+            "t",
+            "a",
+            "m"
+          ],
+          "ab_codes": "LA21-LA09-LA19-LA01-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0076",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "s",
+            "e",
+            "r",
+            "v",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA18-LA05-LA17-LA21-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0077",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "p",
+            "i"
+          ],
+          "ab_codes": "LA11-LA20-LA15-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "u",
+            "r",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA12-LA20-LA17-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0078",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "t",
+            "e",
+            "m",
+            "p",
+            "l",
+            "o"
+          ],
+          "ab_codes": "LA19-LA05-LA12-LA15-LA11-LA14",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "i",
+            "l",
+            "i",
+            "u",
+            "m"
+          ],
+          "ab_codes": "LA06-LA09-LA11-LA09-LA20-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0079",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "g",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA17-LA05-LA07-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "d",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA04-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0080",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "l",
+            "e",
+            "g",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA11-LA05-LA07-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "i",
+            "v",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA03-LA09-LA21-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0081",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "r",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA15-LA01-LA17-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "n",
+            "o",
+            "c",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA13-LA14-LA03-LA19-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0082",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "u",
+            "r",
+            "b",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA20-LA17-LA02-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "v",
+            "o",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA21-LA14-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0083",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "f",
+            "o",
+            "n",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA06-LA14-LA13-LA19-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0084",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "a",
+            "r",
+            "t",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA01-LA17-LA19-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "l",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA11-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0085",
+      "type": "tablet",
+      "site": "pompeii",
+      "words": [
+        {
+          "sign_readings": [
+            "c",
+            "r",
+            "u",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA03-LA17-LA20-LA03-LA05-LA12",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "a",
+            "c",
+            "e",
+            "m"
+          ],
+          "ab_codes": "LA15-LA01-LA03-LA05-LA12",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0086",
+      "type": "tablet",
+      "site": "ostia",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "o",
+            "s",
+            "a"
+          ],
+          "ab_codes": "LA17-LA14-LA18-LA01",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "c",
+            "u",
+            "r",
+            "a"
+          ],
+          "ab_codes": "LA03-LA20-LA17-LA01",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0087",
+      "type": "tablet",
+      "site": "ostia",
+      "words": [
+        {
+          "sign_readings": [
+            "d",
+            "o",
+            "m",
+            "i",
+            "n",
+            "i"
+          ],
+          "ab_codes": "LA04-LA14-LA12-LA09-LA13-LA09",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "p",
+            "o",
+            "p",
+            "u",
+            "l",
+            "o"
+          ],
+          "ab_codes": "LA15-LA14-LA15-LA20-LA11-LA14",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0088",
+      "type": "tablet",
+      "site": "ostia",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "g",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA17-LA05-LA07-LA09-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "m",
+            "o",
+            "n",
+            "t",
+            "i",
+            "s"
+          ],
+          "ab_codes": "LA12-LA14-LA13-LA19-LA09-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0089",
+      "type": "tablet",
+      "site": "ostia",
+      "words": [
+        {
+          "sign_readings": [
+            "m",
+            "a",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA12-LA01-LA13-LA20-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "g",
+            "e",
+            "n",
+            "u",
+            "s"
+          ],
+          "ab_codes": "LA07-LA05-LA13-LA20-LA18",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "LAT-0090",
+      "type": "tablet",
+      "site": "ostia",
+      "words": [
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "s"
+          ],
+          "ab_codes": "LA17-LA05-LA18",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "r",
+            "e",
+            "i"
+          ],
+          "ab_codes": "LA17-LA05-LA09",
+          "has_damage": false
+        }
+      ]
+    }
+  ]
+}

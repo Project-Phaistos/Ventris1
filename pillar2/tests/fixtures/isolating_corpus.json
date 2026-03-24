@@ -1,0 +1,2908 @@
+{
+  "metadata": {
+    "title": "Isolating Language Test Corpus",
+    "description": "Simulated isolating language with 2-4 syllable words and no inflectional morphology. Uses 80 signs.",
+    "version": "1.0.0",
+    "date_compiled": "2026-03-23",
+    "statistics": {
+      "total_documents": 52,
+      "total_unique_signs": 80,
+      "known_syllabograms": 80
+    }
+  },
+  "sign_inventory": {
+    "IS001": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl001",
+      "count": 10
+    },
+    "IS002": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl002",
+      "count": 10
+    },
+    "IS003": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl003",
+      "count": 10
+    },
+    "IS004": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl004",
+      "count": 10
+    },
+    "IS005": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl005",
+      "count": 10
+    },
+    "IS006": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl006",
+      "count": 10
+    },
+    "IS007": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl007",
+      "count": 10
+    },
+    "IS008": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl008",
+      "count": 10
+    },
+    "IS009": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl009",
+      "count": 10
+    },
+    "IS010": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl010",
+      "count": 10
+    },
+    "IS011": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl011",
+      "count": 10
+    },
+    "IS012": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl012",
+      "count": 10
+    },
+    "IS013": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl013",
+      "count": 10
+    },
+    "IS014": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl014",
+      "count": 10
+    },
+    "IS015": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl015",
+      "count": 10
+    },
+    "IS016": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl016",
+      "count": 10
+    },
+    "IS017": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl017",
+      "count": 10
+    },
+    "IS018": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl018",
+      "count": 10
+    },
+    "IS019": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl019",
+      "count": 10
+    },
+    "IS020": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl020",
+      "count": 10
+    },
+    "IS021": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl021",
+      "count": 10
+    },
+    "IS022": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl022",
+      "count": 10
+    },
+    "IS023": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl023",
+      "count": 10
+    },
+    "IS024": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl024",
+      "count": 10
+    },
+    "IS025": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl025",
+      "count": 10
+    },
+    "IS026": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl026",
+      "count": 10
+    },
+    "IS027": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl027",
+      "count": 10
+    },
+    "IS028": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl028",
+      "count": 10
+    },
+    "IS029": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl029",
+      "count": 10
+    },
+    "IS030": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl030",
+      "count": 10
+    },
+    "IS031": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl031",
+      "count": 10
+    },
+    "IS032": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl032",
+      "count": 10
+    },
+    "IS033": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl033",
+      "count": 10
+    },
+    "IS034": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl034",
+      "count": 10
+    },
+    "IS035": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl035",
+      "count": 10
+    },
+    "IS036": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl036",
+      "count": 10
+    },
+    "IS037": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl037",
+      "count": 10
+    },
+    "IS038": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl038",
+      "count": 10
+    },
+    "IS039": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl039",
+      "count": 10
+    },
+    "IS040": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl040",
+      "count": 10
+    },
+    "IS041": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl041",
+      "count": 10
+    },
+    "IS042": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl042",
+      "count": 10
+    },
+    "IS043": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl043",
+      "count": 10
+    },
+    "IS044": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl044",
+      "count": 10
+    },
+    "IS045": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl045",
+      "count": 10
+    },
+    "IS046": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl046",
+      "count": 10
+    },
+    "IS047": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl047",
+      "count": 10
+    },
+    "IS048": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl048",
+      "count": 10
+    },
+    "IS049": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl049",
+      "count": 10
+    },
+    "IS050": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl050",
+      "count": 10
+    },
+    "IS051": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl051",
+      "count": 10
+    },
+    "IS052": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl052",
+      "count": 10
+    },
+    "IS053": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl053",
+      "count": 10
+    },
+    "IS054": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl054",
+      "count": 10
+    },
+    "IS055": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl055",
+      "count": 10
+    },
+    "IS056": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl056",
+      "count": 10
+    },
+    "IS057": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl057",
+      "count": 10
+    },
+    "IS058": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl058",
+      "count": 10
+    },
+    "IS059": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl059",
+      "count": 10
+    },
+    "IS060": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl060",
+      "count": 10
+    },
+    "IS061": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl061",
+      "count": 10
+    },
+    "IS062": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl062",
+      "count": 10
+    },
+    "IS063": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl063",
+      "count": 10
+    },
+    "IS064": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl064",
+      "count": 10
+    },
+    "IS065": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl065",
+      "count": 10
+    },
+    "IS066": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl066",
+      "count": 10
+    },
+    "IS067": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl067",
+      "count": 10
+    },
+    "IS068": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl068",
+      "count": 10
+    },
+    "IS069": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl069",
+      "count": 10
+    },
+    "IS070": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl070",
+      "count": 10
+    },
+    "IS071": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl071",
+      "count": 10
+    },
+    "IS072": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl072",
+      "count": 10
+    },
+    "IS073": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl073",
+      "count": 10
+    },
+    "IS074": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl074",
+      "count": 10
+    },
+    "IS075": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl075",
+      "count": 10
+    },
+    "IS076": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl076",
+      "count": 10
+    },
+    "IS077": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl077",
+      "count": 10
+    },
+    "IS078": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl078",
+      "count": 10
+    },
+    "IS079": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl079",
+      "count": 10
+    },
+    "IS080": {
+      "type": "syllabogram",
+      "confidence": "tier1",
+      "ipa": "syl080",
+      "count": 10
+    }
+  },
+  "inscriptions": [
+    {
+      "id": "ISO-0001",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS027",
+            "IS041",
+            "IS031"
+          ],
+          "ab_codes": "IS027-IS041-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS011",
+            "IS030",
+            "IS013"
+          ],
+          "ab_codes": "IS011-IS030-IS013",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS057",
+            "IS071"
+          ],
+          "ab_codes": "IS057-IS071",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS001",
+            "IS050",
+            "IS034",
+            "IS059"
+          ],
+          "ab_codes": "IS001-IS050-IS034-IS059",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS062"
+          ],
+          "ab_codes": "IS075-IS062",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS016",
+            "IS073",
+            "IS032",
+            "IS075"
+          ],
+          "ab_codes": "IS016-IS073-IS032-IS075",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0002",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS044",
+            "IS014",
+            "IS032",
+            "IS025"
+          ],
+          "ab_codes": "IS044-IS014-IS032-IS025",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS055",
+            "IS052"
+          ],
+          "ab_codes": "IS075-IS055-IS052",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS012",
+            "IS049"
+          ],
+          "ab_codes": "IS014-IS012-IS049",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS079",
+            "IS068",
+            "IS002"
+          ],
+          "ab_codes": "IS079-IS068-IS002",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS066",
+            "IS031"
+          ],
+          "ab_codes": "IS066-IS031",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0003",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS075",
+            "IS055",
+            "IS052"
+          ],
+          "ab_codes": "IS075-IS055-IS052",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS020",
+            "IS048",
+            "IS021"
+          ],
+          "ab_codes": "IS020-IS048-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS016",
+            "IS073",
+            "IS032",
+            "IS075"
+          ],
+          "ab_codes": "IS016-IS073-IS032-IS075",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS006",
+            "IS030"
+          ],
+          "ab_codes": "IS009-IS006-IS030",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0004",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS076",
+            "IS029",
+            "IS001"
+          ],
+          "ab_codes": "IS076-IS029-IS001",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS046",
+            "IS027",
+            "IS035"
+          ],
+          "ab_codes": "IS046-IS027-IS035",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS018",
+            "IS014"
+          ],
+          "ab_codes": "IS029-IS018-IS014",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0005",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS021",
+            "IS057",
+            "IS070"
+          ],
+          "ab_codes": "IS021-IS057-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS055"
+          ],
+          "ab_codes": "IS021-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS035",
+            "IS037",
+            "IS078"
+          ],
+          "ab_codes": "IS035-IS037-IS078",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS060",
+            "IS049"
+          ],
+          "ab_codes": "IS021-IS060-IS049",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS032",
+            "IS048"
+          ],
+          "ab_codes": "IS009-IS032-IS048",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0006",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS068",
+            "IS078",
+            "IS055"
+          ],
+          "ab_codes": "IS068-IS078-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS077",
+            "IS031"
+          ],
+          "ab_codes": "IS009-IS077-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS026",
+            "IS059",
+            "IS045"
+          ],
+          "ab_codes": "IS029-IS026-IS059-IS045",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS057",
+            "IS071"
+          ],
+          "ab_codes": "IS057-IS071",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS036",
+            "IS059",
+            "IS047",
+            "IS021"
+          ],
+          "ab_codes": "IS036-IS059-IS047-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS030"
+          ],
+          "ab_codes": "IS008-IS030",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0007",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS025",
+            "IS013",
+            "IS056"
+          ],
+          "ab_codes": "IS053-IS025-IS013-IS056",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS077",
+            "IS031"
+          ],
+          "ab_codes": "IS009-IS077-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS077",
+            "IS009"
+          ],
+          "ab_codes": "IS055-IS077-IS009",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0008",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS068",
+            "IS078",
+            "IS055"
+          ],
+          "ab_codes": "IS068-IS078-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS007",
+            "IS070"
+          ],
+          "ab_codes": "IS007-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS066",
+            "IS011"
+          ],
+          "ab_codes": "IS008-IS066-IS011",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0009",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS010",
+            "IS069"
+          ],
+          "ab_codes": "IS010-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS047",
+            "IS006",
+            "IS046"
+          ],
+          "ab_codes": "IS047-IS006-IS046",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS066",
+            "IS011"
+          ],
+          "ab_codes": "IS008-IS066-IS011",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS078",
+            "IS022"
+          ],
+          "ab_codes": "IS078-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS051",
+            "IS059",
+            "IS019",
+            "IS034"
+          ],
+          "ab_codes": "IS051-IS059-IS019-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS003",
+            "IS015",
+            "IS047",
+            "IS040"
+          ],
+          "ab_codes": "IS003-IS015-IS047-IS040",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0010",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS071",
+            "IS002",
+            "IS015"
+          ],
+          "ab_codes": "IS071-IS002-IS015",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS076",
+            "IS029",
+            "IS001"
+          ],
+          "ab_codes": "IS076-IS029-IS001",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS056",
+            "IS017",
+            "IS006"
+          ],
+          "ab_codes": "IS056-IS017-IS006",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS030",
+            "IS065",
+            "IS078"
+          ],
+          "ab_codes": "IS030-IS065-IS078",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS065",
+            "IS034",
+            "IS017"
+          ],
+          "ab_codes": "IS065-IS034-IS017",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS070",
+            "IS005",
+            "IS048"
+          ],
+          "ab_codes": "IS070-IS005-IS048",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0011",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS047",
+            "IS006",
+            "IS046"
+          ],
+          "ab_codes": "IS047-IS006-IS046",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS052",
+            "IS008",
+            "IS022"
+          ],
+          "ab_codes": "IS052-IS008-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS049",
+            "IS077",
+            "IS060",
+            "IS068"
+          ],
+          "ab_codes": "IS049-IS077-IS060-IS068",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0012",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS076",
+            "IS055"
+          ],
+          "ab_codes": "IS076-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS046",
+            "IS045"
+          ],
+          "ab_codes": "IS046-IS045",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS041",
+            "IS010",
+            "IS002",
+            "IS059"
+          ],
+          "ab_codes": "IS041-IS010-IS002-IS059",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0013",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS010",
+            "IS069"
+          ],
+          "ab_codes": "IS010-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS012",
+            "IS049"
+          ],
+          "ab_codes": "IS014-IS012-IS049",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS053",
+            "IS063",
+            "IS062"
+          ],
+          "ab_codes": "IS053-IS063-IS062",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS014",
+            "IS046"
+          ],
+          "ab_codes": "IS032-IS014-IS046",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0014",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS048",
+            "IS057",
+            "IS067",
+            "IS058"
+          ],
+          "ab_codes": "IS048-IS057-IS067-IS058",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS036",
+            "IS020",
+            "IS028"
+          ],
+          "ab_codes": "IS036-IS020-IS028",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS071",
+            "IS002",
+            "IS015"
+          ],
+          "ab_codes": "IS071-IS002-IS015",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS027",
+            "IS034"
+          ],
+          "ab_codes": "IS044-IS027-IS034",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0015",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS004",
+            "IS023"
+          ],
+          "ab_codes": "IS053-IS004-IS023",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS070",
+            "IS026",
+            "IS040"
+          ],
+          "ab_codes": "IS070-IS026-IS040",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS007",
+            "IS070"
+          ],
+          "ab_codes": "IS007-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS041",
+            "IS008"
+          ],
+          "ab_codes": "IS041-IS008",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS011",
+            "IS063"
+          ],
+          "ab_codes": "IS011-IS063",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0016",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS073",
+            "IS041",
+            "IS028"
+          ],
+          "ab_codes": "IS073-IS041-IS028",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS069",
+            "IS058",
+            "IS018"
+          ],
+          "ab_codes": "IS069-IS058-IS018",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS005",
+            "IS043"
+          ],
+          "ab_codes": "IS005-IS043",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0017",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS056",
+            "IS017",
+            "IS006"
+          ],
+          "ab_codes": "IS056-IS017-IS006",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS077",
+            "IS042"
+          ],
+          "ab_codes": "IS077-IS042",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS002",
+            "IS015",
+            "IS010"
+          ],
+          "ab_codes": "IS072-IS002-IS015-IS010",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS077",
+            "IS009"
+          ],
+          "ab_codes": "IS055-IS077-IS009",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0018",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS076",
+            "IS029",
+            "IS001"
+          ],
+          "ab_codes": "IS076-IS029-IS001",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS061",
+            "IS071",
+            "IS022"
+          ],
+          "ab_codes": "IS061-IS071-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS018",
+            "IS066"
+          ],
+          "ab_codes": "IS029-IS018-IS066",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0019",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS046",
+            "IS027",
+            "IS035"
+          ],
+          "ab_codes": "IS046-IS027-IS035",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS011"
+          ],
+          "ab_codes": "IS080-IS011",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS041",
+            "IS010",
+            "IS002",
+            "IS059"
+          ],
+          "ab_codes": "IS041-IS010-IS002-IS059",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS012",
+            "IS031"
+          ],
+          "ab_codes": "IS012-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS031",
+            "IS073"
+          ],
+          "ab_codes": "IS008-IS031-IS073",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS073",
+            "IS067",
+            "IS041"
+          ],
+          "ab_codes": "IS075-IS073-IS067-IS041",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0020",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS014",
+            "IS049",
+            "IS005"
+          ],
+          "ab_codes": "IS014-IS049-IS005",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS027",
+            "IS034"
+          ],
+          "ab_codes": "IS044-IS027-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS020",
+            "IS031",
+            "IS021"
+          ],
+          "ab_codes": "IS080-IS020-IS031-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS029"
+          ],
+          "ab_codes": "IS032-IS029",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0021",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS061",
+            "IS071",
+            "IS022"
+          ],
+          "ab_codes": "IS061-IS071-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS074",
+            "IS061",
+            "IS032"
+          ],
+          "ab_codes": "IS074-IS061-IS032",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS058",
+            "IS076",
+            "IS036"
+          ],
+          "ab_codes": "IS029-IS058-IS076-IS036",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS057",
+            "IS071"
+          ],
+          "ab_codes": "IS057-IS071",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS012"
+          ],
+          "ab_codes": "IS004-IS012",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS049",
+            "IS077",
+            "IS060",
+            "IS068"
+          ],
+          "ab_codes": "IS049-IS077-IS060-IS068",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0022",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS076",
+            "IS055"
+          ],
+          "ab_codes": "IS076-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS014",
+            "IS032",
+            "IS025"
+          ],
+          "ab_codes": "IS044-IS014-IS032-IS025",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS062"
+          ],
+          "ab_codes": "IS075-IS062",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS012",
+            "IS007",
+            "IS015",
+            "IS020"
+          ],
+          "ab_codes": "IS012-IS007-IS015-IS020",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS030",
+            "IS005"
+          ],
+          "ab_codes": "IS030-IS005",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS049",
+            "IS011"
+          ],
+          "ab_codes": "IS049-IS011",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0023",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS035",
+            "IS037",
+            "IS078"
+          ],
+          "ab_codes": "IS035-IS037-IS078",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS029",
+            "IS042"
+          ],
+          "ab_codes": "IS072-IS029-IS042",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS026"
+          ],
+          "ab_codes": "IS072-IS026",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS072",
+            "IS069"
+          ],
+          "ab_codes": "IS032-IS072-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS011",
+            "IS030",
+            "IS013"
+          ],
+          "ab_codes": "IS011-IS030-IS013",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS036",
+            "IS059",
+            "IS047",
+            "IS021"
+          ],
+          "ab_codes": "IS036-IS059-IS047-IS021",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0024",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS080",
+            "IS047",
+            "IS074"
+          ],
+          "ab_codes": "IS080-IS047-IS074",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS033",
+            "IS007",
+            "IS012",
+            "IS055"
+          ],
+          "ab_codes": "IS033-IS007-IS012-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS072",
+            "IS063"
+          ],
+          "ab_codes": "IS055-IS072-IS063",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS020",
+            "IS048",
+            "IS021"
+          ],
+          "ab_codes": "IS020-IS048-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS003"
+          ],
+          "ab_codes": "IS044-IS003",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0025",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS003",
+            "IS015",
+            "IS047",
+            "IS040"
+          ],
+          "ab_codes": "IS003-IS015-IS047-IS040",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS024",
+            "IS036",
+            "IS060",
+            "IS032"
+          ],
+          "ab_codes": "IS024-IS036-IS060-IS032",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS018",
+            "IS034"
+          ],
+          "ab_codes": "IS014-IS018-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS052",
+            "IS035",
+            "IS009"
+          ],
+          "ab_codes": "IS052-IS035-IS009",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS046",
+            "IS045"
+          ],
+          "ab_codes": "IS046-IS045",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS014",
+            "IS046"
+          ],
+          "ab_codes": "IS032-IS014-IS046",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0026",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS077",
+            "IS042"
+          ],
+          "ab_codes": "IS077-IS042",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS006",
+            "IS001",
+            "IS043"
+          ],
+          "ab_codes": "IS006-IS001-IS043",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS020",
+            "IS031",
+            "IS021"
+          ],
+          "ab_codes": "IS080-IS020-IS031-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS029"
+          ],
+          "ab_codes": "IS032-IS029",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS055"
+          ],
+          "ab_codes": "IS021-IS055",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0027",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS055",
+            "IS072",
+            "IS063"
+          ],
+          "ab_codes": "IS055-IS072-IS063",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS053",
+            "IS025",
+            "IS013",
+            "IS056"
+          ],
+          "ab_codes": "IS053-IS025-IS013-IS056",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS047",
+            "IS074"
+          ],
+          "ab_codes": "IS080-IS047-IS074",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0028",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS041",
+            "IS010",
+            "IS002",
+            "IS059"
+          ],
+          "ab_codes": "IS041-IS010-IS002-IS059",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS036",
+            "IS020",
+            "IS028"
+          ],
+          "ab_codes": "IS036-IS020-IS028",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS006",
+            "IS059",
+            "IS069"
+          ],
+          "ab_codes": "IS006-IS059-IS069",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0029",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS075",
+            "IS073",
+            "IS067",
+            "IS041"
+          ],
+          "ab_codes": "IS075-IS073-IS067-IS041",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS032",
+            "IS048"
+          ],
+          "ab_codes": "IS009-IS032-IS048",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS020",
+            "IS031",
+            "IS021"
+          ],
+          "ab_codes": "IS080-IS020-IS031-IS021",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS080",
+            "IS011"
+          ],
+          "ab_codes": "IS080-IS011",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0030",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS011",
+            "IS063"
+          ],
+          "ab_codes": "IS011-IS063",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS034",
+            "IS021",
+            "IS057"
+          ],
+          "ab_codes": "IS034-IS021-IS057",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS018",
+            "IS066"
+          ],
+          "ab_codes": "IS029-IS018-IS066",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS049",
+            "IS011"
+          ],
+          "ab_codes": "IS049-IS011",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0031",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS079",
+            "IS068",
+            "IS002"
+          ],
+          "ab_codes": "IS079-IS068-IS002",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS052",
+            "IS035",
+            "IS009"
+          ],
+          "ab_codes": "IS052-IS035-IS009",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS036"
+          ],
+          "ab_codes": "IS004-IS036",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS034",
+            "IS021",
+            "IS057"
+          ],
+          "ab_codes": "IS034-IS021-IS057",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS070"
+          ],
+          "ab_codes": "IS075-IS070",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0032",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS027",
+            "IS041",
+            "IS031"
+          ],
+          "ab_codes": "IS027-IS041-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS012",
+            "IS031"
+          ],
+          "ab_codes": "IS012-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS053",
+            "IS004",
+            "IS023"
+          ],
+          "ab_codes": "IS053-IS004-IS023",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0033",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS005",
+            "IS043"
+          ],
+          "ab_codes": "IS005-IS043",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS030"
+          ],
+          "ab_codes": "IS008-IS030",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS018",
+            "IS014"
+          ],
+          "ab_codes": "IS029-IS018-IS014",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS015",
+            "IS038"
+          ],
+          "ab_codes": "IS044-IS015-IS038",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0034",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS008",
+            "IS031",
+            "IS073"
+          ],
+          "ab_codes": "IS008-IS031-IS073",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS069",
+            "IS017"
+          ],
+          "ab_codes": "IS069-IS017",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS051",
+            "IS059",
+            "IS019",
+            "IS034"
+          ],
+          "ab_codes": "IS051-IS059-IS019-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS055",
+            "IS052"
+          ],
+          "ab_codes": "IS075-IS055-IS052",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0035",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS004",
+            "IS023"
+          ],
+          "ab_codes": "IS053-IS004-IS023",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS018",
+            "IS034"
+          ],
+          "ab_codes": "IS014-IS018-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS012"
+          ],
+          "ab_codes": "IS004-IS012",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS012",
+            "IS007",
+            "IS015",
+            "IS020"
+          ],
+          "ab_codes": "IS012-IS007-IS015-IS020",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0036",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS063",
+            "IS062"
+          ],
+          "ab_codes": "IS053-IS063-IS062",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS009",
+            "IS006",
+            "IS030"
+          ],
+          "ab_codes": "IS009-IS006-IS030",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS059",
+            "IS001",
+            "IS034"
+          ],
+          "ab_codes": "IS021-IS059-IS001-IS034",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0037",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS063",
+            "IS062"
+          ],
+          "ab_codes": "IS053-IS063-IS062",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS051",
+            "IS017",
+            "IS039"
+          ],
+          "ab_codes": "IS051-IS017-IS039",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS069",
+            "IS017"
+          ],
+          "ab_codes": "IS069-IS017",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS027",
+            "IS041",
+            "IS031"
+          ],
+          "ab_codes": "IS027-IS041-IS031",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0038",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS006",
+            "IS059",
+            "IS069"
+          ],
+          "ab_codes": "IS006-IS059-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS036"
+          ],
+          "ab_codes": "IS004-IS036",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS005",
+            "IS043"
+          ],
+          "ab_codes": "IS005-IS043",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0039",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS066",
+            "IS031"
+          ],
+          "ab_codes": "IS066-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS036"
+          ],
+          "ab_codes": "IS004-IS036",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS071"
+          ],
+          "ab_codes": "IS014-IS071",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS002",
+            "IS015",
+            "IS010"
+          ],
+          "ab_codes": "IS072-IS002-IS015-IS010",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS053",
+            "IS060"
+          ],
+          "ab_codes": "IS055-IS053-IS060",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS003"
+          ],
+          "ab_codes": "IS044-IS003",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0040",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS009",
+            "IS077",
+            "IS031"
+          ],
+          "ab_codes": "IS009-IS077-IS031",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS057",
+            "IS070"
+          ],
+          "ab_codes": "IS021-IS057-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS008",
+            "IS030"
+          ],
+          "ab_codes": "IS008-IS030",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS070",
+            "IS005",
+            "IS048"
+          ],
+          "ab_codes": "IS070-IS005-IS048",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS072",
+            "IS063"
+          ],
+          "ab_codes": "IS055-IS072-IS063",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS055"
+          ],
+          "ab_codes": "IS021-IS055",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0041",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS070",
+            "IS026",
+            "IS040"
+          ],
+          "ab_codes": "IS070-IS026-IS040",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS053",
+            "IS032",
+            "IS035"
+          ],
+          "ab_codes": "IS053-IS032-IS035",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS071"
+          ],
+          "ab_codes": "IS014-IS071",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS013",
+            "IS008"
+          ],
+          "ab_codes": "IS013-IS008",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS006",
+            "IS001",
+            "IS043"
+          ],
+          "ab_codes": "IS006-IS001-IS043",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS055",
+            "IS053",
+            "IS060"
+          ],
+          "ab_codes": "IS055-IS053-IS060",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0042",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS041",
+            "IS008"
+          ],
+          "ab_codes": "IS041-IS008",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS069",
+            "IS058",
+            "IS018"
+          ],
+          "ab_codes": "IS069-IS058-IS018",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS078",
+            "IS022"
+          ],
+          "ab_codes": "IS078-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS057",
+            "IS070"
+          ],
+          "ab_codes": "IS021-IS057-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS063",
+            "IS028",
+            "IS070"
+          ],
+          "ab_codes": "IS063-IS028-IS070",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0043",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS080",
+            "IS047",
+            "IS074"
+          ],
+          "ab_codes": "IS080-IS047-IS074",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS052",
+            "IS008",
+            "IS022"
+          ],
+          "ab_codes": "IS052-IS008-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS076",
+            "IS055"
+          ],
+          "ab_codes": "IS076-IS055",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0044",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS008",
+            "IS031",
+            "IS073"
+          ],
+          "ab_codes": "IS008-IS031-IS073",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS059",
+            "IS001",
+            "IS034"
+          ],
+          "ab_codes": "IS021-IS059-IS001-IS034",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS029",
+            "IS042"
+          ],
+          "ab_codes": "IS072-IS029-IS042",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS027",
+            "IS034"
+          ],
+          "ab_codes": "IS044-IS027-IS034",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0045",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS033",
+            "IS007",
+            "IS012",
+            "IS055"
+          ],
+          "ab_codes": "IS033-IS007-IS012-IS055",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS014",
+            "IS049",
+            "IS005"
+          ],
+          "ab_codes": "IS014-IS049-IS005",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS041",
+            "IS008"
+          ],
+          "ab_codes": "IS041-IS008",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS021",
+            "IS060",
+            "IS049"
+          ],
+          "ab_codes": "IS021-IS060-IS049",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS006",
+            "IS001",
+            "IS043"
+          ],
+          "ab_codes": "IS006-IS001-IS043",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0046",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS024",
+            "IS036",
+            "IS060",
+            "IS032"
+          ],
+          "ab_codes": "IS024-IS036-IS060-IS032",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS058",
+            "IS076",
+            "IS036"
+          ],
+          "ab_codes": "IS029-IS058-IS076-IS036",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS074",
+            "IS061",
+            "IS032"
+          ],
+          "ab_codes": "IS074-IS061-IS032",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS032",
+            "IS072",
+            "IS069"
+          ],
+          "ab_codes": "IS032-IS072-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS015",
+            "IS038"
+          ],
+          "ab_codes": "IS044-IS015-IS038",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0047",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS065",
+            "IS014",
+            "IS039"
+          ],
+          "ab_codes": "IS065-IS014-IS039",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS065",
+            "IS034",
+            "IS017"
+          ],
+          "ab_codes": "IS065-IS034-IS017",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS012",
+            "IS007",
+            "IS015",
+            "IS020"
+          ],
+          "ab_codes": "IS012-IS007-IS015-IS020",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS072",
+            "IS026"
+          ],
+          "ab_codes": "IS072-IS026",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS013",
+            "IS008"
+          ],
+          "ab_codes": "IS013-IS008",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS004",
+            "IS012"
+          ],
+          "ab_codes": "IS004-IS012",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0048",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS073",
+            "IS041",
+            "IS028"
+          ],
+          "ab_codes": "IS073-IS041-IS028",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS010",
+            "IS069"
+          ],
+          "ab_codes": "IS010-IS069",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS048",
+            "IS057",
+            "IS067",
+            "IS058"
+          ],
+          "ab_codes": "IS048-IS057-IS067-IS058",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0049",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS049",
+            "IS011"
+          ],
+          "ab_codes": "IS049-IS011",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS075",
+            "IS070"
+          ],
+          "ab_codes": "IS075-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS034",
+            "IS021",
+            "IS057"
+          ],
+          "ab_codes": "IS034-IS021-IS057",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS044",
+            "IS015",
+            "IS038"
+          ],
+          "ab_codes": "IS044-IS015-IS038",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0050",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS065",
+            "IS014",
+            "IS039"
+          ],
+          "ab_codes": "IS065-IS014-IS039",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS025",
+            "IS038",
+            "IS028"
+          ],
+          "ab_codes": "IS025-IS038-IS028",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS029",
+            "IS026",
+            "IS059",
+            "IS045"
+          ],
+          "ab_codes": "IS029-IS026-IS059-IS045",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS003",
+            "IS015",
+            "IS047",
+            "IS040"
+          ],
+          "ab_codes": "IS003-IS015-IS047-IS040",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS025",
+            "IS038",
+            "IS028"
+          ],
+          "ab_codes": "IS025-IS038-IS028",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0051",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS001",
+            "IS050",
+            "IS034",
+            "IS059"
+          ],
+          "ab_codes": "IS001-IS050-IS034-IS059",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS051",
+            "IS017",
+            "IS039"
+          ],
+          "ab_codes": "IS051-IS017-IS039",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS030",
+            "IS065",
+            "IS078"
+          ],
+          "ab_codes": "IS030-IS065-IS078",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS030",
+            "IS005"
+          ],
+          "ab_codes": "IS030-IS005",
+          "has_damage": false
+        }
+      ]
+    },
+    {
+      "id": "ISO-0052",
+      "type": "tablet",
+      "site": "isolating_city",
+      "words": [
+        {
+          "sign_readings": [
+            "IS053",
+            "IS032",
+            "IS035"
+          ],
+          "ab_codes": "IS053-IS032-IS035",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS063",
+            "IS028",
+            "IS070"
+          ],
+          "ab_codes": "IS063-IS028-IS070",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS078",
+            "IS022"
+          ],
+          "ab_codes": "IS078-IS022",
+          "has_damage": false
+        },
+        {
+          "sign_readings": [
+            "IS065",
+            "IS034",
+            "IS017"
+          ],
+          "ab_codes": "IS065-IS034-IS017",
+          "has_damage": false
+        }
+      ]
+    }
+  ]
+}

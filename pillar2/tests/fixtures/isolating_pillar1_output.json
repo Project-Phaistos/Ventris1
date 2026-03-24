@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "corpus_hash": "isolating_test_corpus_hash",
+    "config_hash": "isolating_test_config_hash",
+    "timestamp": "2026-03-23T00:00:00Z",
+    "seed": 1234,
+    "note": "Minimal Pillar 1 output for isolating language test corpus."
+  },
+  "vowel_inventory": {
+    "count": 0,
+    "method": "none",
+    "signs": []
+  },
+  "grid": {
+    "consonant_count": 0,
+    "vowel_count": 0,
+    "method": "none",
+    "assignments": []
+  },
+  "phonotactics": {
+    "forbidden_bigrams": [],
+    "favored_bigrams": []
+  }
+}

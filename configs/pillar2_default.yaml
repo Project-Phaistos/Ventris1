@@ -1,0 +1,32 @@
+# Pillar 2: Morphological Decomposition — Default Configuration
+
+# --- Inputs ---
+corpus_path: "data/sigla_full_corpus.json"
+pillar1_output_path: "results/pillar1_output.json"
+
+# --- Segmentation (Step 1) ---
+segmentation_method: "suffix_strip"  # "suffix_strip" (robust), "bpe", or "morfessor"
+min_word_length: 2                   # Minimum signs for segmentation
+min_suffix_frequency: 3              # Minimum corpus occurrences for a suffix to be retained
+min_suffix_stems: 2                  # Minimum distinct stems for a suffix to be retained
+max_suffix_length: 3                 # Maximum suffix length in signs
+lambda_phon: 1.0                     # Phonological constraint penalty weight
+bpe_min_merge_freq: 3               # Minimum frequency for a BPE merge
+bpe_max_merges: 100                 # Maximum number of BPE merges
+
+# --- Affix Extraction (Step 2) ---
+min_affix_stems: 2                   # Minimum distinct stems for an affix to be real
+
+# --- Paradigm Induction (Step 3) ---
+jaccard_threshold: 0.3               # Minimum Jaccard similarity for paradigm merging
+min_paradigm_members: 2              # Minimum stems in a paradigm class
+min_paradigm_slots: 2                # Minimum suffix slots in a paradigm class
+max_paradigm_classes: 15             # Upper bound for paradigm count
+
+# --- Inflection Classification (Step 4) ---
+inflectional_productivity_threshold: 0.3   # Above this = inflectional
+derivational_productivity_threshold: 0.1   # Below this = derivational
+
+# --- General ---
+seed: 1234
+output_path: "results/pillar2_output.json"

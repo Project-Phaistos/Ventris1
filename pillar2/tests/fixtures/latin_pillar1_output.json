@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "corpus_hash": "latin_test_corpus_hash",
+    "config_hash": "latin_test_config_hash",
+    "timestamp": "2026-03-23T00:00:00Z",
+    "seed": 1234,
+    "note": "Minimal Pillar 1 output for Latin CV syllabary test corpus."
+  },
+  "vowel_inventory": {
+    "count": 5,
+    "method": "known_latin_vowels",
+    "signs": [
+      {"sign_id": "LA01", "enrichment_score": 2.5, "confidence": 0.95},
+      {"sign_id": "LA05", "enrichment_score": 2.3, "confidence": 0.93},
+      {"sign_id": "LA09", "enrichment_score": 2.1, "confidence": 0.91},
+      {"sign_id": "LA14", "enrichment_score": 2.0, "confidence": 0.90},
+      {"sign_id": "LA20", "enrichment_score": 1.9, "confidence": 0.88}
+    ]
+  },
+  "grid": {
+    "consonant_count": 15,
+    "vowel_count": 5,
+    "method": "known_latin_grid",
+    "assignments": [
+      {"sign_id": "LA01", "consonant_class": 0, "vowel_class": 0, "confidence": 0.95, "evidence_count": 80},
+      {"sign_id": "LA02", "consonant_class": 1, "vowel_class": 0, "confidence": 0.80, "evidence_count": 15},
+      {"sign_id": "LA03", "consonant_class": 2, "vowel_class": 0, "confidence": 0.85, "evidence_count": 20},
+      {"sign_id": "LA04", "consonant_class": 3, "vowel_class": 0, "confidence": 0.80, "evidence_count": 18},
+      {"sign_id": "LA05", "consonant_class": 0, "vowel_class": 1, "confidence": 0.93, "evidence_count": 60},
+      {"sign_id": "LA06", "consonant_class": 4, "vowel_class": 0, "confidence": 0.75, "evidence_count": 10},
+      {"sign_id": "LA07", "consonant_class": 5, "vowel_class": 0, "confidence": 0.78, "evidence_count": 12},
+      {"sign_id": "LA08", "consonant_class": 6, "vowel_class": 0, "confidence": 0.70, "evidence_count": 5},
+      {"sign_id": "LA09", "consonant_class": 0, "vowel_class": 2, "confidence": 0.91, "evidence_count": 40},
+      {"sign_id": "LA10", "consonant_class": 7, "vowel_class": 0, "confidence": 0.72, "evidence_count": 8},
+      {"sign_id": "LA11", "consonant_class": 8, "vowel_class": 0, "confidence": 0.88, "evidence_count": 50},
+      {"sign_id": "LA12", "consonant_class": 9, "vowel_class": 0, "confidence": 0.85, "evidence_count": 30},
+      {"sign_id": "LA13", "consonant_class": 10, "vowel_class": 0, "confidence": 0.85, "evidence_count": 35},
+      {"sign_id": "LA14", "consonant_class": 0, "vowel_class": 3, "confidence": 0.90, "evidence_count": 45},
+      {"sign_id": "LA15", "consonant_class": 11, "vowel_class": 0, "confidence": 0.83, "evidence_count": 25},
+      {"sign_id": "LA16", "consonant_class": 12, "vowel_class": 0, "confidence": 0.70, "evidence_count": 5},
+      {"sign_id": "LA17", "consonant_class": 13, "vowel_class": 0, "confidence": 0.85, "evidence_count": 30},
+      {"sign_id": "LA18", "consonant_class": 14, "vowel_class": 0, "confidence": 0.88, "evidence_count": 55},
+      {"sign_id": "LA19", "consonant_class": 15, "vowel_class": 0, "confidence": 0.85, "evidence_count": 40},
+      {"sign_id": "LA20", "consonant_class": 0, "vowel_class": 4, "confidence": 0.88, "evidence_count": 60},
+      {"sign_id": "LA21", "consonant_class": 16, "vowel_class": 0, "confidence": 0.75, "evidence_count": 10},
+      {"sign_id": "LA22", "consonant_class": 17, "vowel_class": 0, "confidence": 0.70, "evidence_count": 5}
+    ]
+  },
+  "phonotactics": {
+    "forbidden_bigrams": [],
+    "favored_bigrams": []
+  }
+}
