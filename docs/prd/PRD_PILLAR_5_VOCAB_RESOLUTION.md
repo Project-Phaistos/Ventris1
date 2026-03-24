@@ -258,34 +258,66 @@ constraints(sg) = {
 - Exclude sign-groups with no constraints (no P4 anchor, no P2 stem)
 - Include sign-groups that have at least ONE of: semantic field (P4), morphological class (P2), or phonetic reading (LB)
 
-### 5.2 Step 2: Phonological Distance Computation
+### 5.2 Step 2: Cognate Discovery via Phonetic Prior Algorithm
 
-**Goal:** For each constrained sign-group, compute phonological distance to every entry in every candidate language lexicon.
+**Goal:** For each Pillar 2 stem, run the Phonetic Prior algorithm (Luo et al. 2021) against each candidate language lexicon to produce per-stem cognate word lists with learned character mappings.
 
-**Method:**
+**Why the Phonetic Prior, not naive edit distance:**
 
-If the sign-group has an LB-derived reading (CONSENSUS_ASSUMED):
-- Convert both the LA sign-group reading and the candidate word to a comparable phonological representation (IPA feature vectors)
-- Compute normalized edit distance on the IPA feature representation
-- Weight by LB agreement score from Pillar 1 (ARI=0.615 → weight LB readings at ~0.6)
+The Phonetic Prior (Luo et al. 2021, "Neural Decipherment via Minimum-Cost Flow") is validated for finding individual cognate words between a lost and known language:
+- Ugaritic-Hebrew: P@1 = 0.557 (repro validation)
+- 926 language pairs validated across 32 languages
+- Uses 61-dimensional IPA feature vectors with 7 grouped projections
+- Learns a soft character mapping via differentiable DP alignment
+- Handles insertions, deletions, and systematic sound shifts
 
-If the sign-group has only the abstract C-V grid assignment (INDEPENDENT):
-- Use the abstract phonological form (consonant class × vowel class sequence)
-- Candidate words are also reduced to abstract C-V forms
-- Distance is computed on abstract forms — less precise but not consensus-dependent
+Naive normalized edit distance has none of this: no learned mapping, no IPA feature projection, no validation on ancient language pairs. For finding individual cognate words, it would be strictly inferior.
 
-**Mathematical basis:**
+**The Phonetic Prior's failure was in EVALUATION (single-language ranking with FDR rubber-stamping and inventory-size bias), not in per-word MATCHING.** We use the matching algorithm but replace the evaluation framework entirely with our Pillar 1-4 constraint filtering.
 
-Phonological distance between sign-group sg and candidate word w:
+**Algorithm:**
 
-d_phon(sg, w) = edit_distance(IPA(sg), IPA(w)) / max(len(IPA(sg)), len(IPA(w)))
+1. **Prepare input:**
+   - Convert each Pillar 2 stem to IPA using LB values (CONSENSUS_ASSUMED, weighted accordingly)
+   - Concatenate stems into an "unsegmented" IPA stream per the Phonetic Prior's expected input format
+   - For each candidate language, use existing IPA lexicons from the ancient-scripts-datasets repo
 
-where IPA(sg) is derived from LB values (if available) or abstract C-V form (if not).
+2. **Run the Phonetic Prior** (phonetic-prior-v2 codebase) per candidate language:
+   - The algorithm learns a character mapping matrix between Linear A IPA and the candidate language
+   - It segments the unsegmented input into word boundaries via DP
+   - For each identified segment, it produces a ranked list of candidate matches with quality scores
 
-For abstract form comparison:
-- Each sign maps to (consonant_class, vowel_class) from Pillar 1
-- Each candidate phoneme maps to a feature vector
-- Distance between abstract forms uses a relaxed metric that counts class matches vs. mismatches
+3. **Extract per-stem cognate lists:**
+   - Map the Phonetic Prior's segments back to our Pillar 2 stems
+   - For each stem, collect the top-N matches from each candidate language
+   - Record: candidate word, IPA, gloss/meaning, quality score, learned character mapping
+
+4. **Cross-check segmentation:**
+   - Compare the Phonetic Prior's discovered word boundaries against our Pillar 2 sign-group boundaries
+   - Agreement = convergent evidence that the segmentation is correct
+   - Disagreement = flag for investigation (one method may be wrong)
+
+**Output per stem:**
+```json
+{
+  "stem": ["AB77"],
+  "stem_ipa_lb": "ka",
+  "candidate_matches": {
+    "Akkadian": [
+      {"word": "kappu", "ipa": "kappu", "gloss": "wing; hand; bowl", "quality_score": -4.2, "rank": 1},
+      {"word": "karpu", "ipa": "karpu", "gloss": "vessel", "quality_score": -6.1, "rank": 2}
+    ],
+    "Luwian": [
+      {"word": "kaluti", "ipa": "kaluti", "gloss": "cup?", "quality_score": -5.8, "rank": 1}
+    ]
+  },
+  "segmentation_agreement_with_pillar2": true
+}
+```
+
+**Compute requirement:** This step requires running the Phonetic Prior algorithm ~12 times (once per candidate language). Based on PhaiPhon3 benchmarks: ~30 minutes per language on Windows CPU with vectorized DP. Total: ~6 hours for all 12 languages. Can be parallelized.
+
+**Provenance:** The cognate lists are CONSENSUS_DEPENDENT because they depend on LB phonetic values for the Linear A IPA input. The quality SCORES from the Phonetic Prior are its own model output and should be treated as one signal among many, not as ground truth. The character MAPPINGS learned per language are potentially informative (if Luwian's mapping shows regular correspondences while Arabic's is random, that's evidence for Luwian contact).
 
 ### 5.3 Step 3: Semantic Compatibility Scoring
 
@@ -311,19 +343,25 @@ For each (sign-group, candidate word) pair where the sign-group has a semantic f
 
 ### 5.4 Step 4: Combined Scoring with Evidence Weighting
 
-**Goal:** Combine phonological distance and semantic compatibility into a single score, weighted by evidence provenance.
+**Goal:** Combine the Phonetic Prior quality score, semantic compatibility, and character mapping regularity into a single score, weighted by evidence provenance.
 
 **Formula:**
 
 ```
-combined_score(sg, w) = (1 - d_phon) * w_phon + semantic * w_sem
+combined_score(sg, w) = phon_score * w_phon + semantic * w_sem + regularity * w_reg
 
 where:
-  w_phon = provenance_weight(phonological_evidence)   # 0.3-1.0
-  w_sem  = provenance_weight(semantic_evidence)        # 0.3-1.0
+  phon_score  = normalized Phonetic Prior quality score for (stem, word) pair
+                (rescaled to [0,1] within each language run)
+  semantic    = semantic compatibility from P4 anchors (0.0 to 1.0)
+  regularity  = character mapping regularity for this language
+                (fraction of character pairs with consistent mapping across
+                multiple word matches — higher = more systematic = more likely
+                real contact vs chance)
+  w_phon      = 0.5  (CONSENSUS_ASSUMED — depends on LB IPA input)
+  w_sem       = provenance_weight(semantic_evidence)  # 0.3-1.0 per P4 provenance
+  w_reg       = 0.3  (model-derived, not independently verified)
 ```
-
-No PhaiPhon prior term. Raw cognate files are cross-referenced post-hoc (Step 7) but do NOT contribute to scores.
 
 Provenance weights follow Section 15 of the standards:
 - INDEPENDENT evidence → weight 1.0
@@ -331,7 +369,7 @@ Provenance weights follow Section 15 of the standards:
 - CONSENSUS_ASSUMED → weight 0.5
 - CONSENSUS_DEPENDENT → weight 0.3
 
-A match driven entirely by LB phonetic reading (CONSENSUS_ASSUMED, 0.5) is weighted less than a match confirmed by both phonology AND semantic field.
+A match driven entirely by the Phonetic Prior quality score (CONSENSUS_ASSUMED via LB) gets at most weight 0.5. A match confirmed by both Phonetic Prior AND Pillar 4 semantic field (ideogram co-occurrence, partially INDEPENDENT) gets up to 0.5 + 1.0 = much stronger. This ensures that independent structural evidence from Pillars 1-4 always dominates over the Phonetic Prior's model output.
 
 ### 5.5 Step 5: Multi-Language Simultaneous Search
 
@@ -375,21 +413,34 @@ for each sign_group in constrained_vocabulary:
 
 **No mixture model.** Per the resolved design decisions (README): "keep it informal and let the strata emerge from the data." We do NOT formalize a mixture model. We simply report what we observe.
 
-### 5.7 Step 7: Cross-Reference Against Raw Cognate Files (POST-HOC ONLY)
+### 5.7 Step 7: Cross-Reference and Cognate List Assembly
 
-**Goal:** After Pillar 5 produces its own matches (Steps 1-6), cross-reference against the raw cognate match files from the Phonetic Prior runs — NOT as input to scoring, but as an independent sanity check.
+**Goal:** Assemble the final per-stem cognate word lists, cross-reference the Phonetic Prior's new results (Step 2) against the old raw cognate files, and produce the vocabulary resolution that is the primary deliverable of this pillar.
 
 **Algorithm:**
 
-For each (sign-group, candidate_language) pair where Pillar 5 found a match:
-1. Check if the raw cognate TSVs contain a corresponding entry
-2. If found: flag as "corroborated_by_raw_cognate_file" in the evidence chain (informational only, does NOT change the score)
-3. If not found: flag as "not_in_raw_cognate_file" (informational only)
-4. If the raw file has a match that Pillar 5 did NOT find: flag as "raw_only_match" for manual review
+1. **For each stem, assemble the filtered cognate list:**
+   From Step 5's simultaneous search results, after filtering by semantic compatibility (Step 3) and combined scoring (Step 4):
+   - Keep all matches with combined_score > threshold
+   - For each match, record: candidate language, candidate word, IPA, gloss, quality score, semantic compatibility, character mapping details
+   - Rank by combined_score within each language
 
-**This step does NOT affect scores or rankings.** It is purely a cross-reference to identify agreements and disagreements between two independent methods. The raw cognate files are untrusted model outputs — they are useful for spotting patterns but not for confirming them.
+2. **Cross-reference against old raw cognate files (informational):**
+   Check the existing `linear_a_cognates/cognates_{lang}.tsv` files:
+   - If the old files contain a match that the new run also found → "corroborated"
+   - If the old files contain a match the new run did NOT find → "old_only" (flag for review)
+   - If the new run found something the old files don't have → "new_finding"
+   This cross-reference does NOT change scores. It's a provenance audit trail.
 
-**PhaiPhon aggregate rankings, Bayes factors, posteriors, and model weights are NOT consulted at any point.**
+3. **Produce per-stem cognate word lists:**
+   The PRIMARY OUTPUT of Pillar 5 is not a score table — it is a **vocabulary** where each Linear A stem has a ranked list of possible cognate words from one or more languages, each with evidence chains and confidence.
+
+   This is directly usable for translation: if ku-ro has no external cognate but is anchored to FUNCTION:TOTAL_MARKER by Pillar 4, that's a vocabulary entry. If ka-pa matches Akkadian "kappu" phonologically but the semantic field disagrees, that's documented with the disagreement.
+
+4. **Segmentation cross-check:**
+   Compare the Phonetic Prior's discovered word boundaries against Pillar 2's sign-group boundaries. Report agreement rate. This is a convergent validity check on the segmentation itself.
+
+**The cognate word lists are the core deliverable** — they are what enables translation of tablets. The stratum analysis (Step 6) and compositional portrait are secondary analyses derived from the cognate lists.
 
 ---
 
@@ -399,11 +450,11 @@ For each (sign-group, candidate_language) pair where Pillar 5 found a match:
 |--------|---------------|-------|--------|
 | `constraint_assembler.py` | Gather P1-P4 constraints per sign-group, filter to matchable vocabulary | P1-P4 outputs | Constrained vocabulary list |
 | `lexicon_loader.py` | Load candidate language lexicons with IPA and glosses | External data files | Typed lexicon objects |
-| `phonological_matcher.py` | Compute phonological distance (LB-based and abstract) | Constrained vocab + lexicons | Distance matrices |
-| `semantic_scorer.py` | Score semantic compatibility using P4 anchors | Constrained vocab + lexicons | Semantic scores |
-| `evidence_combiner.py` | Weighted combination with provenance tags | Distances + semantics + priors | Combined scores |
-| `stratum_detector.py` | Emergent stratum detection from match patterns | Combined scores | Stratum analysis |
-| `cognate_crossref.py` | Post-hoc cross-reference against raw cognate match files | Raw cognate TSVs | Corroboration flags (informational only) |
+| `phonetic_prior_runner.py` | Run Phonetic Prior algorithm (Luo et al. 2021) per candidate language on Pillar 2 stems | Stems (IPA via LB) + candidate lexicons | Per-stem cognate lists with quality scores + learned character mappings |
+| `semantic_scorer.py` | Score semantic compatibility using P4 anchors | Constrained vocab + cognate lists | Semantic compatibility scores |
+| `evidence_combiner.py` | Weighted combination with provenance tags: phon_score + semantic + regularity | Quality scores + semantics + mapping regularity | Combined scores |
+| `stratum_detector.py` | Emergent stratum detection from match patterns | Combined scores + cognate lists | Stratum analysis |
+| `cognate_list_assembler.py` | Assemble final per-stem cognate word lists, cross-reference old cognate files | All above + raw cognate TSVs | Vocabulary resolution (primary deliverable) |
 | `output_formatter.py` | Assemble interface contract JSON | All above | Final JSON |
 | `pipeline.py` | Orchestrator | Config | Runs all steps |
 
