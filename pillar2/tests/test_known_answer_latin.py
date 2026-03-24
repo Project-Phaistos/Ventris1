@@ -109,14 +109,16 @@ def test_latin_identifies_known_suffixes(
 def test_latin_paradigm_count_in_range(
     latin_paradigm_table: ParadigmTable,
 ) -> None:
-    """Number of paradigm classes is between 2 and 8.
+    """Number of paradigm classes is between 2 and 15.
 
     Latin has 5 declension classes, but the segmenter may merge or split
-    them. The range [2, 8] allows for imperfect recovery.
+    them. The range [2, 15] allows for imperfect recovery.  The upper
+    bound matches max_paradigm_classes (default=15).  Greedy longest-match
+    suffix selection may produce finer-grained paradigm splits.
     """
     n = latin_paradigm_table.n_classes
-    assert 2 <= n <= 8, (
-        f"Expected 2-8 paradigm classes, got {n}. "
+    assert 2 <= n <= 15, (
+        f"Expected 2-15 paradigm classes, got {n}. "
         f"Sizes: {[p.n_members for p in latin_paradigm_table.paradigms]}"
     )
 

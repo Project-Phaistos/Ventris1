@@ -136,7 +136,7 @@ def construct_grid(
     # Only consider k in [min_C, max_C] and within the valid range
     valid_range = range(
         max(1, min_consonant_classes - 1),
-        min(max_consonant_classes, n - 1),
+        min(max_consonant_classes + 1, n - 1),
     )
     if len(list(valid_range)) == 0:
         best_k_eigengap = min_consonant_classes
@@ -155,9 +155,14 @@ def construct_grid(
                     eigenvectors[connected_nodes, :k], k, kmeans_n_init, seed,
                 )
                 if len(set(labels)) >= 2:
-                    # Use the affinity submatrix for silhouette
+                    # Convert affinity to distance: silhouette_score with
+                    # metric="precomputed" expects a distance matrix (small
+                    # values = similar), not an affinity matrix.
                     sub_A = A[np.ix_(connected_nodes, connected_nodes)]
-                    sil = silhouette_score(sub_A, labels, metric="precomputed")
+                    A_max = sub_A.max() if sub_A.max() > 0 else 1.0
+                    dist = A_max - sub_A
+                    np.fill_diagonal(dist, 0)
+                    sil = silhouette_score(dist, labels, metric="precomputed")
                     silhouette_scores[k] = sil
             except Exception:
                 continue

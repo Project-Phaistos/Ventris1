@@ -58,6 +58,7 @@ class Paradigm:
     slots: List[ParadigmSlot]
     example_stems: List[StemExample]
     completeness: float  # fraction of stem x slot cells that are attested
+    all_stems: List[List[str]] = field(default_factory=list)
     grid_analysis: Optional[GridAnalysis] = None
 
 
@@ -205,6 +206,7 @@ def induce_paradigms(
             slots=slots,
             example_stems=examples,
             completeness=completeness,
+            all_stems=[list(s) for s in group_stems],
             grid_analysis=grid_analysis,
         ))
         class_id += 1
@@ -264,20 +266,20 @@ def _merge_groups(
                     best_i = i
                     best_j = j
 
-        if best_sim >= threshold and len(groups) > max_classes:
-            # Force merge to stay under max_classes
-            pass
-        elif best_sim < threshold:
+        # If similarity is below threshold AND we are already within
+        # max_classes, stop merging.  But if we still have too many
+        # groups, force-merge the best pair regardless of threshold.
+        if best_sim < threshold and len(groups) <= max_classes:
             break
 
-        if best_sim >= threshold or len(groups) > max_classes:
-            # Merge best_j into best_i
-            groups[best_i] = (
-                groups[best_i][0] + groups[best_j][0],
-                groups[best_i][1] + groups[best_j][1],
-            )
-            groups.pop(best_j)
-            changed = True
+        # Merge best_j into best_i (either above threshold, or
+        # forced because len(groups) > max_classes)
+        groups[best_i] = (
+            groups[best_i][0] + groups[best_j][0],
+            groups[best_i][1] + groups[best_j][1],
+        )
+        groups.pop(best_j)
+        changed = True
 
     return groups
 

@@ -27,6 +27,7 @@ class AlternationPair:
     sign_a: str
     sign_b: str
     independent_stems: int   # Number of distinct prefixes showing this alternation
+    weighted_stems: float    # Sum of weights (1.0 for diff_len=1, 0.5 for diff_len=2)
     stem_examples: List[Tuple[str, str]]  # List of (prefix, word_a, word_b) examples
     expected_by_chance: float
     p_value: float
@@ -91,6 +92,13 @@ def detect_alternations(
     # Key: frozenset({sign_a, sign_b}), Value: set of prefixes
     pair_stems: Dict[frozenset, Set[Tuple[str, ...]]] = defaultdict(set)
     pair_examples: Dict[frozenset, List[Tuple[str, str, str]]] = defaultdict(list)
+    # Track weight per (pair_key, prefix) — diff_len=1 has weight 1.0, diff_len=2 has weight 0.5
+    pair_stem_weights: Dict[frozenset, Dict[Tuple[str, ...], float]] = defaultdict(
+        lambda: defaultdict(float)
+    )
+
+    # Count distinct prefixes with >= 2 continuations (for null model)
+    n_branching_prefixes = 0
 
     for diff_len in range(1, max_suffix_diff_length + 1):
         prefix_groups: Dict[Tuple[str, ...], List[Tuple[str, ...]]] = defaultdict(list)
@@ -102,10 +110,19 @@ def detect_alternations(
             if len(prefix) >= min_shared_prefix_length:
                 prefix_groups[prefix].append(word)
 
+        # Count prefixes with >= 2 words (branching prefixes) for null model
+        n_branching_prefixes += sum(
+            1 for words_in_group in prefix_groups.values()
+            if len(words_in_group) >= 2
+        )
+
         # For each prefix group with 2+ words, extract alternation pairs
         for prefix, words_in_group in prefix_groups.items():
             if len(words_in_group) < 2:
                 continue
+
+            # Determine weight based on diff_len
+            weight = 1.0 if diff_len == 1 else 0.5
 
             for i in range(len(words_in_group)):
                 for j in range(i + 1, len(words_in_group)):
@@ -119,7 +136,9 @@ def detect_alternations(
                         if sign_a != sign_b:
                             pair_key = frozenset({sign_a, sign_b})
                             pair_stems[pair_key].add(prefix)
-                            # Weight = 1.0 for single-sign diff
+                            pair_stem_weights[pair_key][prefix] = max(
+                                pair_stem_weights[pair_key][prefix], weight,
+                            )
                             pair_examples[pair_key].append((
                                 "-".join(prefix),
                                 "-".join(w_a),
@@ -133,6 +152,9 @@ def detect_alternations(
                         if a1 != b1:
                             pk1 = frozenset({a1, b1})
                             pair_stems[pk1].add(prefix)
+                            pair_stem_weights[pk1][prefix] = max(
+                                pair_stem_weights[pk1][prefix], weight,
+                            )
                             pair_examples[pk1].append((
                                 "-".join(prefix),
                                 "-".join(w_a),
@@ -141,6 +163,9 @@ def detect_alternations(
                         if a2 != b2:
                             pk2 = frozenset({a2, b2})
                             pair_stems[pk2].add(prefix)
+                            pair_stem_weights[pk2][prefix] = max(
+                                pair_stem_weights[pk2][prefix], weight,
+                            )
                             pair_examples[pk2].append((
                                 "-".join(prefix),
                                 "-".join(w_a),
@@ -158,9 +183,9 @@ def detect_alternations(
                 final_freq[sids[-1]] += 1
                 total_final += 1
 
-    # Number of distinct prefixes with ≥ 2 continuations
-    # (approximation for the null model)
-    n_prefix_groups = sum(1 for stems in pair_stems.values() if len(stems) >= 1)
+    # Number of distinct prefixes with >= 2 continuations (branching prefixes)
+    # used in the null model for expected co-occurrence calculation.
+    # n_branching_prefixes was accumulated in the loop above.
 
     all_pairs: List[AlternationPair] = []
     significant_pairs: List[AlternationPair] = []
@@ -172,6 +197,8 @@ def detect_alternations(
         sign_a, sign_b = signs
 
         n_stems = len(stems)
+        # Weighted stem count: sum of weights per prefix
+        w_stems = sum(pair_stem_weights[pair_key].values())
 
         # Expected by chance: probability that both signs appear as final sign
         # of words sharing a random prefix
@@ -179,9 +206,9 @@ def detect_alternations(
         p_b = final_freq.get(sign_b, 0) / total_final if total_final > 0 else 0
 
         # Expected number of co-occurrences under independence
-        # (rough estimate — each prefix has ~k continuations, probability both
-        # a and b appear is p_a * p_b * n_prefix_groups)
-        expected = p_a * p_b * n_prefix_groups * 2  # factor of 2 for symmetry
+        # E[w] = n_branching_prefixes * P(a in final) * P(b in final)
+        # No symmetry factor: pairs are stored as frozensets (unordered)
+        expected = p_a * p_b * n_branching_prefixes
 
         # Poisson test: P(X >= n_stems | lambda = expected)
         if expected > 0:
@@ -196,6 +223,7 @@ def detect_alternations(
             sign_a=sign_a,
             sign_b=sign_b,
             independent_stems=n_stems,
+            weighted_stems=w_stems,
             stem_examples=pair_examples[pair_key][:5],  # Keep up to 5 examples
             expected_by_chance=expected,
             p_value=p_value,
@@ -226,8 +254,8 @@ def detect_alternations(
     for pair in significant_pairs:
         i = sign_id_to_idx[pair.sign_a]
         j = sign_id_to_idx[pair.sign_b]
-        affinity[i, j] = pair.independent_stems
-        affinity[j, i] = pair.independent_stems
+        affinity[i, j] = pair.weighted_stems
+        affinity[j, i] = pair.weighted_stems
 
     return AlternationResult(
         all_pairs=all_pairs,
@@ -235,7 +263,7 @@ def detect_alternations(
         affinity_matrix=affinity,
         sign_id_to_index=sign_id_to_idx,
         index_to_sign_id=idx_to_sign_id,
-        total_prefix_groups=n_prefix_groups,
+        total_prefix_groups=n_branching_prefixes,
         total_candidate_pairs=len(all_pairs),
         total_significant_pairs=len(significant_pairs),
     )

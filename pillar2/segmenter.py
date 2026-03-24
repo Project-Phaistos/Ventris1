@@ -196,7 +196,11 @@ def _suffix_strip_segment(
         best_suffix: Optional[Tuple[str, ...]] = None
         best_score = -1.0
 
-        # Try longest suffix first (greedy)
+        # Greedy longest-match: try the longest valid suffix first.
+        # Only fall back to a shorter suffix if the longer one doesn't
+        # pass boundary checks.  This matches the PRD's "try longest
+        # suffix first" strategy and avoids the old scoring formula
+        # which systematically preferred high-frequency short suffixes.
         for suf_len in range(min(max_suffix_length, len(word_sids) - 1), 0, -1):
             candidate = word_sids[-suf_len:]
             if candidate not in valid_suffixes:
@@ -208,12 +212,10 @@ def _suffix_strip_segment(
             if not _check_boundary(stem_part, candidate, pillar1, lambda_phon):
                 continue
 
-            # Score: prefer longer suffixes with more stems, penalize boundary violations
-            n_stems = valid_suffixes[candidate]
-            score = n_stems * (1.0 + 0.1 * suf_len)
-            if score > best_score:
-                best_score = score
-                best_suffix = candidate
+            # Accept the first (longest) valid suffix that passes
+            # boundary checks.
+            best_suffix = candidate
+            break
 
         if best_suffix is not None:
             stem = list(word_sids[:-len(best_suffix)])

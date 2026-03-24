@@ -211,7 +211,10 @@ class TestConfidence:
 
 
 class TestExpectedAlternation:
-    """Formula: expected = p_a * p_b * n_prefix_groups * 2"""
+    """Formula: expected = p_a * p_b * n_branching_prefixes
+
+    No symmetry factor: pairs are stored as frozensets (unordered).
+    """
 
     def test_expected_alternation_pa01_pb005_ngroups100(self) -> None:
         """Expected co-occurrence under independence.
@@ -219,14 +222,13 @@ class TestExpectedAlternation:
         Hand computation:
             p_a = 0.1   (frequency of sign a in final position)
             p_b = 0.05  (frequency of sign b in final position)
-            n_groups = 100  (number of prefix groups)
-            factor of 2 for symmetry (a,b) vs (b,a)
+            n_branching_prefixes = 100  (number of distinct prefixes with >= 2 continuations)
 
-            expected = 0.1 * 0.05 * 100 * 2 = 1.0
+            expected = 0.1 * 0.05 * 100 = 0.5
         """
         p_a, p_b, n_groups = 0.1, 0.05, 100
-        expected = p_a * p_b * n_groups * 2
-        assert expected == pytest.approx(1.0, abs=1e-15)
+        expected = p_a * p_b * n_groups
+        assert expected == pytest.approx(0.5, abs=1e-15)
 
 
 class TestPoissonSignificance:

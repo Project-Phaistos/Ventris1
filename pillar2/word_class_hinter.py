@@ -77,11 +77,11 @@ def hint_word_classes(
         if affix.classification == "inflectional":
             inflectional_suffixes.add(tuple(affix.signs))
 
-    # Build stem -> paradigm class mapping
+    # Build stem -> paradigm class mapping from ALL stems, not just examples
     stem_paradigms: Dict[Tuple[str, ...], Set[int]] = defaultdict(set)
     for paradigm in paradigm_table.paradigms:
-        for example in paradigm.example_stems:
-            stem_key = tuple(example.stem)
+        for stem in paradigm.all_stems:
+            stem_key = tuple(stem)
             stem_paradigms[stem_key].add(paradigm.class_id)
 
     # Also build from the full lexicon: for each stem, check which paradigm
@@ -99,13 +99,13 @@ def hint_word_classes(
             stem_info[stem_key] = {
                 "suffixes": set(),
                 "inscription_types": set(),
-                "n_inflectional": 0,
+                "inflectional_suffixes": set(),
             }
         for suffix in word.suffixes:
             suf_key = tuple(suffix)
             stem_info[stem_key]["suffixes"].add(suf_key)
             if suf_key in inflectional_suffixes:
-                stem_info[stem_key]["n_inflectional"] += 1
+                stem_info[stem_key]["inflectional_suffixes"].add(suf_key)
         for itype in word.inscription_types:
             stem_info[stem_key]["inscription_types"].add(itype)
 
@@ -115,7 +115,7 @@ def hint_word_classes(
     class_paradigms: Dict[str, Set[int]] = defaultdict(set)
 
     for stem_key, info in sorted(stem_info.items()):
-        n_infl = info["n_inflectional"]
+        n_infl = len(info["inflectional_suffixes"])
         n_total = len(info["suffixes"])
         insc_types = sorted(info["inscription_types"])
 
