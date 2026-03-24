@@ -2,6 +2,51 @@
 
 Reverse chronological. Newest first.
 
+## 2026-03-24 — Consensus Dependency Audit: Sign Count Heuristic Debunked
+
+**Type:** Diagnostic
+**Pillar:** Cross-pillar (CD-001, CD-002)
+**Commit:** (this commit)
+
+### Objective
+
+Test whether the V(1+C)=N sign count heuristic can independently verify the GORILA sign type classification (CD-001) — our biggest single point of failure.
+
+### Finding: V(1+C)=N IS NOT DISCRIMINATIVE
+
+For any N in [50, 150], V(1+C) fits within +/-1 for some V in [3,6] and integer C >= 3. The equation accepts:
+- N=62 (tier1 syllabograms — GORILA classification)
+- N=83 (tier1 + frequent tier3)
+- N=142 (ALL classified syllabograms)
+- N=75 (hypothetical misclassification)
+
+...all equally well. The heuristic only rules out N < 18 or N > 300, which nobody claims. **It cannot distinguish a correct classification from an incorrect one.**
+
+This means the claim in CD-001 and CD-002 that the sign count heuristic provides an independent check was WRONG. The registry has been corrected.
+
+### What DOES independently support the classification
+
+Two stronger tests exist:
+
+1. **Grid rectangularity (moderate):** The tier1 grid has row sizes 2-6 (mostly 3-5) and column sizes 6-16 (mostly 9-13). An approximately rectangular grid is predicted by the CV model. But this test uses LB values for cell assignment, so it's not fully independent of CD-008.
+
+2. **Distributional clustering (strong, ARI=0.615):** Pillar 1's alternation-based spectral clustering recovers consonant groups from positional/inflectional evidence alone — no knowledge of sign types, no LB values. The fact that the clustering agrees with LB consonant classes (ARI=0.615) means the tier1 signs really do exhibit the distributional behavior expected of CV syllabograms. This is the strongest independent evidence.
+
+3. **Positional frequency pattern (moderate):** The existence of signs with significantly elevated initial-position rates (AB08 at E=2.72, p=4.2e-10) is predicted by the CV model (pure vowel signs) and would not occur in an alphabetic or logographic system.
+
+### Impact on consensus dependency audit
+
+| Dependency | Previous testability | Updated testability |
+|-----------|---------------------|---------------------|
+| CD-001 (sign types) | "Partially — sign count heuristic" | "V(1+C)=N debunked. Grid rectangularity (moderate) and distributional ARI=0.615 (strong) provide real evidence." |
+| CD-002 (CV assumption) | "Yes — V(1+C)=N" | "V(1+C)=N debunked. Distributional ARI + positional frequency are the real tests." |
+
+### Lesson
+
+Always test whether a proposed discriminator actually discriminates. V(1+C)=N *looks* like a constraint but the parameter space (V=3-6, C=3-49) is so wide that it accepts essentially any sign count. This is analogous to PhaiPhon's FDR rubber-stamping — a test that accepts everything is not a test.
+
+---
+
 ## 2026-03-24 — Pillar 4 Initial Production Run
 
 **Type:** Production Run

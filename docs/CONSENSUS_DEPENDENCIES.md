@@ -7,17 +7,23 @@ Every external scholarly claim the Ventris1 system relies on. Each entry documen
 ### CD-001: Sign type classification (syllabogram vs logogram)
 **Source:** GORILA catalogue (Godart & Olivier 1976-1985), SigLA database (Salgarella & Castellan)
 **Acceptance:** Universal — the GORILA sign list is the standard reference for Linear A, used by all researchers
-**Independently testable:** Partially — the sign count heuristic (V(1+C)=N for a CV syllabary) provides a consistency check on the number of phonetic signs. If the classified count (~60 tier1 syllabograms) fits this equation for plausible V and C, the classification is consistent.
+**Independently testable:** ~~Partially via sign count heuristic~~ **RETESTED 2026-03-24: The sign count heuristic V(1+C)=N is NOT discriminative.** For any N in [50,150], V(1+C) fits within +/-1 for some V in [3,6]. The equation accepts N=62, N=75, N=100, and N=142 equally well. It only rules out extreme values (N<18 or N>300), which nobody claims. **The heuristic cannot verify the GORILA classification.**
+
+**Stronger independent tests exist:**
+1. **Grid rectangularity test (moderate):** If the tier1 signs form a CV syllabary, the grid should be approximately rectangular. Tested: row sizes range 2-6 (most are 3-5), column sizes range 6-16 (most are 9-13). The grid IS approximately rectangular. But this test uses LB values to assign signs to cells, so it's not fully independent of CD-008.
+2. **Distributional clustering test (strong):** Pillar 1's alternation-based spectral clustering recovers consonant groups from distributional evidence alone, achieving ARI=0.615 vs LB. This is the strongest independent evidence that the tier1 signs behave as a CV syllabary — the clustering discovers CV structure from the data without knowing which signs are syllabograms.
+
 **Used by:** Pillar 1 (filters corpus to syllabograms only), propagates to Pillars 2, 3, 4
 **What breaks if wrong:** All of Pillar 1 operates on the wrong sign set. A misclassified logogram treated as a syllabogram would corrupt the C-V grid. A misclassified syllabogram excluded from analysis would create a gap.
 **Mitigation:** Run Pillar 1 on ALL signs (including unknowns) as a sensitivity analysis. Compare results to the filtered run. If qualitatively similar, the classification is not load-bearing for the main findings.
+**Remaining vulnerability:** The 80 tier3 "undeciphered syllabograms" are classified as syllabograms by GORILA but their phonetic values are unknown. Some may actually be logograms. The top 9 by frequency (count >= 10) are the most likely to be genuine syllabograms; the 38 with count = 1 (hapax) are uncertain.
 
 ---
 
 ### CD-002: CV syllabary assumption
 **Source:** Sign count analysis (Evans 1909, Bennett 1951, Packard 1974). ~60 phonetic signs matches the CV syllabary parameter space (V=3-6, C=9-19).
 **Acceptance:** Universal — no serious alternative has been proposed. The sign count excludes both an alphabet (~26 signs) and a logosyllabic system (hundreds of signs).
-**Independently testable:** Yes — the equation V(1+C)=N is testable. If we independently determine V (from Pillar 1 positional frequency), C is constrained. If the resulting grid has the expected structure (each row has ~V members), the assumption holds.
+**Independently testable:** ~~Yes via V(1+C)=N~~ **RETESTED 2026-03-24: V(1+C)=N is not discriminative (see CD-001).** However, the grid rectangularity test and the distributional clustering test (ARI=0.615) provide stronger independent support. The CV assumption is also supported by the positional frequency analysis: the existence of signs with significantly elevated initial-position rates (AB08 at E=2.72) is predicted by the CV model (pure vowel signs appear initially) and would not occur in an alphabetic or logographic system.
 **Used by:** Pillar 1 (grid construction assumes CV structure), Pillar 2 (segmentation respects syllable = 1 sign)
 **What breaks if wrong:** If some signs are CVC or CVCV, the grid has wrong dimensions. Morphological segmentation could split within multi-phone signs.
 **Mitigation:** Check for signs that appear in positions inconsistent with CV (e.g., signs that only appear in clusters, never alone — might be CVC). Flag anomalies.
