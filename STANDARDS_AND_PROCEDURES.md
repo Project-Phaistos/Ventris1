@@ -898,7 +898,119 @@ But also check that the correction actually filters (see 14.2 — FDR that accep
 
 ---
 
-## 15. Multi-Agent Workspace Hygiene
+## 15. Consensus Dependency Layer
+
+Every finding, label, and output in the system inherits assumptions from either (a) internal statistical analysis of the corpus or (b) external scholarly consensus. These are fundamentally different kinds of evidence. Scholarly consensus can be wrong — Ventris himself overturned the consensus that Linear B was not Greek. The dependency layer makes these assumptions explicit so that downstream consumers (especially Pillar 5) know which evidence to trust most.
+
+### 15.1 Evidence provenance tags (mandatory on all outputs)
+
+Every finding in every pillar output must carry an `evidence_provenance` tag:
+
+| Tag | Meaning | Trust level | Example |
+|-----|---------|-------------|---------|
+| `INDEPENDENT` | Derived entirely from internal statistical analysis of the corpus. No external scholarly claim required. | HIGHEST | "AB08 is enriched in initial position (p=4.2e-10)" |
+| `INDEPENDENT_VALIDATED` | Derived independently, then checked against scholarly consensus and found to agree. The finding stands on its own even if the consensus turns out to be wrong. | HIGH | "Consonant ARI=0.615 vs LB — independent clustering agrees with LB, but does not depend on LB" |
+| `CONSENSUS_CONFIRMED` | Based on scholarly consensus that is universally accepted AND independently confirmable from the data. | MEDIUM-HIGH | "ku-ro = total marker — Bennett 1950, independently confirmed as final-position structural marker by Pillar 3" |
+| `CONSENSUS_ASSUMED` | Based on scholarly consensus that cannot be independently verified from the corpus alone. If the consensus is wrong, this finding falls. | MEDIUM | "A704 = 10 (numeral value) — Bennett 1950, not independently verifiable" |
+| `CONSENSUS_DEPENDENT` | Inherits a consensus assumption from an upstream pillar. The finding itself may be statistically valid, but its interpretation depends on the inherited assumption. | LOWER | "Sign-group X is in COMMODITY:FIG semantic field — depends on AB30/FIC ideogram identification (Evans 1909, pictographic)" |
+| `SPECULATIVE` | Not supported by consensus OR independent evidence. Should never appear in the system — if it does, it's a bug. | REJECT | Should not exist in any output |
+
+### 15.2 How to tag findings
+
+In output JSON, every finding that carries a semantic claim, label, or interpretation must include:
+
+```json
+{
+  "finding": "AB08 is a pure vowel sign",
+  "evidence_provenance": "INDEPENDENT",
+  "evidence_chain": [
+    "Positional frequency analysis: initial enrichment E=2.72, p=4.2e-10 (Bonferroni-corrected)",
+    "Medial depletion confirmed (p<0.001)",
+    "No external knowledge used"
+  ],
+  "consensus_dependencies": []
+}
+```
+
+vs.
+
+```json
+{
+  "finding": "Sign-group ka-pa is associated with COMMODITY:FIG",
+  "evidence_provenance": "CONSENSUS_DEPENDENT",
+  "evidence_chain": [
+    "Co-occurs with AB30/FIC ideogram 4 times (Fisher p=0.003)",
+    "Exclusivity=0.80 (appears predominantly with FIG ideogram)"
+  ],
+  "consensus_dependencies": [
+    {
+      "assumption": "AB30/FIC represents figs",
+      "source": "Evans 1909, Bennett 1950 — pictographic identification",
+      "independently_testable": false,
+      "what_breaks_if_wrong": "Semantic field label is wrong, but co-occurrence pattern is still real"
+    }
+  ]
+}
+```
+
+### 15.3 The consensus dependency registry
+
+All consensus assumptions used anywhere in the system are registered in a single file: `docs/CONSENSUS_DEPENDENCIES.md`. This file lists every external scholarly claim the system relies on, who made it, how widely accepted it is, whether it's independently testable, and what breaks if it's wrong.
+
+Format:
+
+```markdown
+### CD-001: Sign type classification (syllabogram vs logogram)
+**Source:** GORILA catalogue (Godart & Olivier 1976-1985)
+**Acceptance:** Universal — no serious challenge in the literature
+**Independently testable:** Partially — sign count heuristic (V(1+C)=N) provides a consistency check
+**Used by:** Pillar 1 (all analysis filters to syllabograms only)
+**What breaks if wrong:** All of Pillar 1 operates on the wrong sign set. Cascades through P2, P3.
+**Mitigation:** Run Pillar 1 on ALL signs (not just classified syllabograms) as a sensitivity analysis. If results are qualitatively similar, the classification is not load-bearing.
+```
+
+### 15.4 Downstream trust hierarchy for Pillar 5
+
+When Pillar 5 uses findings from Pillars 1-4, it must weight them by evidence provenance:
+
+1. **INDEPENDENT findings get full weight.** These are pure data — they're true regardless of what language Linear A is or what scholars have claimed.
+
+2. **INDEPENDENT_VALIDATED findings get full weight** but with the validation noted as a bonus, not a requirement.
+
+3. **CONSENSUS_CONFIRMED findings get 80% weight.** The independent confirmation is strong, but the consensus label (e.g., "total") adds an interpretive layer that could be wrong.
+
+4. **CONSENSUS_ASSUMED findings get 50% weight.** These are only as good as the consensus they depend on. Pillar 5 should treat them as priors, not certainties.
+
+5. **CONSENSUS_DEPENDENT findings get 30% weight.** These inherit assumptions that cannot be independently verified. Useful as soft constraints, not hard ones.
+
+These weights are used when combining evidence in Pillar 5's multi-source vocabulary resolution. A word anchored to COMMODITY:FIG (CONSENSUS_DEPENDENT, weight 0.3) provides weaker constraint than a word identified as a final-position structural marker (INDEPENDENT, weight 1.0).
+
+### 15.5 Current system audit
+
+As of Pillar 4 completion:
+
+| Pillar | INDEPENDENT | INDEPENDENT_VALIDATED | CONSENSUS_CONFIRMED | CONSENSUS_ASSUMED | CONSENSUS_DEPENDENT |
+|--------|-------------|----------------------|---------------------|-------------------|---------------------|
+| 1 | 5 findings | 1 (ARI vs LB) | 0 | 3 (sign types, CV assumption, AB codes) | 2 (LB comparison, damage marking) |
+| 2 | 4 findings | 0 | 0 | 1 (sign-group segmentation) | 2 (inherits P1 sign types, P1 phonotactics) |
+| 3 | 5 findings | 0 | 1 (ku-ro as structural marker) | 1 (inscription type labels) | 1 (inherits P2 morphology) |
+| 4 | 3 findings | 0 | 1 (ku-ro = total) | 3 (numeral values, ideogram IDs, place names) | 1 (semantic field labels) |
+| **Total** | **17** | **1** | **2** | **8** | **6** |
+
+**Independence ratio: 17/34 = 50% of findings are purely independent.** The other 50% inherit scholarly consensus at various levels.
+
+### 15.6 Periodic consensus audit
+
+After every 5th experiment or at each pillar completion, re-evaluate:
+- Has any consensus assumption been challenged in recent scholarship?
+- Can any CONSENSUS_ASSUMED finding be upgraded to CONSENSUS_CONFIRMED by adding an independent test?
+- Can any CONSENSUS_DEPENDENT finding be made more independent by removing the dependency?
+
+The goal is to MAXIMIZE the independence ratio over time. Every consensus dependency is a liability.
+
+---
+
+## 16. Multi-Agent Workspace Hygiene
 
 ### 15.1 File ownership boundaries
 
