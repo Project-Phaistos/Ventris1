@@ -1,0 +1,61 @@
+# Pillar 4: Semantic Anchoring — Default Configuration
+
+# --- Inputs ---
+corpus_path: "data/sigla_full_corpus.json"
+pillar1_output_path: "results/pillar1_output.json"   # optional enrichment
+pillar2_output_path: "results/pillar2_output.json"   # optional enrichment
+pillar3_output_path: "results/pillar3_output.json"   # optional enrichment
+
+# --- Ideogram Analysis (Step 1) ---
+# Only named ideograms from GORILA with pictographic identification
+# are considered communis opinio. All others are "unidentified logograms."
+ideogram_adjacency_window: 3     # Max sign positions between sign-group and ideogram
+min_co_occurrence: 2             # Minimum co-occurrences for a (sign-group, ideogram) pair
+min_exclusivity: 0.3             # Minimum exclusivity score for semantic field assignment
+co_occurrence_alpha: 0.05        # Significance threshold for Fisher's exact test
+
+# --- Transaction Analysis (Step 2) ---
+# Only integer numeral values (units, tens, hundreds) are parsed.
+# Fractions are flagged as unparsed, not guessed.
+kuro_sign_ids: ["AB81", "AB02"]  # ku-ro total marker (Bennett 1950, universally accepted)
+
+# --- Formula Analysis (Step 3) ---
+# Conservative: no labels like "deity name" or "ritual verb"
+# Only "fixed_element" vs "variable_element" based on frequency
+fixed_element_threshold: 0.20    # Appears in >=20% of libation inscriptions
+variable_element_threshold: 0.05 # Appears in <5%
+libation_inscription_types:      # Types to include in formula analysis
+  - "libation_table"
+  - "libation table"
+  - "Libation table"
+  - "libation_table_corpus"
+
+# --- Place Names (Step 4) ---
+# Only place names with wide scholarly consensus
+# Each must cite its published identification source
+confirmed_place_names:
+  - sign_ids: ["AB03", "AB28", "AB05"]
+    name: "Phaistos"
+    source: "Evans 1909; confirmed by site provenance and Linear B PA-I-TO"
+    confidence: 0.90
+  - sign_ids: ["AB28", "AB01"]
+    name: "Mount Ida"
+    source: "Widely accepted; geographic context + Linear B I-DA"
+    confidence: 0.80
+  - sign_ids: ["AB08", "AB07", "AB67", "AB04"]
+    name: "Dikte"
+    source: "Widely accepted; attested at Psychro cave near Dikte + Linear B DI-KI-TE"
+    confidence: 0.80
+
+# --- Anchor Assembly (Step 5) ---
+min_anchor_confidence: 0.3       # Minimum confidence for inclusion in anchor vocabulary
+
+# --- Segmentation Warning ---
+# IMPORTANT: Linear A is NOT reliably segmented. "Sign-groups" in the corpus
+# are separated by physical dividers on the tablets, NOT by linguistic analysis.
+# Many inscriptions have NO word dividers. The segmentation confidence varies.
+# All analysis must account for this uncertainty.
+
+# --- General ---
+seed: 1234
+output_path: "results/pillar4_output.json"

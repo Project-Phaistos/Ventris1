@@ -2,6 +2,85 @@
 
 Reverse chronological. Newest first.
 
+## 2026-03-24 — Pillar 4 Initial Production Run
+
+**Type:** Production Run
+**Pillar:** 4
+**Module:** Full pipeline (all 8 steps)
+**Commit:** (this commit)
+**Corpus version:** sigla_full_corpus.json v2.0.0
+**Duration:** 0.1s
+**Platform:** Windows 11 local, Python 3.13
+
+### Objective
+
+First end-to-end run of the bias-free Pillar 4 semantic anchoring pipeline on the full SigLA Linear A corpus.
+
+### Bias Removal Verification
+
+| Bias term | Occurrences in output | Status |
+|-----------|----------------------|--------|
+| "deity" | 0 | CLEAN |
+| "god" | 0 | CLEAN |
+| "ritual" | 0 | CLEAN |
+| "verb" | 0 | CLEAN |
+| "prayer" | 0 | CLEAN |
+| "offering" | 0 | CLEAN |
+| "dedicant" | 0 | CLEAN |
+
+All labels are neutral: COMMODITY:FIG, FUNCTION:TOTAL_MARKER, FORMULA:FIXED_EARLY, TRANSACTION:ENTITY, PLACE:PHAISTOS, etc. Sign-groups are called "sign_groups" not "words" throughout.
+
+### Results
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Inscriptions loaded | 740 | (139 lack signs_sequence) |
+| Named ideograms found | 19 | GORILA-identified only |
+| Unknown logograms | 326 | NOT treated as identified — excluded from semantic fields |
+| Sign-groups analyzed | 826 | |
+| Semantic field assignments | 37 | From ideogram co-occurrence |
+| ku-ro inscriptions | 33 | |
+| ku-ro totals verified | 0 matching, 1 discrepant, 9 unparsable | Conservative parsing |
+| Libation inscriptions | 3 usable | (48 legacy entries have empty sign data) |
+| Formula elements | 7 fixed, 0 semi-fixed, 0 variable | |
+| Place names found | PA-I-TO (2), I-DA (3), Dikte NOT FOUND | |
+| Phonetic anchors | 5 | pa, i, to, da from place names |
+| Total anchored sign-groups | 205 | |
+| Evidence sources | transaction:181, ideogram:37, formula:7, place:2 | |
+| Tests passing | 35 Pillar 4, 241 total | All pass |
+
+### Top Anchored Sign-Groups
+
+| Sign-group | Semantic Field | Confidence | Source |
+|------------|---------------|-----------|--------|
+| ku-ro | FUNCTION:TOTAL_MARKER | 0.95 | Transaction role (communis opinio) |
+| pa-i-to | PLACE:PHAISTOS | 0.90 | Place name (confirmed) |
+| po-to-ku-ro | FUNCTION:TOTAL_MARKER | 0.90 | Transaction role |
+| i-da | PLACE:MOUNT_IDA | 0.85 | Place name (confirmed) |
+| ku-ma-ro | COMMODITY:FIG | 0.70 | Ideogram co-occurrence |
+
+### Interpretation
+
+1. **Bias removal verified.** Zero occurrences of deity/ritual/verb labels in output. All semantic assignments are evidence-based and use neutral terminology.
+
+2. **Transaction structure is the strongest signal.** 181 of 205 anchored sign-groups come from positional role in tablet transaction structure (before ideogram, before numeral, ku-ro adjacent). This makes sense — administrative tablets are structured documents.
+
+3. **Ideogram co-occurrence identifies 37 commodity-associated sign-groups.** These are sign-groups that appear significantly more often near a specific commodity ideogram (FIG, GRAIN, WINE, etc.) than expected by chance. Each assignment passes Fisher's exact test.
+
+4. **Place name confirmation is sparse but high-confidence.** PA-I-TO found at Hagia Triada (not Phaistos itself — interesting but not unexpected, as HT tablets record transactions from multiple sites). I-DA found at Phaistos and Zakros. Dikte NOT found — the expected AB-code sequence does not appear contiguously.
+
+5. **Libation formula analysis is limited by data.** Only 3 of 71 libation inscriptions have usable sign-group data in the SigLA corpus (the 48 legacy entries lack signs_sequence). This severely limits formula mapping. Future work should reconcile the legacy libation data.
+
+6. **ku-ro total verification mostly fails** due to numeral parsing limitations. Our conservative approach (only A701=1, A704=10, A705=100) leaves most numeral clusters unparsed because they contain fractional or uncertain values. This is the correct behavior — we don't guess.
+
+### Next Steps
+
+1. **Reconcile legacy libation data**: The 48 `libation_table` entries have sign data in a different format (linear_a_corpus.txt) but empty signs_sequence. Ingesting this would 16x the formula analysis data.
+2. **Expand numeral parsing**: Consult Younger's numeral analysis for additional certain values.
+3. **Feed anchors to Pillar 5**: The 205 anchored sign-groups with semantic fields dramatically constrain the cognate search space.
+
+---
+
 ## 2026-03-24 — Architecture Summary: Pillars 1-3 Complete, Pillar 4 PRD
 
 **Type:** Architecture Summary
