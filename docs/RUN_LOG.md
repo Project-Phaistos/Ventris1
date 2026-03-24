@@ -2,6 +2,100 @@
 
 Reverse chronological. Newest first.
 
+## 2026-03-24 — Architecture Summary: Pillars 1-3 Complete, Pillar 4 PRD
+
+**Type:** Architecture Summary
+**Scope:** Cross-pillar
+**Pillars:** 1, 2, 3 (implemented), 4 (PRD complete)
+
+### System Architecture
+
+The Ventris1 system attacks Linear A decipherment from multiple independent angles that converge on the same data. Each pillar extracts a different type of structural information, and all outputs feed into Pillar 5 for multi-source vocabulary resolution.
+
+```
+SigLA Corpus (879 inscriptions, 3518 syllabogram tokens)
+     │
+     ├──→ Pillar 1: Phonological Engine
+     │        Input:  raw sign sequences (AB codes only, no LB values)
+     │        Method: positional frequency + spectral clustering on alternation graph
+     │        Output: C-V grid, vowel inventory, phonotactic constraints
+     │        Key result: consonant ARI vs LB = 0.615 (validates method)
+     │        Key finding: AB08 is the only statistically significant pure vowel
+     │        Tests: 60 (Tier 1: 18, Tier 2: 12 Linear B, Tier 3: 8 null/negative)
+     │
+     ├──→ Pillar 2: Morphological Decomposition
+     │        Input:  corpus + Pillar 1 grid/phonotactics
+     │        Method: suffix-stripping + Jaccard paradigm clustering
+     │        Output: segmented lexicon, 69 suffixes, 39 paradigm classes
+     │        Key result: top suffixes match known Linear A endings (re,ra,ti,ja,na,ta)
+     │        Key finding: 67% declining stems = Linear A is inflected
+     │        Tests: 78 (Tier 1: 45, Tier 2: 6 Latin, Tier 3: 6 null/negative)
+     │
+     ├──→ Pillar 3: Distributional Grammar
+     │        Input:  corpus + Pillar 1 + Pillar 2
+     │        Method: PPMI profiles + SVD + agglomerative clustering
+     │        Output: 7 word classes, word order (inconclusive), 24 functional words
+     │        Key result: ku-ro confirmed as structural marker (final_rate=55.9%)
+     │        Key finding: si (AB41) at 80% final-rate = new functional word candidate
+     │        Tests: 45 (Tier 1: 26, Tier 2: 16, Tier 3: 3)
+     │
+     ├──→ Pillar 4: Semantic Anchoring (PRD complete, implementation next)
+     │        Input:  corpus ideograms, numerals, transaction structure, formulas
+     │        Method: word-ideogram co-occurrence, total verification, formula alignment
+     │        Output: anchor vocabulary (50-100 words with constrained meanings)
+     │        Design: 5 steps + 5 gates + kill criteria
+     │
+     └──→ Pillar 5: Multi-Source Vocabulary Resolution (PRD pending)
+              Input:  ALL of above
+              Method: simultaneous multi-language search, stratum detection
+              Output: compositional linguistic portrait (not single-language ranking)
+```
+
+### How the Pillars Reinforce Each Other
+
+The design is intentionally redundant — each pillar provides independent evidence that cross-validates the others:
+
+1. **Pillar 1 validates Pillar 2:** The C-V grid's consonant classes (ARI=0.615 vs LB) confirm that the alternation pairs used for grid construction are real inflectional patterns, not noise. This same alternation evidence seeds Pillar 2's suffix inventory.
+
+2. **Pillar 2 validates Pillar 3:** The morphological word classes (67% declining) provide ground truth for Pillar 3's distributional clustering. If Pillar 3 separates declining from uninflected stems, the distributional signal agrees with the morphological signal — convergent evidence.
+
+3. **Pillar 3 validates Pillar 4:** Functional words identified by Pillar 3 (ku-ro, ki-ro, si) should appear in Pillar 4's transaction/formula analysis in structural roles, not as commodity names. This cross-check prevents semantic misclassification.
+
+4. **Pillar 4 validates Pillar 1:** Place names (PA-I-TO = Phaistos) provide independent phonetic anchors. If Pillar 1's independent grid assigns these signs to the same C-V cells that the LB values predict, the grid is confirmed.
+
+5. **All four feed Pillar 5 with constraints:** Pillar 5 doesn't search for cognates blindly — it searches for words that (a) have a known phonological form (P1), (b) match the morphological structure (P2), (c) belong to a known word class (P3), and (d) fall in a constrained semantic field (P4). This dramatically reduces the search space and false positive rate.
+
+### Test Coverage Summary
+
+| Pillar | Tier 1 (formula) | Tier 2 (known-answer) | Tier 3 (null/negative) | Unit/integration | Total |
+|--------|------------------|-----------------------|------------------------|------------------|-------|
+| 1 | 18 | 12 (Linear B) | 8 | 22 | 60 |
+| 2 | 45 | 6 (Latin) | 6 | 21 | 78 |
+| 3 | 26 | 16 (Linear A real) | 3 | 0 | 45 |
+| **Total** | **89** | **34** | **17** | **43** | **183** (+23 integration = **206**) |
+
+All 206 tests passing in ~65 seconds.
+
+### Design Decisions Made During Implementation
+
+| Decision | Rationale | Impact |
+|----------|-----------|--------|
+| Pillar 1: Bonferroni correction for vowel identification | Conservative — only AB08 passes, but bootstrap CI [1,4] is informative | V=1 limits Pillar 3 agreement detection; future V=4 override will unlock |
+| Pillar 2: Suffix-stripping over Morfessor | Corpus too small (834 words) for MDL-based segmentation to converge well | Simpler, more robust; BPE available as alternative |
+| Pillar 3: Inconclusive word order | Honest finding — administrative lists ≠ natural syntax | Not a failure; documented as boundary condition |
+| Pillar 4: Ideogram semantics are script-independent | Pictographic evidence + archaeology, not LB-dependent | Most reliable semantic signal available |
+| All: 3-tier testing mandatory | PhaiPhon failures (FDR rubber-stamping, mean-vs-sum bugs) taught us surface tests are insufficient | 206 tests including formula-level math, known-language end-to-end, and null/random controls |
+
+### Current Limitations (Honest Assessment)
+
+1. **Pillar 1 V=1** degrades everything downstream. Only one vowel passes the strict test. Fix: relax to BH-FDR or override to V=4 from convergent evidence.
+2. **Pillar 2's 39 paradigm classes** is over-fragmented. Fix: raise Jaccard threshold from 0.3 to 0.5.
+3. **Pillar 3 word class induction** produces 1 dominant cluster + 6 singletons. Fix: use morphological features as primary signal, distributional as secondary.
+4. **No verb morphology detected.** Administrative texts are noun-heavy. Libation tables may contain verbs but the signal is too sparse.
+5. **Pillar 4 not yet implemented.** The semantic anchoring is the highest-value remaining work — it produces the only supervised labels in the entire system.
+
+---
+
 ## 2026-03-23 — Pillar 3 Initial Production Run
 
 **Type:** Production Run
