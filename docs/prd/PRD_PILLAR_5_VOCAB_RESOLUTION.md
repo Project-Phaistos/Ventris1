@@ -260,116 +260,143 @@ constraints(sg) = {
 
 ### 5.2 Step 2: Cognate Discovery via Phonetic Prior Algorithm
 
-**Goal:** For each Pillar 2 stem, run the Phonetic Prior algorithm (Luo et al. 2021) against each candidate language lexicon to produce per-stem cognate word lists with learned character mappings.
+**Goal:** Obtain per-word cognate match lists for the full Linear A corpus against each candidate language, then map those matches back to our Pillar 2 stems.
 
 **Why the Phonetic Prior, not naive edit distance:**
 
-The Phonetic Prior (Luo et al. 2021, "Neural Decipherment via Minimum-Cost Flow") is validated for finding individual cognate words between a lost and known language:
-- Ugaritic-Hebrew: P@1 = 0.557 (repro validation)
-- 926 language pairs validated across 32 languages
-- Uses 61-dimensional IPA feature vectors with 7 grouped projections
+The Phonetic Prior algorithm (Luo, Cao, & Barzilay — "Decipherment of Lost Ancient Scripts as Combinatorial Optimization," ACL 2019; extended in follow-up work) is the only validated method for finding individual cognate words between a lost and known language:
+- Ugaritic-Hebrew: P@1 = 0.557 (repro validation on known pair)
+- Validated across 926 language pairs covering 32 languages (repro FULL_RESULTS_SUMMARY_REPORT)
+- Uses 61-dimensional IPA feature vectors with grouped projections
 - Learns a soft character mapping via differentiable DP alignment
-- Handles insertions, deletions, and systematic sound shifts
+- Jointly discovers word segmentation AND character correspondence from unsegmented input
 
-Naive normalized edit distance has none of this: no learned mapping, no IPA feature projection, no validation on ancient language pairs. For finding individual cognate words, it would be strictly inferior.
+Naive normalized edit distance has no learned mapping, no IPA feature projection, no validation on ancient language pairs. For finding individual cognate words, it would be strictly inferior.
 
-**The Phonetic Prior's failure was in EVALUATION (single-language ranking with FDR rubber-stamping and inventory-size bias), not in per-word MATCHING.** We use the matching algorithm but replace the evaluation framework entirely with our Pillar 1-4 constraint filtering.
+**The Phonetic Prior's failure was in EVALUATION (single-language ranking with FDR rubber-stamping and inventory-size bias), not in per-word MATCHING.** We use the per-word matching but replace the evaluation framework with Pillar 1-4 constraint filtering.
 
-**Algorithm:**
+**Current state of existing outputs (audited 2026-03-24):**
+
+The existing Phonetic Prior outputs for Linear A are **NOT usable** for Pillar 5:
+- `linear_a_cognates/cognates_{lang}.tsv`: 80 entries per language, but these are progressive scan fragments of a SINGLE inscription (the libation formula), not corpus-wide word lists. Every "lost" entry is a prefix of the same text ("a d", "a da", "a dad", etc.)
+- `PhaiPhon/outputs/full_lambda_v1/`: aggregate ranking scores only. Per-word cognate lists were not saved.
+- `PhaiPhon3 FINAL_REPORT.md`: aggregate Bayes factors. No word-level data.
+- `fleet_results_v2/`: validation runs on known language pairs (lat-osc etc.), not on Linear A
+
+**Therefore, the Phonetic Prior must be RE-RUN on the full Linear A corpus** to produce usable per-word cognate lists. This is a BLOCKING dependency for Pillar 5.
+
+**Algorithm (production run required):**
 
 1. **Prepare input:**
-   - Convert each Pillar 2 stem to IPA using LB values (CONSENSUS_ASSUMED, weighted accordingly)
-   - Concatenate stems into an "unsegmented" IPA stream per the Phonetic Prior's expected input format
-   - For each candidate language, use existing IPA lexicons from the ancient-scripts-datasets repo
+   - Use the full unsegmented Linear A IPA corpus (the Phonetic Prior is designed for unsegmented input — this is what it was validated on)
+   - Do NOT pre-segment with Pillar 2 stems — let the algorithm discover boundaries independently
+   - For each candidate language, use existing IPA lexicons from ancient-scripts-datasets
 
-2. **Run the Phonetic Prior** (phonetic-prior-v2 codebase) per candidate language:
-   - The algorithm learns a character mapping matrix between Linear A IPA and the candidate language
-   - It segments the unsegmented input into word boundaries via DP
-   - For each identified segment, it produces a ranked list of candidate matches with quality scores
+2. **Run the Phonetic Prior** (phonetic-prior-v2 codebase, or the user's PhaiPhon4/5 rebuild when ready) per candidate language:
+   - The algorithm jointly learns character mapping AND word segmentation
+   - For each discovered segment, it produces a ranked list of candidate matches with quality scores
+   - **CRITICAL: Save the full per-word cognate lists** (not just aggregate scores). For each discovered LA segment, save the top-20 candidate matches from the known language with their quality scores.
 
-3. **Extract per-stem cognate lists:**
-   - Map the Phonetic Prior's segments back to our Pillar 2 stems
-   - For each stem, collect the top-N matches from each candidate language
-   - Record: candidate word, IPA, gloss/meaning, quality score, learned character mapping
+3. **Map back to Pillar 2 stems (cross-comparison):**
+   - The Phonetic Prior discovers word boundaries independently from Pillar 2
+   - Map the PP's discovered segments to our Pillar 2 sign-groups by IPA alignment
+   - **Segmentation agreement check:** Do the PP's boundaries match Pillar 2's sign-group boundaries?
+     - Agreement = convergent evidence (two independent methods found the same words)
+     - Disagreement = one method is wrong, or the "word" has internal morpheme boundaries that one method detects and the other doesn't
+   - For each Pillar 2 stem, collect the PP's cognate matches for the corresponding segment(s)
 
-4. **Cross-check segmentation:**
-   - Compare the Phonetic Prior's discovered word boundaries against our Pillar 2 sign-group boundaries
-   - Agreement = convergent evidence that the segmentation is correct
-   - Disagreement = flag for investigation (one method may be wrong)
+4. **Produce per-stem cognate word lists:**
+   For each Pillar 2 stem, the output is:
+   ```json
+   {
+     "stem": ["AB77"],
+     "stem_ipa_lb": "ka",
+     "pp_segment_ipa": "ka",
+     "segmentation_agreement": true,
+     "candidate_matches": {
+       "Akkadian": [
+         {"word": "kappu", "ipa": "kappu", "quality_score": -4.2, "rank": 1}
+       ]
+     }
+   }
+   ```
 
-**Output per stem:**
-```json
-{
-  "stem": ["AB77"],
-  "stem_ipa_lb": "ka",
-  "candidate_matches": {
-    "Akkadian": [
-      {"word": "kappu", "ipa": "kappu", "gloss": "wing; hand; bowl", "quality_score": -4.2, "rank": 1},
-      {"word": "karpu", "ipa": "karpu", "gloss": "vessel", "quality_score": -6.1, "rank": 2}
-    ],
-    "Luwian": [
-      {"word": "kaluti", "ipa": "kaluti", "gloss": "cup?", "quality_score": -5.8, "rank": 1}
-    ]
-  },
-  "segmentation_agreement_with_pillar2": true
-}
-```
+**Compute requirement:** ~30 minutes per language on CPU with vectorized DP (PhaiPhon3 benchmark). 12 languages × 30 min = ~6 hours total. Parallelizable. Alternatively, the user's ongoing PhaiPhon4/5 rebuild may produce these outputs directly — in which case this step becomes "ingest rebuilt PhaiPhon outputs" rather than "run from scratch."
 
-**Compute requirement:** This step requires running the Phonetic Prior algorithm ~12 times (once per candidate language). Based on PhaiPhon3 benchmarks: ~30 minutes per language on Windows CPU with vectorized DP. Total: ~6 hours for all 12 languages. Can be parallelized.
+**Provenance:** CONSENSUS_DEPENDENT. The cognate lists depend on:
+- LB phonetic values for the Linear A IPA input (CONSENSUS_ASSUMED)
+- The Phonetic Prior model's learned character mapping (model output, not independently verified)
+- The candidate language IPA lexicons (data quality varies by source)
 
-**Provenance:** The cognate lists are CONSENSUS_DEPENDENT because they depend on LB phonetic values for the Linear A IPA input. The quality SCORES from the Phonetic Prior are its own model output and should be treated as one signal among many, not as ground truth. The character MAPPINGS learned per language are potentially informative (if Luwian's mapping shows regular correspondences while Arabic's is random, that's evidence for Luwian contact).
+**Academic basis:** The per-word matching algorithm is published and peer-reviewed (Luo, Cao, & Barzilay, ACL 2019). The validation on known language pairs (Ugaritic-Hebrew P@1=0.557) establishes that the algorithm CAN find cognates when they exist. Application to Linear A is extrapolation (the answer is unknown), which is acknowledged and mitigated by Pillar 1-4 constraint filtering.
+
+**What is NOT academically validated:** Application to a truly undeciphered script. All published validation uses language pairs where both sides are known, allowing P@k measurement. For Linear A, we cannot measure P@k — we can only check internal consistency (does the match agree with Pillar 4 semantic anchors?) and cross-method consistency (does the PP's segmentation agree with Pillar 2?).
 
 ### 5.3 Step 3: Semantic Compatibility Scoring
 
-**Goal:** For sign-groups with Pillar 4 semantic anchors, score how well each candidate word's meaning matches the constrained semantic field.
+**Goal:** For sign-groups with Pillar 4 semantic anchors, score how well each candidate cognate's meaning matches the constrained semantic field.
 
-**Method:**
+**BLOCKING DATA REQUIREMENT:** This step requires English glosses/meanings for candidate language words. The existing IPA lexicons in ancient-scripts-datasets may be IPA-only (no glosses). Before implementation, audit each candidate language lexicon for gloss availability:
 
-For each (sign-group, candidate word) pair where the sign-group has a semantic field:
+| Language | IPA available | Glosses available | Source for glosses |
+|----------|--------------|-------------------|-------------------|
+| Hittite | Yes | TO VERIFY | Kloekhorst 2008 "Etymological Dictionary of the Hittite Inherited Lexicon" |
+| Akkadian | Yes | TO VERIFY | CAD (Chicago Assyrian Dictionary) |
+| Luwian | Yes | TO VERIFY | Melchert 1993 "Cuneiform Luvian Lexicon" |
+| Phoenician | Yes | TO VERIFY | DNWSI (Hoftijzer & Jongeling) |
+| Proto-IE | Yes | TO VERIFY | Pokorny, LIV |
+| Others | Yes | TO VERIFY | Various — must be cited per data extraction standards |
 
-1. Extract the candidate word's gloss/meaning from the lexicon
-2. Map the gloss to a semantic category using a simple taxonomy:
-   - Food/agriculture terms → COMMODITY:*
-   - Geographic terms → PLACE:*
-   - Person/role terms → PERSON
+**If glosses are unavailable for a language, semantic scoring is SKIPPED for that language.** The cognate match list still includes those matches but with `semantic_compatibility: null` (unknown, not zero).
+
+**Method (when glosses are available):**
+
+For each (sign-group, candidate word) pair where BOTH the sign-group has a semantic field AND the candidate word has a gloss:
+
+1. Extract the candidate word's gloss
+2. Map the gloss to a semantic category using a simple keyword taxonomy:
+   - Food/agriculture/plant terms → COMMODITY:*
+   - Geographic/place terms → PLACE:*
+   - Person/role/kinship terms → PERSON
    - Quantity/measure terms → TRANSACTION:*
 3. Score compatibility:
    - Exact semantic field match → 1.0
    - Same domain match (both COMMODITY) → 0.5
-   - No match → 0.0
+   - No match or no gloss → null (not scored, not penalized)
+
+**Academic basis:** Semantic compatibility as a filter for cognate identification is standard practice in historical linguistics (Campbell & Poser 2008, "Language Classification: History and Method"). Cognates should have related meanings; pure phonological similarity without semantic connection is likely coincidence. This is the "method of resemblances" with the semantic constraint that Hooker (1979) argued is essential.
 
 **For sign-groups WITHOUT semantic anchors:**
-- Semantic compatibility = 0.5 (neutral — doesn't help or hurt)
+- Semantic compatibility = null (not scored). These sign-groups are matched on phonology only, with appropriately lower confidence.
 
 ### 5.4 Step 4: Combined Scoring with Evidence Weighting
 
-**Goal:** Combine the Phonetic Prior quality score, semantic compatibility, and character mapping regularity into a single score, weighted by evidence provenance.
+**Goal:** Combine the Phonetic Prior quality score and semantic compatibility into a combined confidence, weighted by evidence provenance.
 
 **Formula:**
 
 ```
-combined_score(sg, w) = phon_score * w_phon + semantic * w_sem + regularity * w_reg
+combined_score(sg, w) = phon_score * w_phon + semantic * w_sem
 
 where:
   phon_score  = normalized Phonetic Prior quality score for (stem, word) pair
-                (rescaled to [0,1] within each language run)
-  semantic    = semantic compatibility from P4 anchors (0.0 to 1.0)
-  regularity  = character mapping regularity for this language
-                (fraction of character pairs with consistent mapping across
-                multiple word matches — higher = more systematic = more likely
-                real contact vs chance)
+                (rescaled to [0,1] within each language: best match = 1.0, worst = 0.0)
+  semantic    = semantic compatibility from P4 anchors (0.0, 0.5, or 1.0; null if unavailable)
   w_phon      = 0.5  (CONSENSUS_ASSUMED — depends on LB IPA input)
-  w_sem       = provenance_weight(semantic_evidence)  # 0.3-1.0 per P4 provenance
-  w_reg       = 0.3  (model-derived, not independently verified)
+  w_sem       = provenance_weight(P4 semantic evidence)  # 0.3-1.0 per P4 source provenance
 ```
+
+If semantic is null (no gloss or no P4 anchor): `combined_score = phon_score * w_phon` (phonology only, lower confidence).
+
+**This formula is ad hoc.** It is NOT derived from any paper. The specific weights (0.5 for phonology, 0.3-1.0 for semantics) are design choices based on the consensus dependency layer, not on empirical optimization. They will be validated on the Gate 1 known-answer test (Ugaritic-Hebrew) and adjusted if needed. The Gate 1 test is the validation — if the formula works on a known pair, it's acceptable; if not, the weights need revision.
+
+**Why no "regularity" term:** The earlier draft included a "character mapping regularity" score — the idea that languages with more systematic sound correspondences are more likely real cognates. This concept is well-established in historical linguistics (the Neogrammarian regularity hypothesis, 1870s; formalized by Campbell & Poser 2008). However, our specific COMPUTATION of regularity from the Phonetic Prior's learned character mapping has no published validation. We measure regularity at the STRATUM level (Step 6) rather than incorporating it into per-word scoring, to avoid circular reasoning (using the model's internal state to validate its own output).
 
 Provenance weights follow Section 15 of the standards:
 - INDEPENDENT evidence → weight 1.0
 - CONSENSUS_CONFIRMED → weight 0.8
 - CONSENSUS_ASSUMED → weight 0.5
 - CONSENSUS_DEPENDENT → weight 0.3
-
-A match driven entirely by the Phonetic Prior quality score (CONSENSUS_ASSUMED via LB) gets at most weight 0.5. A match confirmed by both Phonetic Prior AND Pillar 4 semantic field (ideogram co-occurrence, partially INDEPENDENT) gets up to 0.5 + 1.0 = much stronger. This ensures that independent structural evidence from Pillars 1-4 always dominates over the Phonetic Prior's model output.
 
 ### 5.5 Step 5: Multi-Language Simultaneous Search
 
