@@ -28,7 +28,13 @@ import yaml
 from .constraint_assembler import assemble_constraints
 from .lexicon_loader import load_all_lexicons, audit_gloss_availability
 from .pp_result_loader import load_fleet_results
-from .cognate_list_assembler import search_from_pp_results, cross_reference_old_cognates
+from .cognate_list_assembler import (
+    search_from_pp_results,
+    cross_reference_old_cognates,
+    load_supplementary_glosses,
+    _supplementary_glosses,
+)
+import pillar5.cognate_list_assembler as _assembler_mod
 from .stratum_detector import detect_strata, compute_compositional_portrait
 from .output_formatter import format_output, write_output
 
@@ -123,6 +129,17 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
         )
         + f" ({time.time() - t0:.1f}s)"
     )
+
+    # Load supplementary glosses (eDiAna, IDS, eCUT extractions)
+    supp_gloss_dir = config.get("supplementary_gloss_dir", "pillar5/data")
+    supp_glosses = load_supplementary_glosses(supp_gloss_dir)
+    if supp_glosses:
+        _assembler_mod._supplementary_glosses = supp_glosses
+        supp_total = sum(len(g) for g in supp_glosses.values())
+        print(
+            f"  Supplementary glosses: {supp_total} entries "
+            f"({', '.join(f'{k}={len(v)}' for k, v in supp_glosses.items())})"
+        )
 
     # Audit gloss availability
     gloss_audit = audit_gloss_availability(lexicons)

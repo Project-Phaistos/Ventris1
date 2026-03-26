@@ -176,6 +176,61 @@ def _build_p2_sign_groups_set(
     return p2_set
 
 
+def load_supplementary_glosses(
+    gloss_dir: str,
+) -> Dict[str, Dict[str, str]]:
+    """Load supplementary gloss TSVs extracted from academic sources.
+
+    These TSVs (from eDiAna, IDS, eCUT) have format:
+        word\\ttranslation\\tsource\\tsource_url
+
+    Returns:
+        Dict[lang_code -> Dict[word -> translation]]
+        Language is inferred from filename pattern.
+    """
+    import csv
+    from pathlib import Path
+
+    gloss_dir = Path(gloss_dir)
+    if not gloss_dir.exists():
+        return {}
+
+    # Map filename patterns to language codes
+    file_lang_map = {
+        "ediana_lydian": "xld",
+        "ids_elamite": "elx",
+        "ecut_urartian": "xur",
+    }
+
+    result: Dict[str, Dict[str, str]] = {}
+    for tsv_path in gloss_dir.glob("*_glosses.tsv"):
+        # Determine language from filename
+        lang_code = None
+        for pattern, code in file_lang_map.items():
+            if pattern in tsv_path.stem:
+                lang_code = code
+                break
+        if lang_code is None:
+            continue
+
+        word_to_gloss: Dict[str, str] = {}
+        with open(tsv_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("#") or line.startswith("word\t"):
+                    continue
+                parts = line.strip().split("\t")
+                if len(parts) >= 2 and parts[0] and parts[1]:
+                    word_to_gloss[parts[0]] = parts[1]
+
+        result[lang_code] = word_to_gloss
+
+    return result
+
+
+# Module-level cache for supplementary glosses
+_supplementary_glosses: Optional[Dict[str, Dict[str, str]]] = None
+
+
 def _lookup_gloss(
     matched_word: str,
     lang_code: str,
@@ -183,8 +238,8 @@ def _lookup_gloss(
 ) -> Optional[str]:
     """Look up the English gloss for a matched word in its language's lexicon.
 
-    Performs a linear scan of the lexicon entries.  Lexicons are typically
-    small enough (<10k entries) that this is fast.
+    Checks the main lexicon first, then supplementary glosses from
+    academic extractions (eDiAna, IDS, eCUT).
 
     Args:
         matched_word: The target-language word from the PP result.
@@ -194,13 +249,23 @@ def _lookup_gloss(
     Returns:
         The English gloss string, or None if not found.
     """
+    # Check main lexicon first
     lexicon = lexicons.get(lang_code)
-    if lexicon is None:
-        return None
+    if lexicon is not None:
+        for entry in lexicon.entries:
+            if entry.word == matched_word or entry.ipa == matched_word:
+                return entry.gloss
 
-    for entry in lexicon.entries:
-        if entry.word == matched_word or entry.ipa == matched_word:
-            return entry.gloss
+    # Check supplementary glosses (eDiAna, IDS, eCUT)
+    if _supplementary_glosses is not None:
+        lang_glosses = _supplementary_glosses.get(lang_code, {})
+        if matched_word in lang_glosses:
+            return lang_glosses[matched_word]
+        # Try partial match: PP matched words may have suffixes/prefixes
+        # that differ from dictionary headwords
+        for headword, gloss in lang_glosses.items():
+            if matched_word.startswith(headword.rstrip("-")) or headword.rstrip("-").startswith(matched_word):
+                return gloss
 
     return None
 
