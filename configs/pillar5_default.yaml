@@ -40,10 +40,33 @@ candidate_languages:
 # Max lexicon entries per language (0 = no limit)
 max_lexicon_entries: 0
 
-# --- Phonetic Prior results ---
-# Directory containing cognates_{lang}.json from PP production run
-# Leave empty if PP results not yet available (uses edit distance fallback)
-pp_output_dir: ""
+# --- Phonetic Prior fleet results ---
+# Directory containing cleaned fleet cognate TSVs (linear_a_vs_{lang}_clean.tsv)
+pp_cognate_dir: ../ancient-scripts-datasets/data/linear_a_cognates_clean
+
+# PP fleet languages (ISO 639-3 / proto codes)
+pp_languages:
+  - hit
+  - elx
+  - uga
+  - phn
+  - peo
+  - xlc
+  - xld
+  - xpg
+  - xrr
+  - ave
+  - sem-pro
+  - ine-pro
+  - dra-pro
+  - ccs-pro
+  - cms
+  - xcr
+  - xle
+  - xur
+
+# Minimum per-character quality score to accept a PP match
+pp_min_per_char_score: -3.0
 
 # --- Search parameters ---
 # Maximum normalized edit distance to consider a candidate

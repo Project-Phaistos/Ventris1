@@ -27,8 +27,8 @@ import yaml
 
 from .constraint_assembler import assemble_constraints
 from .lexicon_loader import load_all_lexicons, audit_gloss_availability
-from .pp_result_loader import load_pp_results
-from .cognate_list_assembler import search_all_languages, cross_reference_old_cognates
+from .pp_result_loader import load_fleet_results
+from .cognate_list_assembler import search_from_pp_results, cross_reference_old_cognates
 from .stratum_detector import detect_strata, compute_compositional_portrait
 from .output_formatter import format_output, write_output
 
@@ -123,39 +123,50 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     usable = sum(1 for g in gloss_audit if g["usable_for_semantic"])
     print(f"  Gloss audit: {usable}/{len(gloss_audit)} languages usable for semantic scoring")
 
-    # --- Step 3: Load PP results (if available) ---
-    print("[Step 3/8] Loading Phonetic Prior results...")
+    # --- Step 3: Load PP fleet results ---
+    print("[Step 3/8] Loading Phonetic Prior fleet results...")
     t0 = time.time()
-    pp_output_dir = config.get("pp_output_dir", "")
-    pp_results = load_pp_results(pp_output_dir, language_codes) if pp_output_dir else {}
+    pp_cognate_dir = config.get("pp_cognate_dir", "")
+    pp_languages = config.get("pp_languages", [])
+    pp_min_score = config.get("pp_min_per_char_score", -3.0)
+    pp_results = (
+        load_fleet_results(pp_cognate_dir, pp_languages)
+        if pp_cognate_dir
+        else {}
+    )
     if pp_results:
+        total_entries = sum(v.n_entries for v in pp_results.values())
+        unique_subs = set()
+        for v in pp_results.values():
+            unique_subs.update(v.unique_signs())
         print(
-            f"  Loaded PP results for {len(pp_results)} languages. "
+            f"  Loaded {total_entries} PP entries across {len(pp_results)} languages. "
+            f"{len(unique_subs)} unique substring hypotheses. "
             f"({time.time() - t0:.1f}s)"
         )
     else:
         print(
-            f"  No PP results available — using edit distance fallback. "
+            f"  No PP fleet results available — using edit distance fallback. "
             f"({time.time() - t0:.1f}s)"
         )
 
-    # --- Step 4: Multi-language simultaneous search ---
-    print("[Step 4/8] Searching all languages simultaneously...")
+    # --- Step 4: Search from PP fleet results ---
+    print("[Step 4/8] Searching from PP fleet results...")
     t0 = time.time()
-    all_matches = search_all_languages(
+    all_matches = search_from_pp_results(
+        pp_results=pp_results,
         constrained_vocab=constrained_vocab,
         lexicons=lexicons,
-        pp_matches=None,  # TODO: wire in PP results when available
+        min_per_char_score=config.get("pp_min_per_char_score", -3.0),
         min_match_threshold=config.get("min_match_threshold", 0.0),
         max_per_language=config.get("max_per_language", 5),
-        max_edit_distance=config.get("max_edit_distance", 0.7),
     )
     n_with = sum(1 for m in all_matches if m.n_matches > 0)
     n_sig = sum(1 for m in all_matches if m.has_significant_match)
     print(
-        f"  {len(all_matches)} sign-groups searched, "
+        f"  {len(all_matches)} substring hypotheses evaluated, "
         f"{n_with} with candidate matches, "
-        f"{n_sig} with significant matches. "
+        f"{n_sig} with significant matches (score > 0.5). "
         f"({time.time() - t0:.1f}s)"
     )
 
@@ -212,7 +223,7 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     total_time = time.time() - t_start
     print(f"\nPillar 5 pipeline complete. Total time: {total_time:.1f}s")
 
-    # Print top matches
+    # Print top matches (with Unicode-safe encoding)
     top_matches = sorted(
         [m for m in all_matches if m.best_match is not None],
         key=lambda m: -m.best_match.combined_score,
@@ -222,9 +233,12 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
         for sgm in top_matches:
             bm = sgm.best_match
             ids = "-".join(sgm.sign_group_ids)
+            # Use ASCII-safe representation for console output
+            word_safe = bm.word.encode("ascii", errors="replace").decode()
+            ipa_safe = bm.ipa.encode("ascii", errors="replace").decode()
             print(
                 f"  {ids} ({sgm.stem_ipa_lb}): "
-                f"{bm.language_name} '{bm.word}' ({bm.ipa}) "
+                f"{bm.language_name} '{word_safe}' ({ipa_safe}) "
                 f"[score={bm.combined_score:.3f}, "
                 f"sem={sgm.semantic_field or 'none'}]"
             )

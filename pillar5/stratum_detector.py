@@ -189,6 +189,10 @@ def compute_compositional_portrait(
         "anatolian_fraction": 0.0,
         "semitic_fraction": 0.0,
         "greek_fraction": 0.0,
+        "iranian_fraction": 0.0,
+        "hurro_urartian_fraction": 0.0,
+        "pre_greek_fraction": 0.0,
+        "isolate_fraction": 0.0,
         "other_ie_fraction": 0.0,
         "ambiguous_fraction": 0.0,
     }
@@ -196,12 +200,31 @@ def compute_compositional_portrait(
     # Family classification for grouping strata
     family_map = {
         "unknown_substrate": "substrate",
+        # Greek
         "grc": "greek", "ell": "greek",
+        # Semitic (including Afro-Asiatic proto)
         "akk": "semitic", "heb": "semitic", "arb": "semitic", "arc": "semitic",
+        "uga": "semitic", "phn": "semitic",
+        "sem-pro": "semitic", "cop": "semitic",
+        # Anatolian IE
         "hit": "anatolian", "xlu": "anatolian",
+        "xlc": "anatolian", "xld": "anatolian",
+        "xcr": "anatolian",
+        # Iranian IE
+        "peo": "iranian", "ave": "iranian",
+        # Hurro-Urartian
+        "xur": "hurro_urartian",
+        # Pre-Greek / Paleo-Balkan
+        "xrr": "pre_greek", "cms": "pre_greek", "xpg": "pre_greek",
+        # Isolate
+        "elx": "isolate", "eus": "isolate",
+        # Other IE
         "lat": "other_ie", "san": "other_ie", "got": "other_ie",
+        "ine-pro": "other_ie", "xle": "other_ie",
+        # Other families
         "hun": "other", "fin": "other", "tur": "other",
-        "kat": "other", "eus": "other", "cop": "other",
+        "kat": "other",
+        "dra-pro": "other", "ccs-pro": "other",
     }
 
     for stratum in analysis.strata:

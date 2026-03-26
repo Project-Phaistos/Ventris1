@@ -62,6 +62,7 @@ class CandidateLexicon:
 # Candidate languages from PRD Section 3.5 (geographically and temporally
 # plausible for Bronze Age Crete)
 CANDIDATE_LANGUAGES = {
+    # --- Original lexicon-based candidates ---
     "grc": {"name": "Ancient Greek", "family": "Hellenic IE", "plausibility": "LOW-MED"},
     "akk": {"name": "Akkadian", "family": "Semitic", "plausibility": "MEDIUM"},
     "heb": {"name": "Hebrew", "family": "Semitic", "plausibility": "MEDIUM"},
@@ -77,6 +78,25 @@ CANDIDATE_LANGUAGES = {
     "eus": {"name": "Basque", "family": "Isolate", "plausibility": "LOW"},
     "got": {"name": "Gothic", "family": "Germanic IE", "plausibility": "LOW"},
     "cop": {"name": "Coptic", "family": "Afro-Asiatic", "plausibility": "LOW-MED"},
+    # --- PP fleet languages (from Phonetic Prior production run) ---
+    "hit": {"name": "Hittite", "family": "Anatolian IE", "plausibility": "MEDIUM"},
+    "elx": {"name": "Elamite", "family": "Isolate", "plausibility": "MEDIUM"},
+    "uga": {"name": "Ugaritic", "family": "Semitic", "plausibility": "MEDIUM"},
+    "phn": {"name": "Phoenician", "family": "Semitic", "plausibility": "MEDIUM"},
+    "peo": {"name": "Old Persian", "family": "Iranian IE", "plausibility": "LOW-MED"},
+    "xlc": {"name": "Lycian", "family": "Anatolian IE", "plausibility": "HIGH"},
+    "xld": {"name": "Lydian", "family": "Anatolian IE", "plausibility": "HIGH"},
+    "xpg": {"name": "Phrygian", "family": "Paleo-Balkan IE", "plausibility": "MEDIUM"},
+    "xrr": {"name": "Eteocretan", "family": "Pre-Greek", "plausibility": "HIGH"},
+    "ave": {"name": "Avestan", "family": "Iranian IE", "plausibility": "LOW"},
+    "sem-pro": {"name": "Proto-Semitic", "family": "Afro-Asiatic", "plausibility": "MEDIUM"},
+    "ine-pro": {"name": "Proto-IE", "family": "Indo-European", "plausibility": "LOW-MED"},
+    "dra-pro": {"name": "Proto-Dravidian", "family": "Dravidian", "plausibility": "LOW"},
+    "ccs-pro": {"name": "Proto-Caucasian", "family": "Caucasian", "plausibility": "LOW"},
+    "cms": {"name": "Messapic", "family": "Pre-Greek", "plausibility": "MEDIUM"},
+    "xcr": {"name": "Carian", "family": "Anatolian IE", "plausibility": "MEDIUM"},
+    "xle": {"name": "Lepontic", "family": "Celtic IE", "plausibility": "LOW"},
+    "xur": {"name": "Urartian", "family": "Hurro-Urartian", "plausibility": "MEDIUM"},
 }
 
 
