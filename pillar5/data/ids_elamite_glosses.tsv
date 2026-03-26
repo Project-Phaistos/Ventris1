@@ -1,0 +1,346 @@
+# Source: IDS — Intercontinental Dictionary Series, Elamite (contribution 216)
+# URL: https://ids.clld.org/contributions/216
+# License: CC BY 4.0
+# Downloaded: 2026-03-26T08:52:56Z
+# Script: pillar5/scripts/extract_glosses.py
+word	translation	source	source_url
+muru-; mu-ru-it; mu-ru-un	earth=ground, soil	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+su-uk-ma	dust	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+am-ni	mountain, hill	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šà-ri-ut	shore	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-ráš	cave	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zul; zu-ul	water	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kam	sea	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zu-ul.la-li	spring, well	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+husa; hu-sa; hu-sa-a	tree (cf 08.600)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hu-h-qat; hu-uk; ma-lu	wood	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+har; ú-h-um-ma	stone, rock	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+na-h-hu-un-te; na-hi-ti; na-hu-te	sun	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+na-ap-ir; na-pir	moon	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mar-du	star	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+luk; lu-uk	lightning	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ma-an-za-at	rainbow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hun; hu-un; hu-ni-in	light (noun)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šad-da-ku	shade, shadow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+si-me-in	air	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-ip	rain (noun)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lim; li-im	fire	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lim-; lum-; li-im-ma-áš-pi; li-im-ma-ak; lu-mu-un-ra	burn (vb intrans)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+bali; ba-li-be; ru-h; ru-ú	man (vs. woman)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ba-li-na	male	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mu-h-ti-ir-ri; mu-h-ti-be; mu-tur	female	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-hu	young man (adolescent)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-h	young woman (adolescent)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-hi-e; ma-ul; ma-ul-li	child	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zin; zí-in	infant, baby	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ir-ti-ri; ri-tu; ri-ti; ru-tu; ru-tú; mu-tar; mu-ti	wife	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+atta; ad-da; at-ta	father	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+amma; am-ma	mother	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-hu; ru-hu; šak; ša-ak; šá-ak; šá-ag-gi	son	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pak; pa-ak	daughter	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+puhu; pu-hu	offspring (son or daughter)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+i-gi	brother	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šutu; šu-tú	sister	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ru-hu.šá-ak-ri	grandson	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+eri; e-ri-ri	uncle	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+iza; i-za	cousin	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+iš-ti-ri	son-in-law (of a woman)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-a-ni-ip; a-a-ni-ri	relatives, kinsmen	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+u; ù	I	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ni; nu	you (singular)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ni-ka; nu-ku	we (exclusive)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+nu-mi	you (plural)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kun; ku-un	animal	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+áš; ki-ti	livestock	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ahiš; a-h-iš; ki-bat	pasture	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ba-at -ir; ku-dúr	herdsman	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kutu; ku-tu	cattle (bovine)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-up-hi-in	ox	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tila; ti-la	calf	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hidu; hi-du	sheep	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ráp-du; ráp-tam	ram	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kari; qa-ri; qa-ri-ri	lamb	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pap-pi	pig	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kipšu; kupši; ki-ip-ši; ki-ip-šu; ku-ip-šu; šá-h-ši-ik-me-me	goat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kumaš; ku-maš	he-goat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pitu; pi-tú; pi-tu	kid	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lakpilan; lak-pi-la-an	horse (equine)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+dudu; du-du; du-ud-du	foal, colt	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-ip; tranku; it-ra-an-ku; ši-ši	ass, donkey	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+paha; pa-ha	mule	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zamama; za-ma-ma	fowl	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+rum; ru-um	hen	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hi-pu-ur; ip-pu-ur	goose	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-da-ba	duck	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hu-pi-e	nest	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ti-ut	bird	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ba-zi-zi; ba-iz-zí-zí	eagle	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-iš-ba-h	parrot	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal-ki-ni	dog	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+duma; du-ma	wolf	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zibbaru; zib-ba-ru	camel	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lahi; la-hi	scorpion	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+za-na-bu-na	worm	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šin; ši-in-pi; šim-bi	snake	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-te-en	skin, hide	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+i-iš-ti	flesh	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+*ku-na; še-e	hair (head)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+san; sa-an	blood	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kassu; qa-as-su; kás-su	horn	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ukku; uk-ku; uk-gi; ukku.e	head	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+el; el-ti; el	eye	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+siri; si-ri	ear	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-um-me; šim.e	nose	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tit; ti-ut	tongue	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sihhan; si-h-ha	tooth	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ti-pi	neck	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kir-; kur-; ki-ir-pi; kur-pi	hand	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pur; pu-ur	fingernail	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pat; ba-at; pa-at	foot	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+putmaš; pu-ut-ma-áš	feather	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+buni; bu-ni	heart	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ru-el-pa-mín	liver	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ruku; ru-ku	testicle	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kuši-; ku-ši-in; ku-ši-iš	born (to be)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-; du-h; du-iš; duk	conceive	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ta-ak-me; da-ak-ki-me; ta-ak-ki-me	live, living, life	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+halpi-; hal-pi-ik; hal-pi-ip; la-ha-an	die, dead	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ib-ba-ak; šilha-; šil-ha-h; ši-il-ha-ak; ši-il-me	strong, mighty, powerful	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+iš-tuk-ra	weak	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-pi	bruise	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+si-it-ti; si-it-me	cure, heal	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-pu-ur	medicine, drug	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ab-be-be	food	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kura-; ku-ra-at; ku-ra-ak	roast, fry	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+piti; pi-ti	pitcher, jug	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ki-mal-tam	spoon	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-šu-um-ya; du-ši-um; du-ši-um-ir-ra	knife (2)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-ip-ru-um; ši-ip-ri-um	bread	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+e-ul; u-ma-ma	meal, flour	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hurpi; hu-ur-pi; zib-ba	fruit	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pi-ut-	fig	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-ap-pan-na; šap	grape	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+appi; ap-pi	oil	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+abba; ab-ba	grease, fat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+anzi; an-zí	salt	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal -la -ki	honey	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sir-na	milk (noun)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pa	cheese	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+an-na-in	fermented drink	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-h-ši-ik-ra	tailor	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tam-ši-um; ik-tin	cloth	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tuk-ki-me; tuk-na; im-na	wool	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zali; za-li	linen, flax	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-li-tam	cotton	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+da-bar-ri-um	felt	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-ir-šá-at-ti	leather	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kurza-; kur-za-iš; kur-za-qa	weave	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+uk-ku-la-ki	cloak	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hu-el-ip	coat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-šá-ir	shoe	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+uk-ku.ba-ti	hat, cap	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kur-ip	glove	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-ar-ra-h; qa-ar-ra-ha	ornament, adornment	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šà-mi; si-mi-it-tum	ring (for finger)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ah-hu-um; a-h-hu-im	comb	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hasu; ha-su-ip; mi-ir-ri-h	ointment	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-ha; šu-ha.zi-la	mirror	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-a-in; a-hi-in; ha-a-in; a-i-in; a-a-ni	house	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tu-uš; ulhi; ul-hi; ul-hi	yard, court	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hu-el; hi-el; el; e-el; e-ul; ú-el; lu-gu-ú	door, gate	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal-ti; ha-al-te-te	doorpost, jamb	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ku-un-nir	window	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-ip-ta; hu-hu-un	wall	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ku-ra-am-ma; ku-ra-na	stove	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+gi-ut-máš-te; gi-ut-máš-ti	blanket	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hun; hu-ni-ir; hu-un-pu	lamp, torch	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-ri; ku-uk; me-nu-me	roof	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-ti	beam	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šali; ša-li	post, pole	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šil-tur	board	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+e-ri-en-tum; ú-ri-en-tu; hu-us-si-ip; ú-pa-at	brick	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal-la	field (for cultivation)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ya-ad-da	garden	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+āpi-; a-a-pi-h	plow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+atti; at-ti; šullu; šu-ul-lu	shovel	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+at-ti	hoe	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+par; pa-ar	seed	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal-te-me; šu-lu-um	crop, harvest	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tarmi; tarmu; tar-mi; tar-mu; mu-ša-al-lu	grain (barley, oats etc)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-man	wheat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kur-ru-sa; nu	barley	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mi-ik-ki-ma	flower	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+in-na-in; mu-ul-li; mi-el; mi-ul	sap	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+huta-; hu-ud-da; hu-taš; hu-tan-ki; hu-ut-táh; hu-ut-te-eš	do, make	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+rabba-; ra-ab-ba-h; ráb-ba-qa	tie, bind	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-am	rope, cord	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+halpi-; halpu-; hal-pu-h; hal-pi-ya	strike (hit, beat)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+máš-áš; šahši-; šá-h-ši-qa	cut	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ipiš; i-pi-iš; hi-pi-is	ax	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sa-; sa-h	pull	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+be-la-ti-ra; kiš-ki-ip-man-na	carpenter	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kuši-; ku-ši-ha; ku-si-iš; ku-ši-ik	build	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-li-ib-be	bore	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+el-pi	saw	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sa-el	hammer	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sikti; zikti; si-ik-ti; zik-ti-ip	nail	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kás-zí-ra	smith, blacksmith	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kassa-; kassi-; kazza-; kazzi-; qa-as-si-it-ri; qa-az-za-ak	forge	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šari-; ša-ri-h	cast (metals)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+la-an-si-ti-e; la-áš-da	gold	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lani; la-a-ni	silver	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+e-ri-ni; sa-h; sa-hi-i; si-hi-kak	copper, bronze	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+har-gi; har-ki-an-na	iron	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ri-kur	lead (noun)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-na-ku	tin, tinplate	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+halat; ha-la-at	clay	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+še-ri-it	basket	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+za-ba-ar	rug	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+karsu-; kar-su-iš-da; kar-su-qa	paint (vb)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mari-; ma-ri-h; ma-ri-en-t	catch (ball)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pari-; uzzu-; uz-zu-un; uz-zu-un-ta	walk	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+izzi-; iz-zí-iš; šinni-; šinnu-; ši-in-nu-ik; ši-in-nu	come	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kuti-; ku-ti-na; ku-ti-šá	carry (bear)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tela-; te-la-ak-ni; te-la-ni-li	bring	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+da-; da-an-da; da-h	send	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-li-nu-ip	ride	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ba-u; bar-du; hu-te	road	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+za-ap-pan	yoke	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+duma; du-ma; du-ma-iš	take	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+duna-; duni-; du-ni-h; du-ni-ha; du-na-áš; du-na-qa; li-; li-h; li-ik	give	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kutu-; ku-tu-un; ku-tu-uš-li	preserve, look after	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sari-; sa-ri-h; sa-ri-in-ti	destroy	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+bakka-; ba-ak-qa-h	find	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sir	rich	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-h-da-a	debt	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+un-sa-ha; un-sa-iš; za-ag-gi-iš	pay (vb)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-um-be; ha-nu	wages	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-ak-ki-me; šá-ak-ki-mi; šá-gi-me	price	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ki-ik; me-mi; me-ni	behind	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tibbe; ti-ib-ba	before	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ti-ib-ba; si-ma; si-ma	front	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-ti-in; a-ti-ra; ha-ti	inside, in	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ki-du-ú-ya; ki-du-ur; ki-du-um-ma; ki-du	outside	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-ra	under	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kate; qa-te; qa-te-ma	place	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+bela-; pela-; be-la; be-ip-la; da-; ta-; ta-at; da-h	put	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ta-rí-ir; ta-ri-ip	join, unite	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-iš; tu-um-ba-h	open	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kappa-; kap-pa-iš	shut, close	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-da-ni-qa	far (adv)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-tin; ha-te-um-me	east	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-tin	west	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+azza-; hazza-; az-za-qa; ha-iz-za-ik-qa; ha-za-qa; rša-; ir-šá-na; ri-ša-ar	large, big	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tila; ti-la	small, little	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zikki; zik-ki	thin (in dimension)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+du-šá-ra-ma	deep	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ma-šu-um	flat	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+iš-tur-rák-qa	straight	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+irpi; ir-pi	round	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pur; pu-ur	circle	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+še-be	sphere, ball	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ki; ki-ik; ki-ir	one	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mar; ma-ir; mar-ra	two	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ziti; zí-ti	three	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+*tu-ku	five	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+un-ra	every, all	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ir-še-ik-ki	much, many	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-ri-ik-ki	little (quantity), few	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+huh; hu-úh	full	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+áš	part, piece	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pír-ni; pír-nu-šu; pír-nu-ba	half	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ap-pu-qa-na	first	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tuk	pair	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+da-la-ri; dalar.e	time	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+puhu.na; pu-hu-na; pu-u-na; pu-un-na	young	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kara; qa-ra	old	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+irpi; urpu-; ir-pi; ur-pu-ub-ba; ap-pu-qa	early	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+maš-šá; me-šá	late	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-am; am	now	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mur	end (temporal)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tar-ma; tar-maš	finish	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-ka-da	always	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+me-ul-li	long-time (for a)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ki-qa	again	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+na; nan:; na-an-me; na-an-na	day	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-ut-ma-na; šu-ut-me; šu-ut-ti-me	night	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+te-man; ki-in-na-ra	evening	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+na-na-me-na; si-in	month	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pi-el; be-ul	year	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tena; te-na; hal-ki; tena; te-na; halki; hal-ki	sweet	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lu-lu-ki; lu-lu-qa	acid, sour	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hap-; ha-ap-hu; ha-ap-ti	hear	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šà-na	quiet, silence	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+siya-; ziya-; si-ya-nu-un; si-ya-h; si-ya-áš-na; zí-ya	see	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šammi-; ša-am-me-iš; ša-am-mi-iš-ta	show	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-mi-ut	white	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+da-ban-ti-na	blue	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hu-la-ap-na; hu-ra-ap-na	green	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-un-ti-na	yellow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ab-ba-ra	heavy	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+zí-ti-qa	dry	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-da; šá-ud-da; ši-ri; šu-ru; šu-ri-na	good fortune, luck	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tan-na-am-me	joyful, glad, happy	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hani-; ha-ni-eš; ha-ni-ik; ha-ni-in; ha-ni-me	love	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-du-uk-qa	dare	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ipši; ip-ši-ip; ip-ši-iš	fear, fright	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ha-mi-ti; ha-mi-it	faithful	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+siri; si-ri	true	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tit-; ti-ti-ip; ti-ut-ki-um-me	lie, tell lies	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-a; ba-ha	good	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+muš-nu-ik	bad	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hi-šá	praise	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ši-iš-ni	beautiful	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+lma-; el-ma; el-man-da; el-man-ti; ul-ma	think (= reflect)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+uri-; u-ri-iš	believe	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+turna-; tur-nah; tur-na-u-ut	know	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+me-en	need, necessity	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ayak; a-ak; ya-ak	and	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+appa; ap-pa	because	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+an-ka; an-qa	if	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+in-gi; in-na; im-ma; in-ni	no, negative	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ap-pa	how?	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+appa; ap-pa	what?	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+mur; mu-ur	where?	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+akka; ag-ga; ak-ka; ak-qa	which?	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+turi; turu-; tu-ru-nu-un-ki; tu-ru-h; tur-ri-qa	speak, talk	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tiri-; turu-; ti-ri-in-ri; ti-ri; tu-ru-uk; tu-ru-un	say	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šukkit; šu-uk-ki-it	word	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hiš; hi-iš	name	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kulla-; ku-ul-la-h	promise	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kulla-; ku-ul-la-h; ku-ul-la-hu	call (=summon)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+dallu-; tallu-; ta-al-lu-h; da-al-lu-ha; ta-al-lu-h-šu	write	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+bera-; pera-; be-ra-an; be-ip-ra-an-ti; be-ip-rák	read	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hal; ha-al	country	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+a-al	city, town	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+taš-šu-up; taš-šu-íp; hu-úr-du	people (populace)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ah-pi; a-h-pi	tribe, clan	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+sunki; zunki; su-gìr; su-kip; su-un-gìr; su-un-ki-ir; su-un-ki-ip; su-un-ki-kip	king, ruler	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ðimpti; si-im-it; te-im-ti; te-ip-ti; mu-uk-ti	master	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+li-ba-um-me; šá-u-lu-be	slave	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+liba-; li-ba-ir	servant	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šalu.r; šá-lu-ur	freeman	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+me-el; gi-il; šera-; še-ra-h; še-ra-h-ši	command, order	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+duk-ti-ir; kán-ir-ra	friend, companion	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+beti; bi-ti-ir; pi-ti-ir; be-ti; be-it-ra	enemy	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ta-; taš; táh-ha-an-ta; táh-ha-an-te	help, aid	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+be-ut	fight (vb)	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+gugu; gu-gu	peace	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+hi-it	army	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ul-ki-na	weapons, arms	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šá-li-mi	club	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+qa-am-ban	bow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ti-ut-ti-um; hi-iš-ki; sa-h	arrow	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-kur-ru-um	spear	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kar-ik	helmet	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+me-te	victory	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+pu-uk-ri-ir	booty, spoils	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šu-du-ur; šu-tur	law	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+gini; ginu; gi-ni-ip; gi-ni-pi; gi-nu-ip	witness	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+gi-ri-ip; gi-ri	swear	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+tu-uš-šu-íp	thief	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+nap; nab; na-ap; na-ab-ba; na-ap-pi; na-bí-ip	God	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+dala; da-la	sacrifice, offering	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+šà-ti; šá-tin; šá-tan	priest	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+ak-pi; ak-pi-ip	holy, sacred	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
+kik; ki-ki-in; ki-ki-ip; ki-ik	heaven	IDS (Intercontinental Dictionary Series)	https://ids.clld.org/contributions/216
