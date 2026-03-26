@@ -1,0 +1,71 @@
+# Pillar 5: Multi-Source Vocabulary Resolution
+# Configuration file
+
+# --- Inputs ---
+corpus_path: data/sigla_full_corpus.json
+sign_to_ipa_path: data/sign_to_ipa.json
+
+# Upstream pillar outputs
+pillar1_output: results/pillar1_output.json
+pillar2_output: results/pillar2_output.json
+pillar3_output: results/pillar3_output.json
+pillar4_output: results/pillar4_output.json
+
+# --- Candidate language lexicons ---
+lexicon_dir: ../ancient-scripts-datasets/data/training/lexicons
+
+# Languages to search (ISO 639-3 codes)
+# HIGH plausibility: grc (Ancient Greek)
+# MEDIUM: akk (Akkadian), heb (Hebrew)
+# LOW-MED: arb (Arabic), arc (Aramaic), cop (Coptic)
+# LOW: lat (Latin), san (Sanskrit), got (Gothic), ell (Modern Greek)
+# LOW: hun (Hungarian), fin (Finnish), tur (Turkish), kat (Georgian), eus (Basque)
+candidate_languages:
+  - grc
+  - akk
+  - heb
+  - arb
+  - arc
+  - lat
+  - san
+  - ell
+  - hun
+  - fin
+  - tur
+  - kat
+  - eus
+  - got
+  - cop
+
+# Max lexicon entries per language (0 = no limit)
+max_lexicon_entries: 0
+
+# --- Phonetic Prior results ---
+# Directory containing cognates_{lang}.json from PP production run
+# Leave empty if PP results not yet available (uses edit distance fallback)
+pp_output_dir: ""
+
+# --- Search parameters ---
+# Maximum normalized edit distance to consider a candidate
+max_edit_distance: 0.7
+
+# Minimum combined score to keep a match
+min_match_threshold: 0.0
+
+# Maximum matches to keep per language per sign-group
+max_per_language: 5
+
+# --- Stratum detection ---
+# Minimum combined score for a match to count as "significant"
+stratum_threshold: 0.5
+
+# Minimum sign-groups in a stratum to report as a finding
+min_stratum_size: 5
+
+# --- Cross-reference ---
+# Directory containing old cognate TSV files for informational cross-reference
+old_cognate_dir: ../ancient-scripts-datasets/data/linear_a_cognates
+
+# --- General ---
+seed: 1234
+output_path: results/pillar5_output.json
