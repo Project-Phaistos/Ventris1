@@ -248,6 +248,13 @@ def search_from_pp_results(
     # Build P2 sign-group set for convergence checking
     p2_sign_groups = _build_p2_sign_groups_set(constrained_vocab)
 
+    # Build P4 semantic anchor index: hyphenated sign string -> semantic field
+    p4_anchor_index: Dict[str, str] = {}
+    for sg in constrained_vocab.sign_groups:
+        if sg.semantic_field:
+            anchor_str = "-".join(sg.sign_group_ids)
+            p4_anchor_index[anchor_str] = sg.semantic_field
+
     # Collect all unique substrings across all languages.
     # Each substring appears once per language in the PP fleet output.
     all_signs: Set[str] = set()
@@ -297,14 +304,18 @@ def search_from_pp_results(
             # Look up gloss in lexicon for semantic scoring
             gloss = _lookup_gloss(pp_entry.matched_word, lang_code, lexicons)
 
-            # Semantic compatibility: if we have a P2 semantic field for
-            # a matching sign-group, use it; otherwise None
+            # Semantic compatibility: check if any P4 anchor is contained
+            # within this PP substring (exact match or substring containment).
+            # PP scans are progressive and may extend through known words.
             semantic_field = None
-            for sg in constrained_vocab.sign_groups:
-                sg_str = "-".join(sg.sign_group_ids)
-                if sg_str == signs_str:
-                    semantic_field = sg.semantic_field
-                    break
+            if signs_str in p4_anchor_index:
+                semantic_field = p4_anchor_index[signs_str]
+            else:
+                # Check if any P4 anchor is a substring of this PP entry
+                for anchor_signs, anchor_field in p4_anchor_index.items():
+                    if anchor_signs in signs_str:
+                        semantic_field = anchor_field
+                        break
 
             sem_compat = score_semantic_compatibility(semantic_field, gloss)
 

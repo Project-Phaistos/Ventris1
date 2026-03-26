@@ -104,10 +104,16 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
         "../ancient-scripts-datasets/data/training/lexicons"
     )
     language_codes = config.get("candidate_languages", None)
+    pp_lang_codes = config.get("pp_languages", [])
+    # Merge both lists so PP fleet languages also get lexicons loaded for gloss lookup
+    if language_codes is not None and pp_lang_codes:
+        all_lang_codes = list(dict.fromkeys(language_codes + pp_lang_codes))
+    else:
+        all_lang_codes = language_codes
     max_entries = config.get("max_lexicon_entries", 0)
 
     lexicons = load_all_lexicons(
-        lexicon_dir, language_codes, max_entries_per_language=max_entries
+        lexicon_dir, all_lang_codes, max_entries_per_language=max_entries
     )
     print(
         f"  Loaded {len(lexicons)} lexicons: "
