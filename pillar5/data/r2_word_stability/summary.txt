@@ -1,0 +1,21 @@
+Round 2 Word Stability Analysis Summary
+Total stable matches: 970
+High-confidence matches: 280
+Eteocretan: 103 stable (10.6%)
+Messapic: 101 stable (10.4%)
+Etruscan: 73 stable (7.5%)
+Phoenician: 66 stable (6.8%)
+Eteocypriot: 64 stable (6.6%)
+Proto-Dravidian: 62 stable (6.4%)
+Avestan: 60 stable (6.2%)
+Proto-Semitic: 57 stable (5.9%)
+Proto-Indo-European: 55 stable (5.7%)
+Old Persian: 55 stable (5.7%)
+Ugaritic: 50 stable (5.2%)
+Elamite: 43 stable (4.4%)
+Phrygian: 43 stable (4.4%)
+Urartian: 35 stable (3.6%)
+Lycian: 34 stable (3.5%)
+Proto-Kartvelian: 33 stable (3.4%)
+Lydian: 24 stable (2.5%)
+Hittite: 12 stable (1.2%)

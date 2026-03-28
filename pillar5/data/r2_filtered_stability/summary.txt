@@ -1,0 +1,30 @@
+Round 2.5 Filtered Word Stability Analysis Summary
+Filters: F1(word_len>=4), F2(chain_len>=4), F3(exclude_most_freq_word)
+Stability threshold: 0.7
+
+Filter cascade:
+  Total analyzed: 2957
+  Above stability: 970
+  After F1: 529
+  After F2: 453
+  After F3 (FINAL): 309
+
+Language rankings (filtered):
+  Old Persian: 28 (9.1%)
+  Eteocypriot: 28 (9.1%)
+  Phoenician: 26 (8.4%)
+  Messapic: 24 (7.8%)
+  Etruscan: 21 (6.8%)
+  Elamite: 21 (6.8%)
+  Phrygian: 20 (6.5%)
+  Proto-Dravidian: 20 (6.5%)
+  Proto-Semitic: 20 (6.5%)
+  Eteocretan: 20 (6.5%)
+  Lycian: 15 (4.9%)
+  Proto-Kartvelian: 14 (4.5%)
+  Urartian: 12 (3.9%)
+  Proto-Indo-European: 12 (3.9%)
+  Avestan: 10 (3.2%)
+  Lydian: 8 (2.6%)
+  Ugaritic: 6 (1.9%)
+  Hittite: 4 (1.3%)
