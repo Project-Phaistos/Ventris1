@@ -1,0 +1,45 @@
+# Pillar 1: Phonological Engine — V=4 Override Configuration
+# Overrides vowel count to 4 (bootstrap CI=[1,4], communis opinio ~5).
+
+# --- Corpus ---
+corpus_path: "data/sigla_full_corpus.json"
+lb_validation_path: "data/sign_to_ipa.json"
+
+# --- Preprocessing ---
+min_word_length: 2           # Minimum signs per word for positional analysis
+exclude_damaged: true        # Exclude damaged words from positional analysis
+sign_types_included:         # Which sign types to include
+  - "syllabogram"
+
+# --- Vowel Identification (Step 2) ---
+alpha: 0.05                  # Significance level before correction
+min_sign_frequency: 15       # Minimum total occurrences for a sign to be testable
+bootstrap_n: 1000            # Number of bootstrap resamples for CI on vowel count
+seed: 1234                   # Random seed for reproducibility
+vowel_count_override: 4      # Override: use top 4 initial-enriched signs as vowels
+
+# --- Inflectional Alternation Detection (Step 3) ---
+min_shared_prefix_length: 1  # Minimum shared prefix length (in signs) for triplet detection
+max_suffix_diff_length: 2    # Maximum differing suffix length
+min_independent_stems: 2     # Minimum independent stems supporting an alternation pair
+alternation_alpha: 0.01      # Significance level for alternation pair filtering
+
+# --- Grid Construction (Step 4) ---
+clustering_method: "spectral" # "spectral" or "agglomerative"
+max_consonant_classes: 20    # Upper bound for model selection search
+min_consonant_classes: 3     # Lower bound for model selection search
+kmeans_n_init: 50            # Number of k-means initializations for spectral clustering
+low_confidence_threshold: 0.3 # Below this, mark assignment as low_confidence
+
+# --- Phonotactic Analysis (Step 5) ---
+min_expected_bigram: 2.0     # Minimum expected count for a bigram to be testable
+phonotactic_alpha: 0.01      # Significance level for phonotactic constraints (before Bonferroni)
+
+# --- LB Validation (Step 6) ---
+# No parameters — purely diagnostic
+
+# --- Dead Vowel Test (Step 7) ---
+# No parameters — purely diagnostic
+
+# --- Output ---
+output_path: "results/pillar1_v4_output.json"

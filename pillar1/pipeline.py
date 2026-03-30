@@ -27,7 +27,7 @@ from typing import Any, Dict
 import yaml
 
 from .corpus_loader import load_corpus
-from .vowel_identifier import identify_vowels
+from .vowel_identifier import identify_vowels, VowelInventory
 from .alternation_detector import detect_alternations
 from .grid_constructor import construct_grid
 from .phonotactic_analyzer import analyze_phonotactics
@@ -100,6 +100,33 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     vowel_sign_ids = [s.sign_id for s in vowel_inv.signs]
     print(f"  Found {vowel_inv.count} vowels (CI: {vowel_inv.count_ci_95}): "
           f"{vowel_sign_ids}. ({time.time() - t0:.1f}s)")
+
+    # Optional vowel count override (for grid construction with relaxed criteria)
+    vowel_override = config.get("vowel_count_override", 0)
+    if vowel_override > 0 and vowel_override != vowel_inv.count:
+        print(f"  OVERRIDE: Using V={vowel_override} instead of V={vowel_inv.count} "
+              f"(config vowel_count_override={vowel_override})")
+        # Add top enrichment-score signs as vowels up to the override count
+        all_stats = vowel_inv.all_sign_stats
+        override_signs = []
+        for stat in all_stats:
+            if len(override_signs) >= vowel_override:
+                break
+            if stat.enrichment_score > 1.0:  # must be at least somewhat initial-enriched
+                stat.classification = "pure_vowel"
+                stat.confidence = max(0.0, min(1.0, stat.enrichment_score / 3.0))
+                override_signs.append(stat)
+        vowel_inv = VowelInventory(
+            count=len(override_signs),
+            count_ci_95=vowel_inv.count_ci_95,
+            signs=override_signs,
+            all_sign_stats=all_stats,
+            global_initial_rate=vowel_inv.global_initial_rate,
+            global_medial_rate=vowel_inv.global_medial_rate,
+            global_final_rate=vowel_inv.global_final_rate,
+            n_testable_signs=vowel_inv.n_testable_signs,
+        )
+        print(f"  Override vowels: {[s.sign_id for s in override_signs]}")
 
     # --- Step 3: Detect alternations ---
     print("[Step 3/8] Detecting inflectional alternations...")
