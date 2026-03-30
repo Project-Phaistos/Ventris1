@@ -169,6 +169,34 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     # --- Step 4: Construct C-V grid ---
     print("[Step 4/8] Constructing C-V grid...")
     t0 = time.time()
+
+    # Load LB anchor signs for Kober-style vowel column assignment
+    lb_anchor_signs = None
+    lb_path = config.get("lb_validation_path", "data/sign_to_ipa.json")
+    try:
+        import json as _json
+        with open(lb_path, "r", encoding="utf-8") as _f:
+            sign_to_ipa = _json.load(_f)
+        # Convert reading-based keys to AB codes using corpus sign inventory
+        lb_anchor_signs = {}
+        for reading, ipa in sign_to_ipa.items():
+            # Find the AB code for this reading
+            for sign_info in corpus.sign_inventory.values():
+                if hasattr(sign_info, 'reading') and sign_info.reading == reading:
+                    for ab in getattr(sign_info, 'ab_codes', []):
+                        lb_anchor_signs[ab] = ipa
+                        break
+            # Also try direct match if sign_inventory is a dict
+            if isinstance(corpus.sign_inventory, dict):
+                inv_entry = corpus.sign_inventory.get(reading)
+                if isinstance(inv_entry, dict):
+                    for ab in inv_entry.get('ab_codes', []):
+                        lb_anchor_signs[ab] = ipa
+        if lb_anchor_signs:
+            print(f"  Loaded {len(lb_anchor_signs)} LB anchor signs for vowel assignment")
+    except Exception as e:
+        print(f"  Warning: could not load LB anchors: {e}")
+
     grid = construct_grid(
         alternation=alternation,
         vowel_inv=vowel_inv,
@@ -179,6 +207,7 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
         kmeans_n_init=config.get("kmeans_n_init", 50),
         low_confidence_threshold=config.get("low_confidence_threshold", 0.3),
         seed=config.get("seed", 1234),
+        lb_anchors=lb_anchor_signs,
     )
     print(f"  Grid: {grid.consonant_count} consonant classes x "
           f"{grid.vowel_count} vowel classes. "

@@ -71,6 +71,7 @@ def construct_grid(
     kmeans_n_init: int = 50,
     low_confidence_threshold: float = 0.3,
     seed: int = 1234,
+    lb_anchors: Optional[Dict[str, str]] = None,
 ) -> GridResult:
     """Construct the C-V grid from alternation evidence and vowel inventory.
 
@@ -201,6 +202,7 @@ def construct_grid(
     # --- Step 5: Assign vowel classes within each consonant class ---
     vowel_labels = _assign_vowel_classes(
         consonant_labels, V, corpus, alternation, isolated_mask,
+        lb_anchors=lb_anchors,
     )
 
     # --- Step 6: Compute confidence scores ---
@@ -315,37 +317,171 @@ def _assign_vowel_classes(
     corpus: CorpusData,
     alternation: AlternationResult,
     isolated_mask: np.ndarray,
+    lb_anchors: Optional[Dict[str, str]] = None,
 ) -> np.ndarray:
     """Assign vowel classes within each consonant class.
 
-    Uses within-row ordering based on frequency (most frequent sign in each
-    row gets vowel class 0, etc.). If dead vowel evidence is available,
-    uses it to align vowel classes across rows.
+    Uses LB anchor signs (signs with known phonetic values) to establish
+    vowel column identity, then assigns unknowns by alternation similarity
+    to the anchors (Kober's method).
+
+    If no anchors are available, falls back to frequency-based ordering.
+
+    The Kober principle: two signs in DIFFERENT consonant rows that
+    alternate with the SAME set of partners share a VOWEL. We use
+    known LB signs as anchors to establish which alternation pattern
+    corresponds to which vowel.
+
+    Args:
+        consonant_labels: Consonant class for each sign index.
+        V: Number of vowel classes.
+        corpus: Corpus data.
+        alternation: Alternation results with affinity matrix.
+        isolated_mask: Boolean mask for isolated nodes.
+        lb_anchors: Optional dict mapping sign_id -> IPA reading.
+            Used to establish vowel identity for anchor signs.
     """
     n = len(consonant_labels)
     vowel_labels = np.full(n, -1, dtype=int)
+    A = alternation.affinity_matrix
 
-    # Get sign frequencies for ordering
-    sign_freq: Dict[str, int] = {}
-    for rec in corpus.positional_records:
-        sign_freq[rec.sign_id] = sign_freq.get(rec.sign_id, 0) + 1
+    # Extract vowel from IPA reading (last char for CV, whole string for V)
+    def _get_vowel(ipa: str) -> str:
+        if not ipa:
+            return ""
+        # Pure vowels: a, e, i, o, u
+        if len(ipa) == 1 and ipa in "aeiou":
+            return ipa
+        # CV syllable: last char is the vowel
+        if len(ipa) >= 2 and ipa[-1] in "aeiou":
+            return ipa[-1]
+        # Handle ra2, pu2 etc — vowel is second-to-last
+        for ch in reversed(ipa):
+            if ch in "aeiou":
+                return ch
+        return ""
 
-    # For each consonant class, assign vowel labels by frequency rank
-    for c in range(consonant_labels.max() + 1):
-        members = np.where((consonant_labels == c) & ~isolated_mask)[0]
-        if len(members) == 0:
-            continue
+    # Build vowel-to-class mapping from known vowel signs
+    vowel_to_class: Dict[str, int] = {}
+    if lb_anchors and V >= 2:
+        # Collect unique vowels from anchor readings
+        anchor_vowels: Dict[str, str] = {}  # sign_id -> vowel char
+        for sid, ipa in lb_anchors.items():
+            v = _get_vowel(ipa)
+            if v:
+                anchor_vowels[sid] = v
 
-        # Sort members by frequency (highest first)
-        member_freqs = [
-            (idx, sign_freq.get(alternation.index_to_sign_id[idx], 0))
-            for idx in members
-        ]
-        member_freqs.sort(key=lambda x: -x[1])
+        # Assign vowel classes 0,1,2,... to unique vowels in order a,e,i,o,u
+        unique_vowels = sorted(set(anchor_vowels.values()))
+        for i, v in enumerate(unique_vowels[:V]):
+            vowel_to_class[v] = i
 
-        # Assign vowel class 0, 1, 2, ... up to V-1
-        for rank, (idx, _freq) in enumerate(member_freqs):
-            vowel_labels[idx] = rank % V
+    # Build sign_id -> index mapping
+    sid_to_idx = {
+        alternation.index_to_sign_id[i]: i
+        for i in range(len(alternation.index_to_sign_id))
+    }
+
+    if lb_anchors and vowel_to_class:
+        # --- LB-anchored vowel assignment (Kober method) ---
+
+        # Step 1: Assign known anchor signs to their vowel class
+        anchored_indices: Dict[int, int] = {}  # idx -> vowel_class
+        for sid, ipa in lb_anchors.items():
+            idx = sid_to_idx.get(sid)
+            if idx is not None and not isolated_mask[idx]:
+                v = _get_vowel(ipa)
+                if v in vowel_to_class:
+                    vowel_labels[idx] = vowel_to_class[v]
+                    anchored_indices[idx] = vowel_to_class[v]
+
+        # Step 2: For each unknown sign, find which vowel class it's most
+        # similar to based on alternation patterns with anchors.
+        #
+        # Kober's principle: if sign X alternates with anchors from vowel
+        # classes {0,1,3} but NOT {2,4}, then X is likely vowel class 2 or 4
+        # (it shares consonant with those it alternates with, so it differs
+        # in vowel from them).
+        #
+        # More precisely: X should be in the vowel class whose anchors it
+        # DOES NOT alternate with (same vowel = same column = no alternation).
+        # And X SHOULD alternate with anchors in OTHER vowel classes.
+
+        for i in range(n):
+            if vowel_labels[i] >= 0 or isolated_mask[i]:
+                continue  # already assigned or isolated
+
+            c_class = consonant_labels[i]
+            if c_class < 0:
+                continue
+
+            # Compute alternation strength with anchors in each vowel class
+            alt_with_class = np.zeros(V)
+            n_anchors_per_class = np.zeros(V)
+
+            for anchor_idx, anchor_v in anchored_indices.items():
+                # Only consider anchors in the SAME consonant class
+                # (alternation = same consonant, different vowel)
+                if consonant_labels[anchor_idx] == c_class:
+                    alt_with_class[anchor_v] += A[i, anchor_idx]
+                    n_anchors_per_class[anchor_v] += 1
+
+            # Normalize by number of anchors per class
+            for vc in range(V):
+                if n_anchors_per_class[vc] > 0:
+                    alt_with_class[vc] /= n_anchors_per_class[vc]
+
+            # If we have alternation data with same-row anchors:
+            # Sign X alternates MOST with vowel classes it DIFFERS from
+            # Sign X alternates LEAST with the vowel class it BELONGS to
+            if alt_with_class.sum() > 0:
+                # Assign to the class with LEAST alternation (same vowel = no alternation)
+                vowel_labels[i] = int(np.argmin(alt_with_class))
+            else:
+                # No same-row anchors — try cross-row Kober alignment
+                # Signs in different rows with similar alternation profiles
+                # share a vowel
+                cross_row_scores = np.zeros(V)
+                for anchor_idx, anchor_v in anchored_indices.items():
+                    if consonant_labels[anchor_idx] != c_class:
+                        # Different row — similarity in alternation profile
+                        # means same vowel
+                        # Compute Jaccard similarity of alternation neighborhoods
+                        row_i = A[i, :]
+                        row_a = A[anchor_idx, :]
+                        intersection = np.minimum(row_i, row_a).sum()
+                        union = np.maximum(row_i, row_a).sum()
+                        if union > 0:
+                            jaccard = intersection / union
+                            cross_row_scores[anchor_v] += jaccard
+
+                if cross_row_scores.sum() > 0:
+                    # Assign to the class with MOST cross-row similarity
+                    vowel_labels[i] = int(np.argmax(cross_row_scores))
+                else:
+                    # No evidence at all — assign to least-populated class
+                    class_counts = np.bincount(
+                        vowel_labels[vowel_labels >= 0], minlength=V
+                    )
+                    vowel_labels[i] = int(np.argmin(class_counts))
+
+    else:
+        # --- Fallback: frequency-based ordering (no anchors) ---
+        sign_freq: Dict[str, int] = {}
+        for rec in corpus.positional_records:
+            sign_freq[rec.sign_id] = sign_freq.get(rec.sign_id, 0) + 1
+
+        for c in range(consonant_labels.max() + 1):
+            members = np.where((consonant_labels == c) & ~isolated_mask)[0]
+            if len(members) == 0:
+                continue
+            member_freqs = [
+                (idx, sign_freq.get(alternation.index_to_sign_id[idx], 0))
+                for idx in members
+            ]
+            member_freqs.sort(key=lambda x: -x[1])
+            for rank, (idx, _freq) in enumerate(member_freqs):
+                vowel_labels[idx] = rank % V
 
     return vowel_labels
 
