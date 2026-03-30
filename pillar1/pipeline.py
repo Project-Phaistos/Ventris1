@@ -101,21 +101,45 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
     print(f"  Found {vowel_inv.count} vowels (CI: {vowel_inv.count_ci_95}): "
           f"{vowel_sign_ids}. ({time.time() - t0:.1f}s)")
 
-    # Optional vowel count override (for grid construction with relaxed criteria)
-    vowel_override = config.get("vowel_count_override", 0)
-    if vowel_override > 0 and vowel_override != vowel_inv.count:
-        print(f"  OVERRIDE: Using V={vowel_override} instead of V={vowel_inv.count} "
-              f"(config vowel_count_override={vowel_override})")
-        # Add top enrichment-score signs as vowels up to the override count
+    # Optional vowel override: explicit sign IDs or count-based
+    vowel_sign_override = config.get("vowel_sign_ids", [])
+    if vowel_sign_override:
+        # Explicit sign IDs — use these specific signs as vowels
+        # Justification: LB transfer (Packard 1974, 2:1 to 5:1 odds)
+        #   + independent confirmation for a (P1 enrichment), i/u (Jaccard)
+        print(f"  OVERRIDE: Using explicit vowel signs {vowel_sign_override} "
+              f"(LB-transferred, independently validated for a/i/u)")
         all_stats = vowel_inv.all_sign_stats
         override_signs = []
-        for stat in all_stats:
-            if len(override_signs) >= vowel_override:
-                break
-            if stat.enrichment_score > 1.0:  # must be at least somewhat initial-enriched
+        stats_by_id = {s.sign_id: s for s in all_stats}
+        for sid in vowel_sign_override:
+            stat = stats_by_id.get(sid)
+            if stat is not None:
                 stat.classification = "pure_vowel"
                 stat.confidence = max(0.0, min(1.0, stat.enrichment_score / 3.0))
                 override_signs.append(stat)
+            else:
+                # Sign wasn't testable (too few occurrences for statistics)
+                # Create a minimal stats entry — we're using LB consensus here
+                from pillar1.vowel_identifier import SignPositionalStats
+                # Count occurrences from positional records
+                total = sum(
+                    1 for rec in corpus.positional_records
+                    if rec.sign_id == sid
+                )
+                override_signs.append(SignPositionalStats(
+                    sign_id=sid,
+                    initial_count=0,
+                    medial_count=0,
+                    final_count=0,
+                    total_count=max(total, 1),
+                    enrichment_score=0.0,
+                    p_value_initial=1.0,
+                    p_value_medial=1.0,
+                    p_value_corrected=1.0,
+                    classification="pure_vowel",
+                    confidence=0.5,  # CONSENSUS_ASSUMED
+                ))
         vowel_inv = VowelInventory(
             count=len(override_signs),
             count_ci_95=vowel_inv.count_ci_95,
@@ -126,7 +150,7 @@ def run_pipeline(config: Dict[str, Any]) -> Dict[str, Any]:
             global_final_rate=vowel_inv.global_final_rate,
             n_testable_signs=vowel_inv.n_testable_signs,
         )
-        print(f"  Override vowels: {[s.sign_id for s in override_signs]}")
+        print(f"  Vowels set to: {[s.sign_id for s in override_signs]}")
 
     # --- Step 3: Detect alternations ---
     print("[Step 3/8] Detecting inflectional alternations...")

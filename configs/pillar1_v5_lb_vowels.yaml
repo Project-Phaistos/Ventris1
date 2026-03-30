@@ -1,0 +1,54 @@
+# Pillar 1: Phonological Engine — V=5 with LB Vowel Signs
+#
+# Uses the 5 Linear B pure vowel signs as vowels for grid construction.
+# Justification:
+#   AB08 = a — INDEPENDENT (enrichment 2.72, p=4.2e-10, Kober rank #1, Jaccard #1)
+#   AB28 = i — INDEPENDENT_VALIDATED (Kober rank #9, Jaccard top 6, LB confirms)
+#   AB10 = u — INDEPENDENT_VALIDATED (Kober rank #11, Jaccard top 6, LB confirms)
+#   AB38 = e — CONSENSUS_ASSUMED (too rare at 14 tokens for independent detection)
+#   AB61 = o — CONSENSUS_ASSUMED (too rare at 6 tokens for independent detection)
+# Academic basis: Packard 1974 (LB transfer validated at 2:1 to 5:1 odds)
+
+# --- Corpus ---
+corpus_path: "data/sigla_full_corpus.json"
+lb_validation_path: "data/sign_to_ipa.json"
+
+# --- Preprocessing ---
+min_word_length: 2
+exclude_damaged: true
+sign_types_included:
+  - "syllabogram"
+
+# --- Vowel Identification ---
+alpha: 0.05
+min_sign_frequency: 15
+bootstrap_n: 1000
+seed: 1234
+
+# Override: use these specific signs as pure vowels
+vowel_sign_ids:
+  - "AB08"   # a (INDEPENDENT)
+  - "AB38"   # e (CONSENSUS_ASSUMED)
+  - "AB28"   # i (INDEPENDENT_VALIDATED)
+  - "AB61"   # o (CONSENSUS_ASSUMED)
+  - "AB10"   # u (INDEPENDENT_VALIDATED)
+
+# --- Inflectional Alternation Detection ---
+min_shared_prefix_length: 1
+max_suffix_diff_length: 2
+min_independent_stems: 2
+alternation_alpha: 0.01
+
+# --- Grid Construction ---
+clustering_method: "spectral"
+max_consonant_classes: 20
+min_consonant_classes: 3
+kmeans_n_init: 50
+low_confidence_threshold: 0.3
+
+# --- Phonotactic Analysis ---
+min_expected_bigram: 2.0
+phonotactic_alpha: 0.01
+
+# --- Output ---
+output_path: "results/pillar1_v5_output.json"
