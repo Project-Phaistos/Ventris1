@@ -221,3 +221,25 @@ Validated on known pairs (Oscan 44.9% vs Anglo-Saxon 23.2%). Eliminates Lydian f
 2. Improve P1 consonant discrimination (finer classes)
 3. Use the Jaccard paradigmatic substitutability method to identify more unknown signs (it's novel and validated)
 4. Any approach that increases the number of known sign readings will unlock exponentially more matchable stems (the 184 one-missing-syllable stems are the leverage point)
+
+---
+
+## Addendum: Final Constrained Search Results (builder agent completion)
+
+The full constrained SCA search completed (816s, 99 stems, 18 languages, 6,930 comparisons).
+
+**Aggregate enrichment: 3.2x above chance.** 1,112 significant matches vs 346 expected false positives (p=0.05). The constrained search IS capturing non-random signal in aggregate, even though individual 2-sign stems can't discriminate.
+
+**Discriminative signs confirmed:**
+- AB56 → po (5 hits, next best 1)
+- AB118 → po (3 hits, next best 1)
+- AB54 → qa (only reading with matches)
+
+**Systematic reading preferences across multiple stems:**
+- V=0 (a-class) signs favor "ra" (AB08, AB77, AB60, AB59, AB80 all show ra as best/tied)
+- V=2 (i-class) signs favor "wi" (AB67, AB73, AB28, AB41, AB30)
+- V=4 (u-class) signs favor "pu" (AB51, AB69, AB65, AB50, AB81)
+
+**Language distribution:** Tracks lexicon size (Latin #1, Avestan #2, Akkadian #3). No single language dominates disproportionately — consistent with chimaera hypothesis. Lycian produces matches at higher rate per lexicon entry than larger lexicons.
+
+**Key insight:** The method works in AGGREGATE but needs longer stems for PER-WORD discrimination. The iterative decipherment loop (constrain signs → match stems → identify cognates → constrain more signs) is the viable path forward.
