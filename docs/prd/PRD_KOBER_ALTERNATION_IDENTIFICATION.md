@@ -362,26 +362,53 @@ Mitigation: Flag any sign where the triangulated reading is inconsistent with th
 
 ## 7. Validation: Linear B Held-Out Recovery
 
+### Validation Protocol
+
+**BLOCKING REQUIREMENT:** No method may be applied to Linear A until it passes
+ALL validation gates below on known-answer corpora. A "smoke test" on 5-10
+entries is NOT sufficient. Each gate requires a FULL-CORPUS run.
+
+**Data sources for validation:**
+- Linear B corpus: `pillar1/tests/fixtures/linear_b_test_corpus.json` (primary)
+- Linear B HF data: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\` (supplementary)
+- Linear B sign values: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+- Latin test corpus: `pillar2/tests/fixtures/latin_cv_corpus.json`
+- Additional corpora: invoke `data-extraction` skill if needed (follow 7-step adversarial pipeline)
+
+**Reporting:** Each validation run must report:
+1. Corpus size (inscriptions, words, unique signs)
+2. Full metric (ARI, precision@k, F1) with confidence interval
+3. Comparison to null baseline (shuffled corpus)
+4. Any failure modes or edge cases discovered
+
 The gold standard for this method is whether it can recover known sign readings from partial information.
 
-### 7.1 Leave-K-Out Cross-Validation on LB Signs
+### 7.1 FULL Leave-One-Out Cross-Validation on ALL 53 LB Signs (BLOCKING)
+
+**IMPORTANT: This must be a FULL leave-one-out run on ALL 53 known signs -- not a subset of 10 or 20.**
 
 **Protocol:**
-1. From the 53 known signs, select K signs as "unknown" (held-out).
-2. Run the Kober triangulation algorithm using the remaining 53-K signs as anchors.
-3. For each held-out sign, record the top-1 and top-3 predicted readings.
-4. Measure accuracy: what fraction of held-out signs are correctly identified?
+1. For EACH of the 53 known signs in `data/sign_to_ipa.json`:
+   a. Remove it from the anchor set (hold out).
+   b. Run the Kober triangulation algorithm using the remaining 52 signs as anchors.
+   c. Record the top-1, top-3, and top-5 predicted readings.
+   d. Record whether the correct reading appears in each tier.
+2. Report precision@1, precision@3, and precision@5 across all 53 holdouts.
+3. Report per-consonant-row breakdown (which rows are hardest to recover?).
+4. Report per-vowel-column breakdown.
+5. Compute 95% Wilson score confidence interval on precision@3.
 
-**Test configurations:**
-- Leave-1-out (K=1, 53 trials): measures per-sign recovery with maximum anchor support
+**All 53 trials must be run.** A sampled subset (e.g., 10 random holdouts) is NOT acceptable for this gate.
+
+**Additional stress tests (run after the full leave-one-out):**
 - Leave-5-out (K=5, sampled 100 times): measures robustness to reduced anchor density
 - Leave-10-out (K=10, sampled 50 times): stress test -- can the method work with ~43 anchors?
 
-### 7.2 Expected Performance
+### 7.2 Expected Performance (Quantitative Thresholds)
 
 The method should achieve:
 - **Top-1 accuracy >= 60%** on leave-1-out (32+ of 53 signs correctly identified)
-- **Top-3 accuracy >= 80%** on leave-1-out (42+ of 53 signs have correct reading in top 3)
+- **Top-3 accuracy >= 70%** on leave-1-out (37+ of 53 signs have correct reading in top 3) -- **this is the BLOCKING gate**
 - **Top-1 accuracy >= 40%** on leave-5-out (degradation expected with fewer anchors)
 
 These thresholds are informed by:
@@ -389,15 +416,45 @@ These thresholds are informed by:
 - Consonant ARI = 0.615 suggests consonant row identification is good but not perfect
 - Combining vowel (95% accurate) and consonant (61.5% ARI) evidence should yield 50-70% joint accuracy for the full CV reading
 
-### 7.3 Linear B Corpus Validation (Optional, Higher Confidence)
+### 7.3 FULL Linear B Corpus Validation (BLOCKING -- NOT Optional)
 
-If Linear B corpus data is available (Pylos/Knossos tablets), run the full pipeline on Linear B:
-1. Detect alternations in the Linear B corpus
-2. Hold out K signs
-3. Triangulate readings for held-out signs
+**This gate is BLOCKING, not optional.** The method must be validated on the Linear B corpus itself (a different corpus from the Linear A alternation data).
+
+**Data sources:** Load the FULL Linear B corpus by combining:
+- `pillar1/tests/fixtures/linear_b_test_corpus.json` (142 inscriptions, 448 words)
+- `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv` (supplementary)
+- Sign values from `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+
+**Procedure:**
+1. Detect alternations in the FULL combined Linear B corpus (not a subset)
+2. Hold out 20 of the ~87 LB syllabograms as "unknown"
+3. Triangulate readings for the held-out signs using the remaining ~67 signs as anchors
 4. Measure against known Linear B values (100% ground truth available)
+5. Report precision@1 and precision@3 across all 20 held-out signs
+6. Run 10 different random selections of 20 held-out signs; report mean and std of precision@3
 
-This provides a clean validation on a fully deciphered script.
+**Pass criterion:** Mean precision@3 >= 65% across 10 random holdout trials.
+
+This provides a clean validation on a fully deciphered script, on a DIFFERENT corpus from the one used to develop the method.
+
+### 7.4 Additional Language Test (SHOULD PASS)
+
+If Cypriot Greek syllabary data is available at `C:\Users\alvin\hf-ancient-scripts\data\` or can be obtained:
+
+1. Invoke `data-extraction` skill if data is not available locally. Source: academic publications on Cypriot syllabary inscriptions (e.g., Edalion tablet, Idalion bronze). Follow the 7-step adversarial pipeline.
+2. Run the Kober triangulation method on the Cypriot corpus.
+3. Hold out known signs and measure precision@3.
+
+If Cypriot data is unavailable, document why and note this as a known validation gap.
+
+### 7.5 Null Test: Shuffled Corpus (BLOCKING)
+
+Run the Kober triangulation on a shuffled version of the FULL Linear B corpus:
+1. Randomly permute sign sequences within each word (destroying alternation structure)
+2. Run alternation detection + triangulation on the shuffled corpus
+3. Attempt to recover held-out sign readings
+
+**Pass criterion:** Precision@3 on shuffled corpus must be < 10% (random-level performance). If the method achieves > 10% on shuffled data, it is detecting frequency artifacts, not alternation structure.
 
 ---
 
@@ -431,11 +488,24 @@ The leverage is multiplicative: 5 new sign readings could unlock 25-100 new full
 
 ## 9. Go/No-Go Gates
 
-### Gate 1: LB Held-Out Recovery (MUST PASS)
+### Gate 1: FULL LB Held-Out Recovery (MUST PASS -- BLOCKING)
 
-**Test:** Leave-1-out cross-validation on 53 known signs.
-**Pass criterion:** Top-3 accuracy >= 70%.
+**Test:** FULL leave-1-out cross-validation on ALL 53 known signs (Section 7.1). Not a subset.
+**Pass criterion:** Top-3 accuracy >= 70% across all 53 holdout trials.
+**BLOCKING:** Method does NOT proceed to Linear A application until this gate passes.
 **Fail action:** If top-3 accuracy < 70%, the triangulation method is unreliable. Investigate whether the problem is consonant row inference (use greedy rows instead of spectral), vowel column inference (increase weight on non-alternation evidence), or insufficient alternation density. If accuracy < 50% after tuning, the method is not viable and should be abandoned in favor of Jaccard-based identification.
+
+### Gate 1b: FULL LB Corpus Cross-Validation (MUST PASS -- BLOCKING)
+
+**Test:** Run the method on the FULL combined Linear B corpus (Section 7.3). Hold out 20 signs, recover them. Repeat 10 times with different random holdout sets.
+**Pass criterion:** Mean precision@3 >= 65% across 10 trials.
+**BLOCKING:** This validates the method on a DIFFERENT corpus from the development data. Must pass before LA application.
+
+### Gate 1c: Null Test (MUST PASS -- BLOCKING)
+
+**Test:** Run on shuffled FULL LB corpus (Section 7.5).
+**Pass criterion:** Precision@3 < 10% on shuffled data.
+**BLOCKING:** If the method finds structure in random data, it is broken.
 
 ### Gate 2: Self-Consistency Check (MUST PASS)
 

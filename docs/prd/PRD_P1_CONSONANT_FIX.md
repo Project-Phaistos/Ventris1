@@ -265,6 +265,8 @@ Before implementing fixes, quantify the problem precisely.
 
 **Go/No-Go Gate 1:** If the ROC AUC > 0.65, the alternation signal contains usable consonant information and tightening thresholds (Approach A) is viable. If AUC < 0.55, the alternation signal is too noisy and we must rely on Approach D (LB seeding) as the primary method.
 
+**NOTE:** This diagnostic must be run on the FULL LB corpus (not a subset). See Section 6.1 for the full validation protocol.
+
 ### Phase 2: Threshold Optimization + Weighted Graph (1 session)
 
 **Tasks:**
@@ -281,7 +283,7 @@ Before implementing fixes, quantify the problem precisely.
 
 **Output:** `results/consonant_sweep_results.json` with all parameter combinations and metrics.
 
-**Go/No-Go Gate 2:** If any parameter combination achieves consonant ARI > 0.15 with >= 6 classes, proceed to Phase 3 using that configuration. If not, proceed to Phase 3 with Approach D (LB seeding) as the primary method.
+**Go/No-Go Gate 2:** If any parameter combination achieves consonant ARI > 0.15 with >= 6 classes on the FULL combined LB corpus, proceed to Phase 3 using that configuration. If not, proceed to Phase 3 with Approach D (LB seeding) as the primary method. All parameter sweeps must report ARI with 95% bootstrap CI -- see Section 6.1 for full reporting requirements.
 
 ### Phase 3: LB Consonant Seeding (1 session)
 
@@ -296,7 +298,7 @@ Before implementing fixes, quantify the problem precisely.
 
 **Output:** Updated `results/pillar1_v6_output.json` with improved consonant classes.
 
-**Go/No-Go Gate 3:** Leave-one-out accuracy >= 70% on LB signs. At least 6 consonant classes with >= 3 members each.
+**Go/No-Go Gate 3:** Leave-one-out accuracy >= 70% on ALL LB signs in the alternation graph (not a subset -- see Section 6.3). At least 6 consonant classes with >= 3 members each. The null test on shuffled corpus (Section 6.2) must also pass before proceeding.
 
 ### Phase 4: Integration and Validation (1 session)
 
@@ -314,19 +316,80 @@ Before implementing fixes, quantify the problem precisely.
 
 ## 6. Validation Strategy
 
-### 6.1 Primary Validation: Leave-One-Out Cross-Validation
+### Validation Protocol
+
+**BLOCKING REQUIREMENT:** No method may be applied to Linear A until it passes
+ALL validation gates below on known-answer corpora. A "smoke test" on 5-10
+entries is NOT sufficient. Each gate requires a FULL-CORPUS run.
+
+**Data sources for validation:**
+- Linear B corpus: `pillar1/tests/fixtures/linear_b_test_corpus.json` (primary)
+- Linear B HF data: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\` (supplementary)
+- Linear B sign values: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+- Latin test corpus: `pillar2/tests/fixtures/latin_cv_corpus.json`
+- Additional corpora: invoke `data-extraction` skill if needed (follow 7-step adversarial pipeline)
+
+**Reporting:** Each validation run must report:
+1. Corpus size (inscriptions, words, unique signs)
+2. Full metric (ARI, precision@k, F1) with confidence interval
+3. Comparison to null baseline (shuffled corpus)
+4. Any failure modes or edge cases discovered
+
+### 6.1 Primary Validation: FULL Linear B Validation of ALL 5 Approaches (BLOCKING)
+
+**BLOCKING:** Each of the 5 proposed approaches (A through E) MUST be individually validated on the FULL Linear B corpus before any approach is applied to Linear A.
+
+**Data:** Load the FULL combined LB corpus:
+- `pillar1/tests/fixtures/linear_b_test_corpus.json` (142 inscriptions, 448 words)
+- `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv` (supplementary)
+- Sign values from `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+
+**Procedure for EACH of the 5 approaches:**
+1. Run the approach on the FULL combined LB corpus
+2. Measure consonant ARI against LB's known consonant classes (t-series, k-series, d-series, etc.)
+3. Report:
+   - Consonant ARI with 95% bootstrap confidence interval
+   - Number of consonant classes produced
+   - Class size distribution (min, max, median, std)
+   - Any degenerate behavior (mega-classes containing > 30% of signs)
+   - Per-consonant-row recall (which rows were correctly recovered?)
+
+**Comparative evaluation (BLOCKING):** After running all 5 approaches:
+1. Rank all 5 by consonant ARI on the FULL LB corpus
+2. Report a comparison table: Approach | ARI | n_classes | max_class_share | degenerate?
+3. The WINNING approach must achieve consonant ARI >= 0.50 on the FULL LB corpus
+4. If no approach achieves ARI >= 0.50, the best-performing approach may still proceed but with a documented limitation
+
+**Non-degradation test (BLOCKING):** After selecting the winning approach:
+1. Run the winning approach on the Linear A corpus
+2. Compare the resulting consonant ARI against the current P1 grid (consonant ARI = 0.615)
+3. The fix must NOT degrade the existing consonant ARI below 0.55
+4. If the fix degrades consonant ARI, it fails this gate and must not be deployed
+
+### 6.2 Null Test: Shuffled Corpus (BLOCKING)
+
+Run the winning approach on a shuffled version of the FULL combined LB corpus:
+1. Randomly permute sign sequences within each word (destroying positional structure)
+2. Run consonant clustering on the shuffled corpus
+3. Measure consonant ARI against LB ground truth
+
+**Pass criterion:** Consonant ARI on shuffled corpus must be < 0.05 (random-level).
+**BLOCKING:** If the approach finds consonant structure in random data, it is broken and must not proceed.
+
+### 6.3 Leave-One-Out Cross-Validation (for Approach D specifically)
 
 Because Approach D uses LB values as input, the standard ARI validation becomes circular. Instead:
 
-1. For each of the ~20 LB signs that appear in the alternation graph:
+1. For EACH of the ~20 LB signs that appear in the alternation graph (not a subset):
    a. Remove it from the LB anchor set
    b. Run consonant classification using the remaining LB signs as seeds
    c. Check if the held-out sign is assigned to the correct consonant class
 2. Report leave-one-out accuracy and confusion matrix.
+3. Report which consonant rows are hardest to recover.
 
 **Target:** >= 70% leave-one-out accuracy.
 
-### 6.2 Secondary Validation: Downstream Impact
+### 6.4 Secondary Validation: Downstream Impact
 
 The real test is whether improved consonant discrimination enables better cognate matching:
 
@@ -336,7 +399,7 @@ The real test is whether improved consonant discrimination enables better cognat
 
 **Target:** >= 50% of assigned signs constrained to <= 5 readings. >= 10 new fully-constrained P2 stems.
 
-### 6.3 Tertiary Validation: Structural Coherence
+### 6.5 Tertiary Validation: Structural Coherence
 
 1. Dead vowel test: same-vowel consecutive pair rate should still be significant (currently p=1.6e-5).
 2. Phonotactic coherence: forbidden bigrams should still be detected.

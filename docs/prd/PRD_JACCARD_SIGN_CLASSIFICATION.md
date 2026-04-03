@@ -219,40 +219,89 @@ Signs below these thresholds are excluded from clustering and marked "insufficie
 
 ## 4. Validation Plan
 
-### 4.1 Known-Answer Test: Linear B
+### Validation Protocol
+
+**BLOCKING REQUIREMENT:** No method may be applied to Linear A until it passes
+ALL validation gates below on known-answer corpora. A "smoke test" on 5-10
+entries is NOT sufficient. Each gate requires a FULL-CORPUS run.
+
+**Data sources for validation:**
+- Linear B corpus: `pillar1/tests/fixtures/linear_b_test_corpus.json` (primary)
+- Linear B HF data: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\` (supplementary -- MUST be included for full-corpus coverage)
+- Linear B sign values: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+- Latin test corpus: `pillar2/tests/fixtures/latin_cv_corpus.json`
+- Additional corpora: invoke `data-extraction` skill if needed (follow 7-step adversarial pipeline)
+
+**Reporting:** Each validation run must report:
+1. Corpus size (inscriptions, words, unique signs)
+2. Full metric (ARI, precision@k, F1) with confidence interval
+3. Comparison to null baseline (shuffled corpus)
+4. Any failure modes or edge cases discovered
+
+### 4.1 Known-Answer Test: FULL Linear B Corpus (BLOCKING)
 
 Linear B is the ideal validation corpus because:
 - The phonological system is fully known (5 vowels, ~15 consonant series)
 - The script is closely related to Linear A (shares many signs)
 - A test corpus exists: `pillar1/tests/fixtures/linear_b_test_corpus.json` (142 inscriptions, 448 words, 56 unique signs)
+- A supplementary HF dataset exists: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv`
+
+**IMPORTANT: This must be a FULL-CORPUS run.** Both the test corpus AND the HF supplementary data must be loaded and deduplicated. Running on a 5-10 word subset is NOT acceptable.
 
 **Procedure:**
-1. Run the full Jaccard classification pipeline on the LB test corpus
-2. Compare discovered consonant series against known LB consonant rows using ARI
-3. Compare discovered vowel classes against known LB vowel columns using ARI
-4. Report precision/recall/F1 per consonant series and per vowel class
+1. Load the FULL LB corpus: combine `pillar1/tests/fixtures/linear_b_test_corpus.json` AND `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv` using the deduplication function from `entropy_vowel_analysis.py`
+2. Run LEFT-context Jaccard (J_left) on ALL LB syllabograms in the combined corpus
+3. Cluster to discover consonant series
+4. Compare discovered consonant series against known LB consonant rows using ARI
+5. Compare discovered vowel classes against known LB vowel columns using ARI
+6. Report precision/recall/F1 per consonant series and per vowel class
 
-**Ground truth for LB:** From the sign inventory in the test corpus:
+**Consonant series ground truth (must recover these):**
+The method must recover LB's known consonant series with ARI >= 0.30. Specifically, the following series must be identified as distinct clusters:
+- t-series: ta, te, ti, to, tu (5 signs)
+- k-series: ka, ke, ki, ko, ku (5 signs)
+- r-series: ra, re, ri, ro, ru (5+ signs)
+- n-series: na, ne, ni, no, nu (5 signs)
+- s-series: sa, se, si, so, su (4-5 signs)
+At minimum, 3 of these 5 major series must be recovered as distinct clusters.
+
+**Ground truth for LB (full):** From the sign inventory:
 - Vowels: a, e, i, o, u (5 signs)
-- Consonant series (examples): d-series (da, de, di, do, du), k-series (ka, ke, ki, ko, ku), n-series (na, ne, ni, no, nu), p-series (pa, pe, pi, po, pu), r-series (ra, re, ri, ro, ru), s-series (sa, se, si, so, su), t-series (ta, te, ti, to, tu), etc.
+- Consonant series: d-series (da, de, di, do, du), k-series (ka, ke, ki, ko, ku), n-series (na, ne, ni, no, nu), p-series (pa, pe, pi, po, pu), r-series (ra, re, ri, ro, ru), s-series (sa, se, si, so, su), t-series (ta, te, ti, to, tu), m-series (ma, me, mi, mo, mu), j-series (ja, je, jo), w-series (wa, we, wi, wo), q-series (qa, qe), z-series (za, ze)
 
 **Expected challenges:**
-- LB corpus is only 1,249 tokens with 56 unique signs -- some signs will have too few bigrams for reliable Jaccard
+- LB corpus is only 1,249 tokens with 56 unique signs -- some signs will have too few bigrams for reliable Jaccard. The HF supplementary data mitigates this.
 - Some consonant series may be underrepresented (e.g., z-series has very few tokens)
 - The dead vowel convention in Mycenaean Greek is strong, which helps right-context Jaccard but may not be universal
 
-### 4.2 Supplementary LB Data
+### 4.2 Second Language Test: Cypriot Syllabary or Synthetic CV Corpus (BLOCKING)
 
-To improve the LB validation, also load the HF dataset:
-- `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv` -- additional Linear B words
-- Combine with the test corpus using the deduplication function from `entropy_vowel_analysis.py`
+**Rationale:** A single validation corpus (Linear B) is insufficient. The method must demonstrate generalization on at least one additional CV syllabary.
 
-### 4.3 Null Test: Shuffled Corpus
+**Option A -- Cypriot Syllabary (preferred):**
+If Cypriot Greek syllabary data is available locally at `C:\Users\alvin\hf-ancient-scripts\data\` or can be downloaded:
+1. Invoke `data-extraction` skill. Source: Unicode CLDR Cypriot entries, Wiktionary Cypriot Greek inscriptions, or the Edalion tablet inscription. Follow the 7-step adversarial pipeline.
+2. Run LEFT-context Jaccard on the Cypriot corpus
+3. Compare against known Cypriot syllabary consonant/vowel structure
+4. Report ARI for both consonant and vowel classification
 
-Randomly permute signs within each word (destroying all positional structure) and run the pipeline. Expected:
+**Option B -- Japanese hiragana as synthetic CV corpus (fallback):**
+If Cypriot data is not available:
+1. Construct a synthetic CV corpus from Japanese hiragana mapped to CV structure. Source: frequency-ranked Japanese word list from Wiktionary or BCCWJ corpus.
+2. Map each hiragana character to its CV decomposition (ka, ki, ku, ke, ko -> k-series, etc.)
+3. Run LEFT-context Jaccard and verify consonant series recovery
+4. Report ARI
+
+**Pass criterion:** Consonant ARI >= 0.20 on the second language (lower threshold acceptable due to different script/language properties).
+
+### 4.3 Null Test: Shuffled Corpus (BLOCKING)
+
+Randomly permute signs within each word (destroying all positional structure) and run the pipeline on the FULL LB corpus. Expected:
 - All Jaccard similarities converge toward a uniform baseline
 - No meaningful clusters emerge
-- ARI ~ 0.0 against known LB grid
+- ARI ~ 0.0 against known LB grid (must be < 0.05)
+
+**BLOCKING:** If the shuffled corpus produces ARI >= 0.05, the method is detecting an artifact, not phonological structure. The method MUST NOT proceed to Linear A until this test passes.
 
 This confirms the method detects real structure, not frequency artifacts.
 
@@ -301,9 +350,11 @@ Produce a JSON file matching the P1 output schema (see `docs/prd/PRD_PILLAR_1_PH
 
 ## 6. Go/No-Go Gates
 
-### Gate 1: Left-Context Jaccard Recovers at Least 3 LB Consonant Series (CRITICAL)
+### Gate 1: FULL-CORPUS Left-Context Jaccard Recovers at Least 3 LB Consonant Series (CRITICAL -- BLOCKING)
 
-**Test:** On the combined LB corpus, compute J_left and cluster. At least 3 of the ~15 known consonant series must be recovered as distinct clusters (ARI contribution > 0 from those 3).
+**Test:** On the FULL combined LB corpus (test corpus + HF supplementary data, deduplicated), compute J_left and cluster. At least 3 of the ~15 known consonant series must be recovered as distinct clusters (ARI contribution > 0 from those 3).
+
+**BLOCKING:** This gate MUST use the FULL combined corpus. A run on a subset or a 5-word sample does NOT satisfy this gate. The validation report must state the total number of inscriptions, words, and unique signs processed.
 
 **Threshold:** Consonant ARI >= 0.30 on LB.
 
@@ -312,17 +363,27 @@ Produce a JSON file matching the P1 output schema (see `docs/prd/PRD_PILLAR_1_PH
 - Try combining J_left with alternation evidence from P1
 - If ARI < 0.10 after all variants: KILL this approach for consonant classification (vowel classification via J_right may still work)
 
+### Gate 1b: Second Language Validation (BLOCKING)
+
+**Test:** Run the LEFT-context Jaccard pipeline on a second CV syllabary corpus (Cypriot Greek or synthetic Japanese hiragana -- see Section 4.2). The method must produce consonant ARI >= 0.20 on the second language.
+
+**BLOCKING:** Method does NOT proceed to Linear A until this gate passes. If no second language corpus is available locally, invoke `data-extraction` skill to obtain one before proceeding.
+
+**On failure:** Method is overfitting to Linear B's specific distributional properties. Investigate whether the failure is corpus-size-related (second corpus too small) or structural (the method exploits LB-specific phonotactic patterns).
+
 ### Gate 2: J_right Matches or Exceeds Existing Vowel Identification (HIGH)
 
-**Test:** On LB, J_right-based vowel classification achieves F1 >= 80% (matching the existing cliquishness method from `entropy_vowel_analysis.py`).
+**Test:** On the FULL combined LB corpus, J_right-based vowel classification achieves F1 >= 80% (matching the existing cliquishness method from `entropy_vowel_analysis.py`).
 
 **Threshold:** Vowel F1 >= 80% on LB.
 
 **On failure:** J_right alone is weaker than the full-context cliquishness. Use J_right as supplementary evidence only, keep the existing vowel method as primary.
 
-### Gate 3: Null Test Passes (CRITICAL)
+### Gate 3: Null Test Passes (CRITICAL -- BLOCKING)
 
-**Test:** Shuffled corpus produces no meaningful clusters (ARI < 0.05).
+**Test:** Shuffled FULL LB corpus produces no meaningful clusters (ARI < 0.05).
+
+**BLOCKING:** Must run on the FULL corpus (not a subset). If ARI >= 0.05, the method detects an artifact and MUST NOT be applied to Linear A.
 
 **On failure:** The method is detecting an artifact (likely frequency-based, not distributional). Debug by checking whether high-frequency signs cluster together regardless of phonological class.
 

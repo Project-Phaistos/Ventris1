@@ -355,19 +355,82 @@ Normalize to get a posterior distribution over the 20 grid cells.
 
 ## 7. Go/No-Go Gates
 
-### Gate 1: Linear B Suffix Validation (CRITICAL)
+### Validation Protocol
 
-**Test:** Apply the suffix constraint extraction algorithm to a Linear B corpus (where suffix phonetic values are KNOWN) and check whether the extracted same-consonant constraints are correct.
+**BLOCKING REQUIREMENT:** No method may be applied to Linear A until it passes
+ALL validation gates below on known-answer corpora. A "smoke test" on 5-10
+entries is NOT sufficient. Each gate requires a FULL-CORPUS run.
 
-**Data source:** Linear B has well-documented inflectional suffixes. Key examples from Mycenaean Greek:
+**Data sources for validation:**
+- Linear B corpus: `pillar1/tests/fixtures/linear_b_test_corpus.json` (primary)
+- Linear B HF data: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\` (supplementary)
+- Linear B sign values: `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+- Latin test corpus: `pillar2/tests/fixtures/latin_cv_corpus.json`
+- Additional corpora: invoke `data-extraction` skill if needed (follow 7-step adversarial pipeline)
+
+**Reporting:** Each validation run must report:
+1. Corpus size (inscriptions, words, unique signs)
+2. Full metric (ARI, precision@k, F1) with confidence interval
+3. Comparison to null baseline (shuffled corpus)
+4. Any failure modes or edge cases discovered
+
+### Gate 1: FULL Linear B Suffix Validation (CRITICAL -- BLOCKING)
+
+**Test:** Apply the suffix constraint extraction algorithm to the FULL Linear B corpus (where suffix phonetic values are KNOWN) and check whether the extracted same-consonant constraints are correct.
+
+**IMPORTANT: This must be a FULL-CORPUS run.** Load the complete Linear B corpus by combining:
+- `pillar1/tests/fixtures/linear_b_test_corpus.json` (142 inscriptions, 448 words)
+- `C:\Users\alvin\hf-ancient-scripts\data\linear_b\linear_b_words.tsv` (supplementary)
+- Sign values from `C:\Users\alvin\hf-ancient-scripts\data\linear_b\sign_to_ipa.json`
+
+A run on a 5-10 word subset is NOT acceptable.
+
+**Data source:** Linear B has well-documented inflectional suffixes and declension/conjugation paradigms. Key examples from Mycenaean Greek:
 
 - Nominative -o (AB70), genitive -o-jo (AB70-AB36), dative -o-i (AB70-AB28): these three single-sign suffixes alternate in the same paradigm. AB70 (/o/) is a pure vowel, so these three slots do NOT share a consonant -- they share a vowel. The algorithm must detect this correctly (same-vowel constraint, not same-consonant).
 - First declension: -a (AB08), -a-o (AB08-AB70), -a-i (AB08-AB28): AB08 is a pure vowel. Same pattern.
 - Third declension: -e (AB38), -e-o (AB38-AB70): AB38 is a pure vowel.
+- t-series suffix alternation: the method must correctly identify that ta/te/ti/to/tu share consonant /t/ from suffix alternation evidence.
+- k-series: similarly, ka/ke/ki/ko/ku must be grouped.
 
-**Expected result:** The algorithm correctly identifies pure vowel suffixes as same-VOWEL alternation sets (not same-consonant). For CV suffixes (e.g., -ti vs -to), the algorithm correctly identifies them as same-consonant sets. Agreement with known Linear B phonetic values >= 80%.
+**Quantitative gate -- consonant series recovery (BLOCKING):**
+The method must correctly identify same-consonant constraints from suffix alternation for at least 5 of the following consonant series in Linear B:
+- t-series (ta, te, ti, to, tu)
+- k-series (ka, ke, ki, ko, ku)
+- r-series (ra, re, ri, ro, ru)
+- n-series (na, ne, ni, no, nu)
+- s-series (sa, se, si, so, su)
+- p-series (pa, pe, pi, po, pu)
+- d-series (da, de, di, do, du)
+- m-series (ma, me, mi, mo, mu)
+
+For each testable suffix position, the suffix-derived consonant constraints must agree with LB ground truth at >= 80% accuracy.
+
+**Expected result:** The algorithm correctly identifies pure vowel suffixes as same-VOWEL alternation sets (not same-consonant). For CV suffixes (e.g., -ti vs -to), the algorithm correctly identifies them as same-consonant sets. Overall agreement with known Linear B phonetic values >= 80%.
+
+**BLOCKING:** This gate must pass before the method is applied to Linear A. Report the exact accuracy, confidence interval, and per-series breakdown.
 
 **On failure:** The algorithm is confusing vowel alternation with consonant alternation. Root cause: not accounting for pure vowel signs identified by P1. Fix: exclude pure vowel signs from same-consonant constraint sets; create a separate "vowel suffix" category.
+
+### Gate 1b: Latin Morphological Test (SHOULD PASS)
+
+**Test:** Run the suffix constraint extraction on the Latin CV corpus at `pillar2/tests/fixtures/latin_cv_corpus.json`.
+
+Latin has well-known declension classes (1st through 5th declension) and conjugation paradigms. The method should:
+1. Detect suffix alternation sets corresponding to Latin declension endings
+2. Correctly group endings that share consonant structure
+3. Report accuracy against known Latin morphological paradigms
+
+**Pass criterion:** Suffix-derived constraints agree with known Latin consonant structure at >= 70% accuracy.
+
+**On failure:** If Latin test data is insufficient (too few words or missing paradigm coverage), document the limitation and note this as a validation gap. If the data is sufficient but the method fails, investigate whether the failure is language-specific (Latin's richer morphology) or algorithmic.
+
+### Gate 1c: LB Paradigm Ground Truth (invoke data-extraction if needed)
+
+If detailed Linear B morphological paradigm ground truth data (complete paradigm tables with all attested forms per stem) is not available locally:
+- Invoke `data-extraction` skill for Linear B paradigm tables from academic sources (e.g., Ventris & Chadwick 1973 "Documents in Mycenaean Greek", Palmer 1963 "The Interpretation of Mycenaean Greek Texts").
+- Follow the 7-step adversarial pipeline.
+- Store downloaded data at `pillar1/tests/fixtures/linear_b_paradigm_tables.json`.
 
 ### Gate 2: Constraint-P1 Agreement (HIGH)
 
