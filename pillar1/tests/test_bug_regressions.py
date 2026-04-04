@@ -385,15 +385,16 @@ class TestDiffLen2PairsWeightedHalf:
     PRD, but the old code gave them weight 1.0 in the affinity matrix."""
 
     def test_diff_len_2_pairs_weighted_half(self) -> None:
-        """Create a corpus where a pair X-Y alternates under one prefix
-        via diff_len=2 (two-sign suffix difference). The weighted_stems
-        for that pair should be 0.5, not 1.0.
+        """Create a corpus where a final-position pair M-N alternates under
+        one prefix via diff_len=2 (two-sign suffix difference). The
+        weighted_stems for that pair should be 0.5, not 1.0.
 
         Words:
             ["A", "X", "M"]  and  ["A", "Y", "N"]
             share prefix "A" but differ in the last 2 signs.
-            With max_suffix_diff_length=2, this creates pairs {X,Y} and {M,N}
-            each with weight 0.5.
+            With max_suffix_diff_length=2, only the FINAL-position pair {M,N}
+            is extracted (weight 0.5). The penultimate pair {X,Y} is a stem
+            difference, not a suffix alternation, and is NOT extracted.
         """
         corpus = _make_synthetic_corpus([
             ["A", "X", "M"],
@@ -408,21 +409,33 @@ class TestDiffLen2PairsWeightedHalf:
             alternation_alpha=1.0,
         )
 
-        # Find the X-Y pair (from diff_len=2 matching on the penultimate sign)
+        # Find the M-N pair (final position from diff_len=2)
+        mn_pair = None
+        for pair in result.all_pairs:
+            if {pair.sign_a, pair.sign_b} == {"M", "N"}:
+                mn_pair = pair
+                break
+
+        assert mn_pair is not None, (
+            f"Expected to find M-N pair from diff_len=2 final position. "
+            f"All pairs: {[(p.sign_a, p.sign_b) for p in result.all_pairs]}"
+        )
+
+        assert mn_pair.weighted_stems == pytest.approx(0.5, abs=1e-10), (
+            f"weighted_stems={mn_pair.weighted_stems}, expected 0.5. "
+            f"diff_len=2 pairs should have weight 0.5, not 1.0."
+        )
+
+        # Penultimate pair X-Y should NOT be extracted (stem position, not suffix)
         xy_pair = None
         for pair in result.all_pairs:
             if {pair.sign_a, pair.sign_b} == {"X", "Y"}:
                 xy_pair = pair
                 break
 
-        assert xy_pair is not None, (
-            f"Expected to find X-Y pair from diff_len=2. "
-            f"All pairs: {[(p.sign_a, p.sign_b) for p in result.all_pairs]}"
-        )
-
-        assert xy_pair.weighted_stems == pytest.approx(0.5, abs=1e-10), (
-            f"weighted_stems={xy_pair.weighted_stems}, expected 0.5. "
-            f"diff_len=2 pairs should have weight 0.5, not 1.0."
+        assert xy_pair is None, (
+            f"Penultimate pair X-Y should NOT be extracted from diff_len=2. "
+            f"Only final-position pairs are valid suffix alternations."
         )
 
     def test_diff_len_1_pairs_weighted_full(self) -> None:
@@ -463,18 +476,22 @@ class TestDiffLen2PairsWeightedHalf:
 
         Create two separate alternation pairs:
         - P-Q from diff_len=1 only (weight 1.0 per stem)
-        - X-Y from diff_len=2 only (weight 0.5 per stem)
+        - M-N from diff_len=2 final position only (weight 0.5 per stem)
 
         If the affinity matrix correctly uses weighted_stems, then the
-        affinity entry for P-Q should be 1.0 and for X-Y should be 0.5.
+        affinity entry for P-Q should be 1.0 and for M-N should be 0.5.
         With the old bug (using independent_stems), both would be 1.0.
+
+        NOTE: diff_len=2 now only extracts the FINAL-position pair (M vs N),
+        not the penultimate pair (X vs Y), which is a stem-position difference.
         """
         corpus = _make_synthetic_corpus([
             # diff_len=1: prefix "A", P vs Q (weight 1.0)
             ["A", "P"],
             ["A", "Q"],
             # diff_len=2: prefix "B", suffix differs in both positions.
-            # penultimate: X vs Y (weight 0.5), last: M vs N (weight 0.5)
+            # Only final position M vs N is extracted (weight 0.5).
+            # Penultimate X vs Y is a stem difference, NOT extracted.
             ["B", "X", "M"],
             ["B", "Y", "N"],
         ])
@@ -488,23 +505,23 @@ class TestDiffLen2PairsWeightedHalf:
         )
 
         pq_pair = None
-        xy_pair = None
+        mn_pair = None
         for pair in result.all_pairs:
             if {pair.sign_a, pair.sign_b} == {"P", "Q"}:
                 pq_pair = pair
-            if {pair.sign_a, pair.sign_b} == {"X", "Y"}:
-                xy_pair = pair
+            if {pair.sign_a, pair.sign_b} == {"M", "N"}:
+                mn_pair = pair
 
         assert pq_pair is not None, "Expected to find P-Q pair"
-        assert xy_pair is not None, "Expected to find X-Y pair"
+        assert mn_pair is not None, "Expected to find M-N pair (final position from diff_len=2)"
 
         # P-Q from diff_len=1: 1 stem at weight 1.0
         assert pq_pair.weighted_stems == pytest.approx(1.0, abs=1e-10), (
             f"P-Q weighted_stems={pq_pair.weighted_stems}, expected 1.0"
         )
 
-        # X-Y from diff_len=2: 1 stem at weight 0.5
-        assert xy_pair.weighted_stems == pytest.approx(0.5, abs=1e-10), (
-            f"X-Y weighted_stems={xy_pair.weighted_stems}, expected 0.5 "
+        # M-N from diff_len=2 final position: 1 stem at weight 0.5
+        assert mn_pair.weighted_stems == pytest.approx(0.5, abs=1e-10), (
+            f"M-N weighted_stems={mn_pair.weighted_stems}, expected 0.5 "
             f"(diff_len=2 pairs should have weight 0.5)"
         )

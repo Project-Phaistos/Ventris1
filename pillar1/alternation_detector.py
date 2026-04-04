@@ -50,7 +50,7 @@ class AlternationResult:
 
 def detect_alternations(
     corpus: CorpusData,
-    min_shared_prefix_length: int = 1,
+    min_shared_prefix_length: int = 2,
     max_suffix_diff_length: int = 2,
     min_independent_stems: int = 2,
     alternation_alpha: float = 0.01,
@@ -58,16 +58,27 @@ def detect_alternations(
     """Detect inflectional alternation pairs (Kober's triplets).
 
     Algorithm (PRD Section 5.3):
-    1. Find all word pairs sharing a prefix of length >= min_shared_prefix_length,
+    1. Find all sign-group pairs sharing a prefix of length >= min_shared_prefix_length,
        differing in the last max_suffix_diff_length signs.
     2. Count independent stems per alternation pair.
     3. Filter by significance (Poisson test vs. chance co-occurrence).
     4. Build same-consonant affinity matrix.
 
+    NOTE (2026-04-03): Default min_shared_prefix_length raised from 1 to 2.
+    With prefix=1, 2-sign groups contribute "alternation" evidence when they are
+    just different sign-groups sharing an initial syllable (not a stem). This
+    produced 610 pairs indistinguishable from a shuffled corpus (609 mean).
+    With prefix=2, sign-groups must be >= 3 signs to contribute evidence,
+    ensuring the shared prefix is at least a 2-sign stem.
+
     Args:
         corpus: Processed corpus data.
         min_shared_prefix_length: Minimum shared prefix length in signs.
+            Default 2 requires >= 3-sign groups for evidence (genuine stems).
+            Use 1 for legacy behavior (includes 2-sign groups, mostly artifacts).
         max_suffix_diff_length: Maximum differing suffix length (1 or 2).
+            When 2, only the FINAL-position pair is extracted (penultimate
+            position differences are stem changes, not suffix alternations).
         min_independent_stems: Minimum independent stems for a pair to be retained.
         alternation_alpha: Significance level for pair filtering.
 
@@ -145,21 +156,15 @@ def detect_alternations(
                                 "-".join(w_b),
                             ))
                     elif diff_len == 2:
-                        # Two sign difference — generates two pairs at weight 0.5
-                        a1, a2 = w_a[-2], w_a[-1]
-                        b1, b2 = w_b[-2], w_b[-1]
+                        # Two sign difference — only the FINAL position pair
+                        # is a genuine suffix alternation. The penultimate
+                        # pair (a1 vs b1) is a stem-position difference, NOT
+                        # suffix alternation evidence.
+                        # (2026-04-03 fix: previously both pairs were kept,
+                        # inflating pair count with stem-position artifacts.)
+                        a2 = w_a[-1]
+                        b2 = w_b[-1]
 
-                        if a1 != b1:
-                            pk1 = frozenset({a1, b1})
-                            pair_stems[pk1].add(prefix)
-                            pair_stem_weights[pk1][prefix] = max(
-                                pair_stem_weights[pk1][prefix], weight,
-                            )
-                            pair_examples[pk1].append((
-                                "-".join(prefix),
-                                "-".join(w_a),
-                                "-".join(w_b),
-                            ))
                         if a2 != b2:
                             pk2 = frozenset({a2, b2})
                             pair_stems[pk2].add(prefix)
