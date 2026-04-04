@@ -221,3 +221,293 @@ def test_minimum_stems_filter_works() -> None:
     assert xy not in sig_pairs, (
         f"X/Y pair (2 stems) should NOT be significant with min_independent_stems=3"
     )
+
+
+# ── Fix 1 regression: min_prefix=1 (legacy) still yields high pair count ──
+
+def test_legacy_prefix1_yields_many_pairs(
+    corpus_data: CorpusData,
+) -> None:
+    """With min_shared_prefix_length=1 (legacy), the real corpus should
+    still yield hundreds of pairs (proving old behavior is preserved as
+    an option, even though it is dominated by artifacts)."""
+    result = detect_alternations(
+        corpus_data,
+        min_shared_prefix_length=1,
+    )
+    # The old detector produced ~449 pairs (610 before the diff_len=2 fix).
+    # Require >= 200 to confirm old behavior is accessible.
+    assert result.total_significant_pairs >= 200, (
+        f"Legacy prefix=1 should yield >= 200 significant pairs, "
+        f"got {result.total_significant_pairs}"
+    )
+
+
+# ── Fix 1: Prefix length test ────────────────────────────────────────
+
+def test_prefix2_excludes_two_sign_words() -> None:
+    """With min_shared_prefix_length=2, 2-sign words must contribute
+    ZERO pairs. Only words with >= 3 signs can share a 2-sign prefix.
+
+    This is the core fix: 2-sign words sharing only an initial syllable
+    are NOT evidence of inflectional alternation."""
+    # Corpus with ONLY 2-sign words (different final signs sharing initial)
+    corpus_2sign = _make_synthetic_corpus([
+        ["A", "X"],
+        ["A", "Y"],
+        ["A", "Z"],
+        ["B", "X"],
+        ["B", "Y"],
+    ])
+    result = detect_alternations(
+        corpus_2sign,
+        min_shared_prefix_length=2,
+        min_independent_stems=1,
+        alternation_alpha=1.0,
+    )
+    assert len(result.all_pairs) == 0, (
+        f"With prefix=2, 2-sign words should contribute 0 pairs, "
+        f"got {len(result.all_pairs)}"
+    )
+
+    # But prefix=1 should find them
+    result_legacy = detect_alternations(
+        corpus_2sign,
+        min_shared_prefix_length=1,
+        min_independent_stems=1,
+        alternation_alpha=1.0,
+    )
+    assert len(result_legacy.all_pairs) > 0, (
+        "With prefix=1, 2-sign words should produce alternation pairs"
+    )
+
+
+def test_prefix2_keeps_three_sign_words() -> None:
+    """With min_shared_prefix_length=2, 3-sign words sharing a 2-sign
+    prefix should still produce alternation pairs."""
+    corpus_3sign = _make_synthetic_corpus([
+        ["A", "B", "X"],
+        ["A", "B", "Y"],
+        ["A", "B", "Z"],
+    ])
+    result = detect_alternations(
+        corpus_3sign,
+        min_shared_prefix_length=2,
+        min_independent_stems=1,
+        alternation_alpha=1.0,
+    )
+    detected = {frozenset({p.sign_a, p.sign_b}) for p in result.all_pairs}
+    expected = {
+        frozenset({"X", "Y"}),
+        frozenset({"X", "Z"}),
+        frozenset({"Y", "Z"}),
+    }
+    assert expected.issubset(detected), (
+        f"3-sign words with 2-sign prefix should produce pairs. "
+        f"Expected {expected}, got {detected}"
+    )
+
+
+# ── Fix 2: diff_len=2 final-position only ────────────────────────────
+
+def test_diff_len2_only_extracts_final_position() -> None:
+    """When two words differ in their last 2 signs, only the final-position
+    pair should be extracted. The penultimate pair is a stem difference,
+    not a suffix alternation.
+
+    For [A, B, X1, X2] vs [A, B, Y1, Y2]:
+      - (X2, Y2) should be detected (final position = suffix alternation)
+      - (X1, Y1) should NOT be detected (penultimate = stem difference)
+    """
+    corpus = _make_synthetic_corpus([
+        ["A", "B", "X1", "X2"],
+        ["A", "B", "Y1", "Y2"],
+    ])
+    result = detect_alternations(
+        corpus,
+        min_shared_prefix_length=1,
+        max_suffix_diff_length=2,
+        min_independent_stems=1,
+        alternation_alpha=1.0,
+    )
+    detected = {frozenset({p.sign_a, p.sign_b}) for p in result.all_pairs}
+
+    # Final-position pair should be present
+    final_pair = frozenset({"X2", "Y2"})
+    assert final_pair in detected, (
+        f"Final-position pair {final_pair} should be detected, got {detected}"
+    )
+
+    # Penultimate pair should NOT be present
+    penult_pair = frozenset({"X1", "Y1"})
+    assert penult_pair not in detected, (
+        f"Penultimate pair {penult_pair} should NOT be detected (stem position, "
+        f"not suffix alternation)"
+    )
+
+
+# ── Fix 3: Permutation null test ─────────────────────────────────────
+
+def test_shuffled_corpus_produces_fewer_pairs(
+    corpus_data: CorpusData,
+) -> None:
+    """The fixed detector must produce significantly more pairs on the
+    real corpus than on shuffled copies (where sign order within
+    sign-groups is randomized, destroying all alternation structure).
+
+    Gate: N_original > 2 * mean(N_shuffled)
+
+    This is the KEY validation: the old detector (prefix=1) failed this
+    test entirely (610 original vs 609 mean shuffled = 1.0x ratio).
+    """
+    import random
+    from pillar1.corpus_loader import (
+        PositionalRecord, BigramRecord, Inscription, Word, SignToken,
+    )
+
+    # Original
+    original = detect_alternations(corpus_data)
+    n_original = original.total_significant_pairs
+
+    # Build shuffled corpora
+    def _shuffle_corpus(corpus: CorpusData, seed: int) -> CorpusData:
+        rng = random.Random(seed)
+        new_inscriptions = []
+        all_pos: List[PositionalRecord] = []
+        all_bi: List[BigramRecord] = []
+
+        for insc in corpus.inscriptions:
+            new_words = []
+            for word in insc.words:
+                sids = list(word.sign_ids)
+                if len(sids) >= 2:
+                    rng.shuffle(sids)
+                tokens = [
+                    SignToken(sign_id=s, sign_type="syllabogram", reading=s.lower())
+                    for s in sids
+                ]
+                new_word = Word(
+                    signs=tokens, has_damage=word.has_damage,
+                    inscription_id=word.inscription_id, word_index=word.word_index,
+                )
+                new_words.append(new_word)
+
+                syllib = new_word.sign_ids
+                for pi, sid in enumerate(syllib):
+                    if len(syllib) == 1:
+                        pos = "singleton"
+                    elif pi == 0:
+                        pos = "initial"
+                    elif pi == len(syllib) - 1:
+                        pos = "final"
+                    else:
+                        pos = "medial"
+                    all_pos.append(PositionalRecord(
+                        sign_id=sid, position=pos,
+                        word_sign_ids=syllib, inscription_id=insc.id,
+                    ))
+                if len(syllib) >= 2:
+                    for j in range(len(syllib) - 1):
+                        all_bi.append(BigramRecord(
+                            sign_i=syllib[j], sign_j=syllib[j + 1],
+                            position_in_word=j, word_sign_ids=syllib,
+                            inscription_id=insc.id,
+                        ))
+            new_inscriptions.append(Inscription(
+                id=insc.id, type=insc.type, site=insc.site, words=new_words,
+            ))
+
+        return CorpusData(
+            inscriptions=new_inscriptions,
+            positional_records=all_pos,
+            bigram_records=all_bi,
+            sign_inventory=corpus.sign_inventory,
+            corpus_hash="shuffled",
+            total_inscriptions=corpus.total_inscriptions,
+            total_words=corpus.total_words,
+            total_syllabogram_tokens=corpus.total_syllabogram_tokens,
+            unique_syllabograms=corpus.unique_syllabograms,
+            words_used_positional=corpus.words_used_positional,
+            words_used_bigram=corpus.words_used_bigram,
+        )
+
+    shuffled_counts = []
+    for seed in range(5):
+        sc = _shuffle_corpus(corpus_data, seed)
+        sr = detect_alternations(sc)
+        shuffled_counts.append(sr.total_significant_pairs)
+
+    mean_shuffled = sum(shuffled_counts) / len(shuffled_counts)
+
+    # Gate: original must be at least 2x mean shuffled
+    assert n_original > 2 * mean_shuffled, (
+        f"Permutation null test FAILED: original={n_original} pairs, "
+        f"mean_shuffled={mean_shuffled:.1f} pairs, "
+        f"ratio={n_original / mean_shuffled:.2f}x (need > 2.0x). "
+        f"Shuffled counts: {shuffled_counts}. "
+        f"The detector is still measuring frequency artifacts, not alternation."
+    )
+
+
+# ── Fix 4: Consonant row purity ──────────────────────────────────────
+
+def test_consonant_row_purity_improved(
+    corpus_data: CorpusData,
+) -> None:
+    """Consonant row purity of the fixed detector's significant pairs
+    must exceed 30% when checked against LB ground truth.
+
+    The old detector achieved only 7.9% purity (worse than random).
+    With the fixes, the remaining pairs are more likely to be genuine
+    Kober alternations (same consonant, different vowel).
+
+    Note: If there are fewer than 2 testable pairs (both signs have
+    known LB values), the test is skipped — too few pairs to measure
+    purity reliably.
+    """
+    import json
+    from pathlib import Path
+
+    result = detect_alternations(corpus_data)
+
+    # Load LB ground truth
+    fixture_path = Path(__file__).parent / "fixtures" / "linear_b_sign_to_ipa.json"
+    with open(fixture_path, "r", encoding="utf-8") as f:
+        lb_ipa = json.load(f)
+
+    def _get_consonant(reading: str) -> str | None:
+        vowels = {"a", "e", "i", "o", "u"}
+        if reading in vowels:
+            return ""
+        clean = reading.rstrip("0123456789")
+        if len(clean) >= 2 and clean[-1] in vowels:
+            return clean[:-1]
+        return None
+
+    lb_consonant = {}
+    for ab, reading in lb_ipa.items():
+        c = _get_consonant(reading)
+        if c is not None:
+            lb_consonant[ab] = c
+
+    n_pure = 0
+    n_testable = 0
+    for p in result.significant_pairs:
+        c_a = lb_consonant.get(p.sign_a)
+        c_b = lb_consonant.get(p.sign_b)
+        if c_a is not None and c_b is not None:
+            n_testable += 1
+            if c_a == c_b:
+                n_pure += 1
+
+    if n_testable < 2:
+        pytest.skip(
+            f"Only {n_testable} testable pair(s) — too few for purity measurement"
+        )
+
+    purity = n_pure / n_testable
+    assert purity > 0.30, (
+        f"Consonant row purity {purity:.1%} ({n_pure}/{n_testable}) is below "
+        f"30% threshold. The old detector was at 7.9%. Purity should improve "
+        f"dramatically with the prefix-length and diff_len fixes."
+    )
