@@ -10,11 +10,15 @@ For each P2 stem with exactly 1 unknown syllable:
 6. If one reading yields significantly better matches, that constrains
    both the sign's identity and the cognate relationship.
 
+Uses two significance measures:
+  A) Per-query permutation null (100 perms, lexicon capped at 500 entries)
+  B) Cross-reading comparison: does one reading beat others consistently?
+
 Output:
-  - All (reading, language, match, gloss, p-value) results per stem
-  - Significant matches (p <= 0.05) highlighted
+  - Per-stem results with permutation p-values
+  - Significant matches (p <= 0.05)
   - Self-consistency: for each unknown sign, do different stems agree?
-  - Summary: how many stems produced significant matches? Which languages?
+  - Summary statistics
 """
 
 import csv
@@ -42,10 +46,16 @@ with open(PROJECT / "data" / "sigla_full_corpus.json", encoding="utf-8") as f:
     CORPUS = json.load(f)
 
 AB_TO_READING: dict[str, str] = {}
+_AB_CONFIDENCE: dict[str, str] = {}
+_TIER_PRIORITY = {"tier1": 0, "tier2": 1, "tier3_undeciphered": 2}
 for _reading, _info in CORPUS["sign_inventory"].items():
     if isinstance(_info, dict):
+        _conf = _info.get("confidence", "tier3_undeciphered")
         for _ab in _info.get("ab_codes", []):
-            AB_TO_READING[_ab] = _reading
+            _prev_conf = _AB_CONFIDENCE.get(_ab, "tier3_undeciphered")
+            if _TIER_PRIORITY.get(_conf, 2) <= _TIER_PRIORITY.get(_prev_conf, 2):
+                AB_TO_READING[_ab] = _reading
+                _AB_CONFIDENCE[_ab] = _conf
 
 with open(PROJECT / "results" / "pillar1_v5_output.json") as f:
     P1 = json.load(f)
@@ -60,10 +70,8 @@ for _a in P1["grid"]["assignments"]:
         _a["confidence"],
     )
 
-# Vowel class -> vowel letter (based on pure-vowel sign assignments)
 VC_TO_VOWEL = {0: "a", 1: "e", 2: "i", 3: "o", 4: "u"}
 
-# For each vowel class, collect consonant onsets from known signs in that cell
 CELL_CONSONANTS: dict[int, set[str]] = defaultdict(set)
 for _a in P1["grid"]["assignments"]:
     _sid = _a["sign_id"]
@@ -81,7 +89,6 @@ for _a in P1["grid"]["assignments"]:
 
 
 def candidate_readings(vowel_class: int) -> list[str]:
-    """Return possible CV syllable readings for a given vowel class."""
     vowel = VC_TO_VOWEL.get(vowel_class)
     if vowel is None:
         return []
@@ -91,30 +98,35 @@ def candidate_readings(vowel_class: int) -> list[str]:
 # ── Dolgopolsky sound classes ─────────────────────────────────────────────────
 
 DOLGOPOLSKY = {
-    "p": "P", "b": "P", "f": "P", "v": "P",
-    "t": "T", "d": "T", "θ": "T", "ð": "T",
+    "p": "P", "b": "P", "f": "P", "v": "P", "ɸ": "P", "β": "P",
+    "t": "T", "d": "T", "θ": "T", "ð": "T", "ɗ": "T", "ɖ": "T",
     "s": "S", "z": "S", "ʃ": "S", "ʒ": "S", "ʂ": "S", "ʐ": "S",
-    "k": "K", "g": "K", "x": "K", "ɣ": "K", "q": "K",
-    "m": "M",
-    "n": "N", "ɲ": "N", "ŋ": "N",
-    "l": "L", "ɬ": "L", "ɮ": "L",
-    "r": "R", "ɾ": "R", "ɽ": "R",
-    "w": "W",
-    "j": "J", "ʎ": "J",
-    "h": "H", "ɦ": "H", "ʔ": "H",
+    "c": "S", "ç": "S", "ɕ": "S", "ʑ": "S",
+    "k": "K", "g": "K", "ɡ": "K", "x": "K", "ɣ": "K", "q": "K",
+    "χ": "K", "ɢ": "K", "ʁ": "K",
+    "m": "M", "ɱ": "M",
+    "n": "N", "ɲ": "N", "ŋ": "N", "ɳ": "N", "ɴ": "N",
+    "l": "L", "ɬ": "L", "ɮ": "L", "ɭ": "L", "ʎ": "L",
+    "r": "R", "ɾ": "R", "ɽ": "R", "ɻ": "R",
+    "w": "W", "ʷ": "W",
+    "j": "J", "ʝ": "J",
+    "h": "H", "ɦ": "H", "ʔ": "H", "ʕ": "H", "ħ": "H", "ɧ": "H",
     "a": "V", "e": "V", "i": "V", "o": "V", "u": "V",
     "ə": "V", "ɛ": "V", "ɔ": "V", "ɪ": "V", "ʊ": "V",
     "æ": "V", "ɑ": "V", "ʌ": "V", "ɒ": "V",
+    "y": "V", "ø": "V", "œ": "V", "ɯ": "V", "ɨ": "V", "ʉ": "V",
+    "ɐ": "V", "ɵ": "V", "ɤ": "V",
 }
+
+# Diacritics/modifiers to strip before SCA mapping (length, aspiration, etc.)
+_SCA_STRIP = set("ːˑʰʱˤ̃̈̊ʼ̤̥̩̯̰ˠˁ̻̪̺̝̞̘̙̟̠̜̹̈̽ʲ͜͡")
 
 
 def ipa_to_sca(ipa: str) -> str:
-    """Convert IPA string to Dolgopolsky SCA encoding."""
-    return "".join(DOLGOPOLSKY.get(ch, "") for ch in ipa)
+    return "".join(DOLGOPOLSKY.get(ch, "") for ch in ipa if ch not in _SCA_STRIP)
 
 
 def normalized_edit_distance(s1: str, s2: str) -> float:
-    """Normalized Levenshtein distance in [0, 1]."""
     if not s1 or not s2:
         return 1.0
     if s1 == s2:
@@ -139,112 +151,85 @@ def normalized_edit_distance(s1: str, s2: str) -> float:
 MAX_LEXICON_ENTRIES = 3000
 
 
-def load_lexicon(lang_code: str) -> list[dict]:
-    """Load a lexicon TSV and return entries with SCA encodings."""
+def load_lexicon(lang_code: str, recompute_sca: bool = True) -> list[dict]:
+    """Load lexicon TSV. If recompute_sca=True, always recompute SCA from IPA
+    using Ventris1 Dolgopolsky encoding (V-collapse) to ensure encoding consistency.
+    Caps at MAX_LEXICON_ENTRIES via seeded random sampling (not first-N)."""
     path = LEXICON_DIR / f"{lang_code}.tsv"
     if not path.exists():
         return []
-    entries = []
+    all_entries = []
     with open(path, encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="\t")
         for row in reader:
             ipa = row.get("IPA", "").strip()
             if not ipa:
                 continue
-            sca = row.get("SCA", "").strip()
-            if not sca or sca == "-":
+            if recompute_sca:
                 sca = ipa_to_sca(ipa)
+            else:
+                sca = row.get("SCA", "").strip()
+                if not sca or sca == "-":
+                    sca = ipa_to_sca(ipa)
             gloss = row.get("Concept_ID", "").strip()
             if gloss == "-":
                 gloss = ""
-            entries.append({
+            all_entries.append({
                 "word": row.get("Word", "").strip(),
                 "ipa": ipa,
                 "sca": sca,
                 "gloss": gloss,
             })
-            if len(entries) >= MAX_LEXICON_ENTRIES:
-                break
-    return entries
+    if len(all_entries) > MAX_LEXICON_ENTRIES:
+        rng = random.Random(42)
+        all_entries = rng.sample(all_entries, MAX_LEXICON_ENTRIES)
+    return all_entries
 
 
-# ── Search & null ─────────────────────────────────────────────────────────────
+# ── Search & permutation null ─────────────────────────────────────────────────
 
 N_PERMS = 100
-NULL_SAMPLE = 300  # subsample lexicon for null
+NULL_CAP = 500  # max SCA pool size for permutation null
 
 
-def search_best_match(stem_sca: str, lexicon: list[dict]) -> tuple[float, dict]:
-    """Find the lexicon entry with lowest SCA distance to stem_sca."""
-    best_dist = 1.0
-    best_entry = None
+def search_lexicon(stem_sca: str, lexicon: list[dict], top_k: int = 3):
+    """Search lexicon for closest SCA matches. Returns [(dist, entry), ...]."""
+    scored = []
     for entry in lexicon:
         if not entry["sca"]:
             continue
         d = normalized_edit_distance(stem_sca, entry["sca"])
-        if d < best_dist:
-            best_dist = d
-            best_entry = entry
-    return best_dist, best_entry
+        scored.append((d, entry))
+    scored.sort(key=lambda x: x[0])
+    return scored[:top_k]
 
 
-def precompute_null_distributions(
-    lexicons: dict[str, list[dict]],
-    sca_lengths: set[int],
-    rng: random.Random,
-) -> dict[tuple[str, int], list[float]]:
-    """Pre-compute null distributions for each (language, query_length) pair.
+def permutation_null(
+    stem_sca: str, lexicon: list[dict], rng: random.Random
+) -> list[float]:
+    """Build null distribution by shuffling lexicon SCA column.
 
-    For each (lang, length), we generate N_PERMS random SCA strings of that
-    length and find each one's best match in the lexicon. The resulting
-    distribution of best distances is the null.
-
-    This is much faster than doing per-query permutation because we compute
-    the null once per (lang, length) pair instead of once per (stem, reading,
-    lang) triple.
+    For each permutation, shuffle the SCA strings among entries and find
+    the best match. Returns sorted list of N_PERMS best-match distances.
     """
-    SCA_ALPHABET = list("PTSKMNLRWJHV")
-    null_dists: dict[tuple[str, int], list[float]] = {}
+    sca_pool = [e["sca"] for e in lexicon if e["sca"]]
+    if not sca_pool:
+        return [1.0]
+    if len(sca_pool) > NULL_CAP:
+        sca_pool = rng.sample(sca_pool, NULL_CAP)
 
-    for lc, lex in lexicons.items():
-        sca_pool = [e["sca"] for e in lex if e["sca"]]
-        if not sca_pool:
-            continue
-        # Subsample for speed
-        if len(sca_pool) > NULL_SAMPLE:
-            pool = rng.sample(sca_pool, NULL_SAMPLE)
-        else:
-            pool = sca_pool
-
-        for qlen in sca_lengths:
-            bests = []
-            for _ in range(N_PERMS):
-                # Generate a random SCA string of the given length
-                rand_sca = "".join(rng.choice(SCA_ALPHABET) for _ in range(qlen))
-                best_d = min(
-                    normalized_edit_distance(rand_sca, s) for s in pool
-                )
-                bests.append(best_d)
-            null_dists[(lc, qlen)] = sorted(bests)
-
-    return null_dists
+    null_bests = []
+    for _ in range(N_PERMS):
+        rng.shuffle(sca_pool)
+        best = min(normalized_edit_distance(stem_sca, s) for s in sca_pool)
+        null_bests.append(best)
+    return sorted(null_bests)
 
 
-def p_value_from_null(
-    real_dist: float, null_dist: list[float]
-) -> float:
-    """Compute p-value: fraction of null scores <= real_dist."""
-    if not null_dist:
-        return 1.0
-    count = sum(1 for nd in null_dist if nd <= real_dist)
-    return count / len(null_dist)
-
-
-# ── Main pipeline ─────────────────────────────────────────────────────────────
+# ── Pipeline helpers ──────────────────────────────────────────────────────────
 
 
 def find_partial_stems() -> list[dict]:
-    """Find P2 stems with exactly 1 unknown sign that is in the P1 grid."""
     with open(PROJECT / "results" / "pillar2_output.json") as f:
         p2 = json.load(f)
 
@@ -295,7 +280,6 @@ def find_partial_stems() -> list[dict]:
 
 
 def deduplicate_stems(stems: list[dict]) -> list[dict]:
-    """Deduplicate: keep highest-frequency version of each unique stem."""
     seen: dict[str, dict] = {}
     for s in stems:
         key = "-".join(s["stem_ids"])
@@ -304,11 +288,13 @@ def deduplicate_stems(stems: list[dict]) -> list[dict]:
     return list(seen.values())
 
 
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+
 def main():
     rng = random.Random(42)
     t0 = time.time()
 
-    # ── Find partial stems ────────────────────────────────────────────────
     raw_stems = find_partial_stems()
     stems = deduplicate_stems(raw_stems)
     stems.sort(key=lambda s: -s["freq"])
@@ -341,21 +327,8 @@ def main():
             lexicons[lc] = lex
             print(f"  {lc}: {len(lex)} entries")
 
-    # ── Pre-compute all possible SCA lengths ──────────────────────────────
-    all_sca_lengths: set[int] = set()
-    for stem in stems:
-        for cand in stem["candidate_readings"]:
-            parts = list(stem["known_ipas"])
-            parts[stem["unknown_idx"]] = cand
-            ipa = "".join(p for p in parts)
-            sca = ipa_to_sca(ipa)
-            if sca:
-                all_sca_lengths.add(len(sca))
-
-    print(f"\nPre-computing null distributions for {len(all_sca_lengths)} "
-          f"SCA lengths x {len(lexicons)} languages...")
-    null_dists = precompute_null_distributions(lexicons, all_sca_lengths, rng)
-    print(f"  Done ({time.time() - t0:.0f}s elapsed)")
+    # ── Cache for permutation nulls: (sca_query, lang) -> null_dist ───────
+    null_cache: dict[tuple[str, str], list[float]] = {}
 
     print(f"\n{'=' * 78}")
     print(f"SEARCHING {len(stems)} partially-phonetic stems")
@@ -363,7 +336,6 @@ def main():
     print(f"  with {N_PERMS} permutations per null")
     print(f"{'=' * 78}")
 
-    # ── Per-stem search ───────────────────────────────────────────────────
     all_results: list[dict] = []
     sign_reading_votes: dict[str, dict[str, list]] = defaultdict(
         lambda: defaultdict(list)
@@ -394,18 +366,26 @@ def main():
             if not complete_sca:
                 continue
 
-            sca_len = len(complete_sca)
             reading_lang_results: list[dict] = []
 
             for lc, lex in lexicons.items():
-                best_dist, best_entry = search_best_match(complete_sca, lex)
-                if best_entry is None:
+                top_matches = search_lexicon(complete_sca, lex, top_k=3)
+                if not top_matches:
                     continue
+                best_dist, best_entry = top_matches[0]
 
-                # Look up pre-computed null
-                null_key = (lc, sca_len)
-                nd = null_dists.get(null_key, [])
-                p_val = p_value_from_null(best_dist, nd)
+                # Permutation null (cached)
+                cache_key = (complete_sca, lc)
+                if cache_key not in null_cache:
+                    null_cache[cache_key] = permutation_null(
+                        complete_sca, lex, rng
+                    )
+                null_dist = null_cache[cache_key]
+
+                # p-value: fraction of null bests <= real best
+                p_val = sum(
+                    1 for nd in null_dist if nd <= best_dist
+                ) / len(null_dist)
 
                 result = {
                     "stem": stem_label,
@@ -421,6 +401,7 @@ def main():
                     "gloss": best_entry["gloss"],
                     "sca_dist": best_dist,
                     "p_value": p_val,
+                    "null_median": null_dist[len(null_dist) // 2],
                 }
                 all_results.append(result)
                 reading_lang_results.append(result)
@@ -440,6 +421,7 @@ def main():
                     "best_word": best["best_word"],
                     "best_gloss": best["gloss"],
                     "best_p": best["p_value"],
+                    "null_median": best["null_median"],
                     "n_sig": sig_count,
                     "all_langs": reading_lang_results,
                 })
@@ -450,9 +432,9 @@ def main():
             print(
                 f"  {'Reading':8s} {'IPA':12s} {'SCA':8s} "
                 f"{'BestLang':8s} {'BestWord':15s} {'Gloss':18s} "
-                f"{'Dist':>5s} {'p':>5s} {'#sig'}"
+                f"{'Dist':>5s} {'Null':>5s} {'p':>5s} {'#sig'}"
             )
-            print(f"  {'-' * 90}")
+            print(f"  {'-' * 96}")
             for br in best_reading_results:
                 g = br["best_gloss"][:16] if br["best_gloss"] else "-"
                 sig_mark = (
@@ -464,7 +446,8 @@ def main():
                 print(
                     f"  {br['reading']:8s} {br['ipa']:12s} {br['sca']:8s} "
                     f"{br['best_lang']:8s} {br['best_word']:15s} {g:18s} "
-                    f"{br['best_dist']:>5.3f} {br['best_p']:>5.2f} "
+                    f"{br['best_dist']:>5.3f} {br['null_median']:>5.3f} "
+                    f"{br['best_p']:>5.2f} "
                     f"{br['n_sig']}{sig_mark}"
                 )
 
@@ -503,18 +486,18 @@ def main():
         total_stems = sum(len(v) for v in votes.values())
         print(f"\n  {sign_id} ({total_stems} stems with significant matches):")
         for reading in sorted(votes.keys(), key=lambda r: -len(votes[r])):
-            stems_for_reading = votes[reading]
-            n = len(stems_for_reading)
-            avg_sig = sum(s["n_sig"] for s in stems_for_reading) / n
-            avg_dist = sum(s["best_dist"] for s in stems_for_reading) / n
+            stems_for = votes[reading]
+            n = len(stems_for)
+            avg_sig = sum(s["n_sig"] for s in stems_for) / n
+            avg_dist = sum(s["best_dist"] for s in stems_for) / n
             print(
                 f"    {reading:8s}: {n} stems agree, "
                 f"avg #sig={avg_sig:.1f}, avg best_dist={avg_dist:.3f}"
             )
-            for s in stems_for_reading:
+            for s in stems_for:
                 print(
-                    f"      stem={s['stem']:30s} #sig={s['n_sig']} "
-                    f"best_dist={s['best_dist']:.3f}"
+                    f"      stem={s['stem']:30s} "
+                    f"#sig={s['n_sig']} best_dist={s['best_dist']:.3f}"
                 )
 
     if not sign_reading_votes:
@@ -528,6 +511,8 @@ def main():
     sig_results = [r for r in all_results if r["p_value"] <= 0.05]
     print(f"\nTotal comparisons: {len(all_results)}")
     print(f"Significant at p <= 0.05: {len(sig_results)}")
+    expected_fp = len(all_results) * 0.05
+    print(f"Expected false positives at 0.05: {expected_fp:.0f}")
 
     # By language
     sig_by_lang = defaultdict(list)
@@ -583,11 +568,12 @@ def main():
         for rd in sorted(readings, key=lambda k: -readings[k]):
             print(f"    {rd:6s}: {readings[rd]}")
 
-    # ── Discriminative power: signs where one reading clearly wins ────────
+    # ── Discriminative signs ──────────────────────────────────────────────
     print(f"\n{'=' * 78}")
     print("DISCRIMINATIVE SIGNS (one reading dominates)")
     print(f"{'=' * 78}")
 
+    disc_found = False
     for sign_id in sorted(sig_by_sign):
         readings = sig_by_sign[sign_id]
         if len(readings) < 2:
@@ -597,6 +583,7 @@ def main():
                     f"  {sign_id}: ONLY '{rd}' produced significant matches "
                     f"({readings[rd]} hits)"
                 )
+                disc_found = True
             continue
         vals = sorted(readings.values(), reverse=True)
         if vals[0] >= 2 * vals[1] and vals[0] >= 3:
@@ -605,9 +592,13 @@ def main():
                 f"  {sign_id}: '{best}' dominates with {readings[best]} hits "
                 f"(next best: {vals[1]})"
             )
+            disc_found = True
+    if not disc_found:
+        print("  No clearly discriminative signs found.")
 
     elapsed = time.time() - t0
     print(f"\n{'=' * 78}")
+    print(f"Cache stats: {len(null_cache)} unique (sca, lang) pairs cached")
     print(f"DONE ({elapsed:.0f}s total)")
     print(f"{'=' * 78}")
 
