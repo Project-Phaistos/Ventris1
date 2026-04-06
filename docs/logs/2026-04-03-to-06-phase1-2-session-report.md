@@ -278,7 +278,7 @@ Clean linear history on `main`. 10 worktree branches created and isolated withou
 
 3. **The Jaccard k=19 may be tuned on the validation set.** The consonant ARI peaks at k=19-21, and it's unclear whether this reflects genuine phonological structure or parameter optimization.
 
-4. **AB08 bug persists in `analytical_null_search.py`** — the builder's corpus loading doesn't apply the Tier 0 fix. Affects 19.8% of ANS survivors.
+4. **AB08 bug** was present in `analytical_null_search.py` — the builder's corpus loading didn't apply the Tier 0 fix. **Fixed 2026-04-06** (commit `874bb42`). The fix prefers tier1 readings over tier3 when the corpus has duplicate entries, same pattern as the Tier 0 fix in `constrained_sca_search.py`. 52 ANS tests pass after fix.
 
 ---
 
@@ -297,9 +297,9 @@ The system now has the components for the first iteration:
 
 The loop: constrain signs (Jaccard) → enumerate readings → SCA match (ANS) → accept converging evidence → expand anchor set → repeat.
 
-### Fix the AB08 bug in analytical_null_search.py
+### ~~Fix the AB08 bug in analytical_null_search.py~~ DONE
 
-Simple but important — the builder's corpus loading needs the same tier1-preferred fix applied in Tier 0.
+Fixed 2026-04-06 (commit `874bb42`). The builder's `load_corpus()` now prefers tier1 readings over tier3, matching the Tier 0 fix in `constrained_sca_search.py`.
 
 ### Increase Monte Carlo resolution
 

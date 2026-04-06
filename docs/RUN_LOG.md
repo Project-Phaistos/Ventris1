@@ -2,6 +2,69 @@
 
 Reverse chronological. Newest first.
 
+## 2026-04-03 to 2026-04-06 — Phase 1-2 Execution: All 6 Forward PRDs
+
+**Type:** Multi-day execution sprint
+**Scope:** All 6 forward PRDs across 4 phases
+**Agents dispatched:** 16 (8 builders, 5 adversarial critics, 3 final verifiers)
+**Tests:** 311 -> 461 (+150, zero regressions)
+**Full report:** `docs/logs/2026-04-03-to-06-phase1-2-session-report.md`
+
+### Tier 0: Foundation Fixes
+
+Adversarial critics found 7 CRITICAL + 8 HIGH bugs in existing infrastructure before any PRD execution. All fixed:
+- Removed undeciphered signs *301/*56 from anchors (53 -> 51)
+- Fixed 3 AB-code swaps (AB06=na, AB07=di, AB54=wa)
+- Fixed AB08 reading resolution (tier1 preferred over tier3 duplicate)
+- Extended DOLGOPOLSKY dict (+25 IPA chars, diacritic stripping)
+- Fixed SCA encoding mismatch (recompute_sca=True)
+- Fixed lexicon subsampling (seeded random, not first-N)
+
+### Phase 1A: Analytical Null Search
+
+Replaced degenerate permutation null with Monte Carlo null tables (M=1,000). Per-hypothesis aggregation (best reading per stem x language). Gates: 10/10 Ug-Heb, 10/10 Grc-Lat, 3/10 Eng-Akk FP. FDR survivors: 243/378 (64.3%) — all at q=[0.028, 0.050], no deeply significant results.
+
+**Notable:** u-wi-ri -> Urartian "awari" (field) at NED=0.000. Perfect SCA match, independently verified as legitimate.
+
+### Phase 1B: Kober Alternation Identification
+
+**Critical discovery:** Alternation detector was broken (shuffled corpus = same pair count). Fixed: min_prefix=2, final-position-only diff_len=2. Signal-to-noise: 0.94x -> 7.0x. But only 7 genuine pairs survive — too sparse for triangulation. Data limitation, not algorithm failure.
+
+### Phase 2A: Jaccard Sign Classification — SESSION HIGHLIGHT
+
+**19 consonant clusters** (9 with >= 3 signs) from distributional evidence alone. Solved the P1 mega-class problem (91% of signs in C0). Method: TF-IDF left-context cosine + mutual kNN sparsification.
+
+| Metric | P1 Before | Jaccard After |
+|--------|-----------|---------------|
+| Consonant clusters | 1 mega-class | 19 clusters |
+| Consonant ARI vs LB | degenerate | 0.342 (verified) |
+| Vowel ARI vs LB | 0.242 | 0.422 (verified) |
+| LB series recovered | 0 | 3/5 (t, k, n) |
+
+Caveats: null test fragile (30% of seeds breach 0.05), k=19 at ARI peak (possible tuning), TF-IDF did not fix frequency confound (rho increased 0.159 -> 0.624).
+
+### Phase 2B: Suffix Constraints — Core Assumption Falsified
+
+Critic proved Kober's principle as applied was backwards: stem overlap measures signs in DIFFERENT paradigm slots (should have different consonants), not the SAME slot. 10.2% same-consonant = random chance. Infrastructure solid (48 tests) but constraints unreliable.
+
+### Post-Session Fix (2026-04-06)
+
+Fixed AB08 bug in `analytical_null_search.py` — same tier1-preferred fix as Tier 0 sprint. Commit `874bb42`.
+
+### Audit Reports (7 total, all committed)
+
+| Report | Key Finding |
+|--------|-------------|
+| `kober_triangulation_audit.md` | Alternation signal = noise (610 vs 609 shuffled) |
+| `analytical_null_search_audit.md` | SCA encoding mismatch, degenerate null |
+| `jaccard_classification_audit.md` | Frequency confound rho=0.965 |
+| `suffix_constraints_audit.md` | Core assumption falsified (10.2% = chance) |
+| `jaccard_final_verification.md` | All ARI values reproduced exactly |
+| `ans_final_verification.md` | u-wi-ri -> awari confirmed legitimate |
+| `overall_integrity_check.md` | 461/461 tests, all fixes intact |
+
+---
+
 ## 2026-03-26 — Pillar 5: Multi-Source Vocabulary Resolution — Implementation + Production Run
 
 **Type:** Implementation + Production Run
