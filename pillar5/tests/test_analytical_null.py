@@ -17,6 +17,7 @@ from pillar5.scripts.analytical_null_search import (
     normalized_edit_distance,
     bh_fdr_correction,
     build_null_table,
+    build_null_table_cached,
     pvalue_from_null_table,
     analytical_pvalue,
     search_lexicon_full,
@@ -27,6 +28,10 @@ from pillar5.scripts.analytical_null_search import (
     aggregate_by_stem_language,
     run_validation_gates,
     _count_pool_size,
+    _pool_hash,
+    _null_cache_path,
+    _load_cached_null_table,
+    _save_null_table,
     _reading_to_sca_class,
     compute_class_background_rates,
     freq_norm_adjust_pvalue,
@@ -37,6 +42,7 @@ from pillar5.scripts.analytical_null_search import (
     SCA_K,
     DOLGOPOLSKY,
     NULL_SAMPLES,
+    NULL_CACHE_DIR,
 )
 
 
@@ -832,3 +838,102 @@ class TestLBHoldoutConstants:
     def test_holdout_signs_are_unique(self):
         ab_codes = [ab for ab, _, _ in LB_HOLDOUT_SIGNS]
         assert len(ab_codes) == len(set(ab_codes))
+
+
+# ============================================================
+# Tier 1b: Disk cache and pool hash tests
+# ============================================================
+
+
+class TestPoolHash:
+    """Test pool hash determinism and sensitivity."""
+
+    def test_same_pool_same_hash(self):
+        pool1 = ["PVT", "MVT", "KVN"]
+        pool2 = ["PVT", "MVT", "KVN"]
+        assert _pool_hash(pool1) == _pool_hash(pool2)
+
+    def test_order_independent(self):
+        """Hash should be order-independent (uses sorted)."""
+        pool1 = ["PVT", "MVT", "KVN"]
+        pool2 = ["KVN", "PVT", "MVT"]
+        assert _pool_hash(pool1) == _pool_hash(pool2)
+
+    def test_different_pool_different_hash(self):
+        pool1 = ["PVT", "MVT", "KVN"]
+        pool2 = ["PVT", "MVT", "SVN"]
+        assert _pool_hash(pool1) != _pool_hash(pool2)
+
+    def test_empty_pool(self):
+        h = _pool_hash([])
+        assert isinstance(h, str)
+        assert len(h) == 16
+
+
+class TestDiskCache:
+    """Test null table disk caching round-trip."""
+
+    def test_save_and_load(self, tmp_path):
+        """Null table should survive a save/load cycle."""
+        import numpy as np
+        table = np.array([0.1, 0.2, 0.3, 0.5, 0.8], dtype=np.float32)
+        cache_path = tmp_path / "test_cache.npz"
+        _save_null_table(cache_path, table)
+        loaded = _load_cached_null_table(cache_path)
+        assert loaded is not None
+        np.testing.assert_array_almost_equal(loaded, table, decimal=5)
+
+    def test_load_nonexistent(self, tmp_path):
+        """Loading from nonexistent path should return None."""
+        cache_path = tmp_path / "does_not_exist.npz"
+        assert _load_cached_null_table(cache_path) is None
+
+    def test_build_null_table_cached_roundtrip(self, tmp_path, monkeypatch):
+        """build_null_table_cached should save and reload correctly.
+
+        Uses approx comparison because npz stores float32, introducing
+        minor rounding vs the original float64 Python values.
+        """
+        import numpy as np
+        import pillar5.scripts.analytical_null_search as mod
+        monkeypatch.setattr(mod, "NULL_CACHE_DIR", tmp_path)
+
+        lex = [
+            {"word": "x", "ipa": "pa", "sca": "PV", "gloss": ""},
+            {"word": "y", "ipa": "ta", "sca": "TV", "gloss": ""},
+            {"word": "z", "ipa": "ka", "sca": "KV", "gloss": ""},
+        ]
+        by_len = bucket_lexicon(lex)
+        capped = cap_bucketed_lexicon(by_len, random.Random(42))
+
+        rng1 = random.Random(42)
+        null1 = build_null_table_cached(3, capped, 200, rng1, lang="test_lang")
+
+        # Second call should load from cache
+        rng2 = random.Random(999)  # different seed -- should not matter
+        null2 = build_null_table_cached(3, capped, 200, rng2, lang="test_lang")
+
+        # float32 round-trip introduces minor precision loss
+        np.testing.assert_allclose(null1, null2, atol=1e-6)
+
+    def test_null_samples_constant(self):
+        """NULL_SAMPLES should be 100,000 for sufficient BH-FDR resolution."""
+        assert NULL_SAMPLES == 100_000
+
+
+class TestPvalueResolution:
+    """Test that M=100K provides sufficient p-value resolution."""
+
+    def test_minimum_pvalue_sufficient_for_bh_fdr(self):
+        """Minimum p-value 1/(M+1) must be < 0.05/378 for rank-1 BH threshold."""
+        min_p = 1 / (NULL_SAMPLES + 1)
+        bh_rank1_threshold = 0.05 / 378
+        assert min_p < bh_rank1_threshold, (
+            f"min_p={min_p:.2e} >= BH rank-1={bh_rank1_threshold:.2e}"
+        )
+
+    def test_pvalue_granularity(self):
+        """Adjacent null table positions should produce distinguishable p-values."""
+        # With M=100K, consecutive entries differ by 1/100001
+        granularity = 1 / (NULL_SAMPLES + 1)
+        assert granularity < 1e-4  # at least 10^-5 resolution
