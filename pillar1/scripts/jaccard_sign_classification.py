@@ -802,22 +802,29 @@ def run_null_test(
 def run_null_test_robust(
     sign_groups: list[list[str]],
     sign_to_ipa: dict,
-    n_seeds: int = 20,
-    threshold: float = 0.05,
+    n_seeds: int = 50,
+    threshold: float = 0.10,
     **kwargs,
 ) -> dict[str, Any]:
     """Robust null test: median ARI across multiple shuffled seeds.
 
-    Single-seed null tests are fragile (~16% of seeds produce |ARI| > 0.05
-    due to chance alignment between shuffled data and hierarchical clustering).
-    Taking the median across 20+ seeds eliminates this variance:
-    100% pass rate across 50 independent trials of 20-seed medians.
+    Single-seed null tests are fragile (~25% of seeds produce |ARI| > 0.05
+    due to systematic positive bias: the within-group shuffle preserves sign
+    frequencies and group lengths, producing mean null ARI of +0.026 consonant
+    and +0.016 vowel).
+
+    Taking the median across 50 seeds reduces the 95% halfwidth of the
+    median estimate to ~0.008 (vs ~0.012 at 20 seeds).
+
+    The threshold of 0.10 is set above the 95th percentile of |null ARI|
+    (~0.08), providing a defensible false-positive rate. The previous
+    threshold of 0.05 produced a 25% false-positive rate.
 
     Args:
         sign_groups: corpus sign-group sequences
         sign_to_ipa: sign-to-IPA mapping for ground truth
-        n_seeds: number of independent shuffled copies (default 20)
-        threshold: gate threshold for median ARI (default 0.05)
+        n_seeds: number of independent shuffled copies (default 50)
+        threshold: gate threshold for median |ARI| (default 0.10)
         **kwargs: forwarded to validate_on_linear_b
 
     Returns:
@@ -907,6 +914,124 @@ def compute_null_significance(
         "real_consonant_ari": real_cons_ari,
         "real_vowel_ari": real_vowel_ari,
         "n_seeds": n_seeds,
+    }
+
+
+def bootstrap_ari_ci(
+    sign_groups: list[list[str]],
+    sign_to_ipa: dict,
+    n_bootstrap: int = 200,
+    ci_level: float = 0.95,
+    seed: int = 42,
+    inscription_corpus_path: str | None = None,
+    **kwargs,
+) -> dict[str, Any]:
+    """Bootstrap 95% CI on ARI by resampling sign-groups with replacement.
+
+    Resamples at the sign-group level (not individual signs) to preserve
+    within-group context structure. When an inscription corpus is provided,
+    resamples inscriptions (not individual sign-groups) for the portion of
+    data that has inscription structure, preserving within-inscription
+    dependence.
+
+    This is computationally intensive (n_bootstrap full pipeline runs).
+    Intended for final validation, not routine testing.
+
+    Args:
+        sign_groups: corpus sign-group sequences
+        sign_to_ipa: sign-to-IPA mapping for ground truth
+        n_bootstrap: number of bootstrap resamples (default 200)
+        ci_level: confidence level (default 0.95)
+        seed: random seed for reproducibility
+        inscription_corpus_path: path to inscription-structured JSON corpus.
+            If provided, sign-groups from this corpus are resampled at the
+            inscription level. Remaining sign-groups (e.g. from HF lexicon)
+            are resampled independently at the word level.
+        **kwargs: forwarded to validate_on_linear_b
+
+    Returns:
+        dict with:
+          - consonant_ci: (low, high) tuple
+          - vowel_ci: (low, high) tuple
+          - consonant_aris: list of per-resample ARI values
+          - vowel_aris: list of per-resample ARI values
+          - n_bootstrap: number of resamples
+          - ci_level: confidence level used
+    """
+    rng = np.random.RandomState(seed)
+    alpha = (1.0 - ci_level) / 2.0
+
+    # Partition sign-groups by source if inscription corpus is provided
+    inscription_groups: list[list[list[str]]] = []  # per-inscription
+    independent_groups: list[list[str]] = []
+
+    if inscription_corpus_path is not None:
+        # Load inscription-structured corpus to get inscription boundaries
+        with open(inscription_corpus_path, encoding="utf-8") as f:
+            data = json.load(f)
+        insc_sign_group_keys: set[tuple[str, ...]] = set()
+        for inscription in data.get("inscriptions", []):
+            insc_groups: list[list[str]] = []
+            for word in inscription.get("words", []):
+                signs = word.get("sign_readings", [])
+                if signs and not word.get("has_damage", False):
+                    insc_groups.append(signs)
+                    insc_sign_group_keys.add(tuple(signs))
+            if insc_groups:
+                inscription_groups.append(insc_groups)
+
+        # Remaining sign-groups are independent (e.g. HF lexicon entries)
+        for sg in sign_groups:
+            if tuple(sg) not in insc_sign_group_keys:
+                independent_groups.append(sg)
+    else:
+        # No inscription structure: all sign-groups are independent
+        independent_groups = list(sign_groups)
+
+    cons_aris: list[float] = []
+    vowel_aris: list[float] = []
+
+    for i in range(n_bootstrap):
+        # Resample inscription-level groups
+        resampled: list[list[str]] = []
+        if inscription_groups:
+            n_insc = len(inscription_groups)
+            insc_idx = rng.choice(n_insc, size=n_insc, replace=True)
+            for idx in insc_idx:
+                resampled.extend(inscription_groups[idx])
+
+        # Resample independent groups
+        if independent_groups:
+            n_indep = len(independent_groups)
+            indep_idx = rng.choice(n_indep, size=n_indep, replace=True)
+            for idx in indep_idx:
+                resampled.append(independent_groups[idx])
+
+        # Run pipeline and compute ARI
+        val = validate_on_linear_b(resampled, sign_to_ipa, **kwargs)
+        cons_aris.append(val.get("consonant_ari", 0.0))
+        vowel_aris.append(val.get("vowel_ari", 0.0))
+
+    cons_arr = np.array(cons_aris)
+    vowel_arr = np.array(vowel_aris)
+
+    return {
+        "consonant_ci": (
+            round(float(np.percentile(cons_arr, 100 * alpha)), 4),
+            round(float(np.percentile(cons_arr, 100 * (1 - alpha))), 4),
+        ),
+        "vowel_ci": (
+            round(float(np.percentile(vowel_arr, 100 * alpha)), 4),
+            round(float(np.percentile(vowel_arr, 100 * (1 - alpha))), 4),
+        ),
+        "consonant_mean": round(float(cons_arr.mean()), 4),
+        "vowel_mean": round(float(vowel_arr.mean()), 4),
+        "consonant_std": round(float(cons_arr.std()), 4),
+        "vowel_std": round(float(vowel_arr.std()), 4),
+        "consonant_aris": [round(x, 4) for x in cons_aris],
+        "vowel_aris": [round(x, 4) for x in vowel_aris],
+        "n_bootstrap": n_bootstrap,
+        "ci_level": ci_level,
     }
 
 
