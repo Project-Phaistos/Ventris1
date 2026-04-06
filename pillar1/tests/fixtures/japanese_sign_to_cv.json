@@ -1,0 +1,270 @@
+{
+  "a": {
+    "consonant": "V",
+    "vowel": "a"
+  },
+  "ba": {
+    "consonant": "b",
+    "vowel": "a"
+  },
+  "be": {
+    "consonant": "b",
+    "vowel": "e"
+  },
+  "bi": {
+    "consonant": "b",
+    "vowel": "i"
+  },
+  "bo": {
+    "consonant": "b",
+    "vowel": "o"
+  },
+  "bu": {
+    "consonant": "b",
+    "vowel": "u"
+  },
+  "da": {
+    "consonant": "d",
+    "vowel": "a"
+  },
+  "de": {
+    "consonant": "d",
+    "vowel": "e"
+  },
+  "di": {
+    "consonant": "d",
+    "vowel": "i"
+  },
+  "do": {
+    "consonant": "d",
+    "vowel": "o"
+  },
+  "du": {
+    "consonant": "d",
+    "vowel": "u"
+  },
+  "e": {
+    "consonant": "V",
+    "vowel": "e"
+  },
+  "ga": {
+    "consonant": "g",
+    "vowel": "a"
+  },
+  "ge": {
+    "consonant": "g",
+    "vowel": "e"
+  },
+  "gi": {
+    "consonant": "g",
+    "vowel": "i"
+  },
+  "go": {
+    "consonant": "g",
+    "vowel": "o"
+  },
+  "gu": {
+    "consonant": "g",
+    "vowel": "u"
+  },
+  "ha": {
+    "consonant": "h",
+    "vowel": "a"
+  },
+  "he": {
+    "consonant": "h",
+    "vowel": "e"
+  },
+  "hi": {
+    "consonant": "h",
+    "vowel": "i"
+  },
+  "ho": {
+    "consonant": "h",
+    "vowel": "o"
+  },
+  "i": {
+    "consonant": "V",
+    "vowel": "i"
+  },
+  "ka": {
+    "consonant": "k",
+    "vowel": "a"
+  },
+  "ke": {
+    "consonant": "k",
+    "vowel": "e"
+  },
+  "ki": {
+    "consonant": "k",
+    "vowel": "i"
+  },
+  "ko": {
+    "consonant": "k",
+    "vowel": "o"
+  },
+  "ku": {
+    "consonant": "k",
+    "vowel": "u"
+  },
+  "ma": {
+    "consonant": "m",
+    "vowel": "a"
+  },
+  "me": {
+    "consonant": "m",
+    "vowel": "e"
+  },
+  "mi": {
+    "consonant": "m",
+    "vowel": "i"
+  },
+  "mo": {
+    "consonant": "m",
+    "vowel": "o"
+  },
+  "mu": {
+    "consonant": "m",
+    "vowel": "u"
+  },
+  "na": {
+    "consonant": "n",
+    "vowel": "a"
+  },
+  "ne": {
+    "consonant": "n",
+    "vowel": "e"
+  },
+  "ni": {
+    "consonant": "n",
+    "vowel": "i"
+  },
+  "no": {
+    "consonant": "n",
+    "vowel": "o"
+  },
+  "nu": {
+    "consonant": "n",
+    "vowel": "u"
+  },
+  "o": {
+    "consonant": "V",
+    "vowel": "o"
+  },
+  "pa": {
+    "consonant": "p",
+    "vowel": "a"
+  },
+  "pe": {
+    "consonant": "p",
+    "vowel": "e"
+  },
+  "pi": {
+    "consonant": "p",
+    "vowel": "i"
+  },
+  "po": {
+    "consonant": "p",
+    "vowel": "o"
+  },
+  "pu": {
+    "consonant": "p",
+    "vowel": "u"
+  },
+  "ra": {
+    "consonant": "r",
+    "vowel": "a"
+  },
+  "re": {
+    "consonant": "r",
+    "vowel": "e"
+  },
+  "ri": {
+    "consonant": "r",
+    "vowel": "i"
+  },
+  "ro": {
+    "consonant": "r",
+    "vowel": "o"
+  },
+  "ru": {
+    "consonant": "r",
+    "vowel": "u"
+  },
+  "sa": {
+    "consonant": "s",
+    "vowel": "a"
+  },
+  "se": {
+    "consonant": "s",
+    "vowel": "e"
+  },
+  "si": {
+    "consonant": "s",
+    "vowel": "i"
+  },
+  "so": {
+    "consonant": "s",
+    "vowel": "o"
+  },
+  "su": {
+    "consonant": "s",
+    "vowel": "u"
+  },
+  "ta": {
+    "consonant": "t",
+    "vowel": "a"
+  },
+  "te": {
+    "consonant": "t",
+    "vowel": "e"
+  },
+  "ti": {
+    "consonant": "t",
+    "vowel": "i"
+  },
+  "to": {
+    "consonant": "t",
+    "vowel": "o"
+  },
+  "tu": {
+    "consonant": "t",
+    "vowel": "u"
+  },
+  "u": {
+    "consonant": "V",
+    "vowel": "u"
+  },
+  "wa": {
+    "consonant": "w",
+    "vowel": "a"
+  },
+  "we": {
+    "consonant": "w",
+    "vowel": "e"
+  },
+  "wi": {
+    "consonant": "w",
+    "vowel": "i"
+  },
+  "wo": {
+    "consonant": "w",
+    "vowel": "o"
+  },
+  "wu": {
+    "consonant": "w",
+    "vowel": "u"
+  },
+  "ya": {
+    "consonant": "y",
+    "vowel": "a"
+  },
+  "yo": {
+    "consonant": "y",
+    "vowel": "o"
+  },
+  "yu": {
+    "consonant": "y",
+    "vowel": "u"
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "experiment": "jaccard_independent_validation",
+  "date": "2026-04-03",
+  "corpus": {
+    "language": "Japanese",
+    "source": "WOLD (World Loanword Database) via ancient-scripts-datasets/data/training/lexicons/jpn.tsv",
+    "script_type": "CV syllabary (SCA encoding -> kana-equivalent signs)",
+    "n_words": 24633,
+    "total_tokens": 84579,
+    "n_unique_signs": 67,
+    "n_consonant_series_gt": 14,
+    "consonant_series_gt": [
+      "V",
+      "b",
+      "d",
+      "g",
+      "h",
+      "k",
+      "m",
+      "n",
+      "p",
+      "r",
+      "s",
+      "t",
+      "w",
+      "y"
+    ],
+    "n_vowel_classes_gt": 5,
+    "vowel_classes_gt": [
+      "a",
+      "e",
+      "i",
+      "o",
+      "u"
+    ]
+  },
+  "method": {
+    "pipeline": "jaccard_sign_classification.py (identical code to Linear B validation)",
+    "consonant_method": "TF-IDF left-context + mutual-kNN + hierarchical average-linkage",
+    "vowel_method": "PPMI right-context + anti-correlation (beta=0.15) + spectral clustering",
+    "consonant_k": 14,
+    "vowel_k": 5,
+    "consonant_knn": 8,
+    "vowel_beta": 0.15,
+    "min_count": 5
+  },
+  "results": {
+    "consonant_ari": 0.0466,
+    "vowel_ari": 0.2459,
+    "combined_ari": 0.1463,
+    "n_analyzed_signs": 65,
+    "n_recovered_series": 1,
+    "recovered_series": [
+      "r"
+    ],
+    "gate1_pass": false,
+    "gate2_pass": false,
+    "combined_pass": false
+  },
+  "diagnostic": {
+    "consonant_raw_cohens_d": 0.3807,
+    "consonant_tfidf_cohens_d": 0.4999,
+    "vowel_raw_cohens_d": 0.3393,
+    "consonant_raw_gap": 0.053868,
+    "consonant_tfidf_gap": 0.087718,
+    "vowel_raw_gap": 0.06145,
+    "n_within_consonant_pairs": 121,
+    "n_between_consonant_pairs": 1959,
+    "n_within_vowel_pairs": 393,
+    "n_between_vowel_pairs": 1687
+  },
+  "consonant_method_sweep": {
+    "best_method": "mknn_spectral knn=12 k=12",
+    "best_ari": 0.1445,
+    "all_results": [
+      {
+        "method": "complete_linkage",
+        "k": 12,
+        "ari": 0.0926
+      },
+      {
+        "method": "complete_linkage",
+        "k": 14,
+        "ari": 0.119
+      },
+      {
+        "method": "complete_linkage",
+        "k": 16,
+        "ari": 0.1145
+      },
+      {
+        "method": "spectral_tfidf_cosine",
+        "k": 10,
+        "ari": 0.1203
+      },
+      {
+        "method": "spectral_tfidf_cosine",
+        "k": 12,
+        "ari": 0.0972
+      },
+      {
+        "method": "spectral_tfidf_cosine",
+        "k": 14,
+        "ari": 0.0423
+      },
+      {
+        "method": "mknn_spectral_knn10",
+        "k": 10,
+        "ari": 0.0686
+      },
+      {
+        "method": "mknn_spectral_knn10",
+        "k": 12,
+        "ari": 0.1255
+      },
+      {
+        "method": "mknn_spectral_knn10",
+        "k": 14,
+        "ari": 0.1087
+      },
+      {
+        "method": "mknn_spectral_knn12",
+        "k": 10,
+        "ari": 0.0624
+      },
+      {
+        "method": "mknn_spectral_knn12",
+        "k": 12,
+        "ari": 0.1445
+      },
+      {
+        "method": "mknn_spectral_knn12",
+        "k": 14,
+        "ari": 0.1239
+      }
+    ]
+  },
+  "null_test": {
+    "shuffled_consonant_ari": 0.0,
+    "shuffled_vowel_ari": 0.0525,
+    "gate_pass": true,
+    "multi_seed_consonant_aris": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "multi_seed_vowel_aris": [
+      0.0525,
+      0.035,
+      0.0312,
+      0.0671,
+      0.0724,
+      0.0288
+    ],
+    "multi_seed_consonant_mean": 0.0,
+    "multi_seed_vowel_mean": 0.0478
+  },
+  "bootstrap": {
+    "consonant_ari_ci_95": [
+      0.0,
+      0.1013
+    ],
+    "vowel_ari_ci_95": [
+      0.1046,
+      0.3952
+    ],
+    "consonant_ari_mean": 0.029,
+    "vowel_ari_mean": 0.2344,
+    "consonant_ari_std": 0.0265,
+    "vowel_ari_std": 0.074,
+    "n_bootstrap": 30
+  },
+  "pipeline_time_seconds": 1.63,
+  "comparison_to_linear_b": {
+    "lb_consonant_ari": 0.3416,
+    "lb_vowel_ari": 0.4219,
+    "lb_n_signs": 60,
+    "lb_n_consonant_series": 19,
+    "lb_n_sign_groups": 1000,
+    "jpn_consonant_ari": 0.0466,
+    "jpn_vowel_ari": 0.2459,
+    "jpn_n_signs": 65,
+    "jpn_n_consonant_series": 14,
+    "jpn_n_sign_groups": 24633,
+    "analysis": "Japanese consonant ARI is lower than Linear B due to permissive Japanese phonotactics: syllable transitions are weakly consonant-dependent (Cohen's d = 0.4999 for TF-IDF left context). Linear B (Mycenaean Greek) has more restrictive phonotactics that make consonant identity a stronger predictor of distributional context. Vowel ARI is closer to target, confirming that the right-context vowel signal is detectable across both syllabaries."
+  },
+  "cluster_detail": {
+    "consonant_clusters": {
+      "7": [
+        "a",
+        "po"
+      ],
+      "4": [
+        "ba",
+        "bo",
+        "da",
+        "do",
+        "e",
+        "go",
+        "ha",
+        "he",
+        "hi",
+        "ho",
+        "i",
+        "ka",
+        "ko",
+        "ku",
+        "me",
+        "mi",
+        "na",
+        "ne",
+        "o",
+        "pu",
+        "sa",
+        "se",
+        "si",
+        "so",
+        "ta",
+        "u",
+        "wa",
+        "ya",
+        "yo",
+        "yu"
+      ],
+      "2": [
+        "be",
+        "ga",
+        "ge",
+        "gi",
+        "gu"
+      ],
+      "10": [
+        "bi"
+      ],
+      "8": [
+        "bu",
+        "pa",
+        "pi"
+      ],
+      "1": [
+        "de",
+        "mu",
+        "wi"
+      ],
+      "5": [
+        "di",
+        "ti"
+      ],
+      "3": [
+        "ke",
+        "ma",
+        "mo",
+        "ni",
+        "ra",
+        "re",
+        "ri",
+        "ro",
+        "te",
+        "to",
+        "we"
+      ],
+      "6": [
+        "ki",
+        "ru"
+      ],
+      "11": [
+        "no"
+      ],
+      "9": [
+        "nu",
+        "pe"
+      ],
+      "12": [
+        "su"
+      ],
+      "13": [
+        "tu"
+      ],
+      "14": [
+        "wo"
+      ]
+    },
+    "vowel_clusters": {
+      "4": [
+        "a",
+        "di",
+        "he",
+        "hi",
+        "me",
+        "na",
+        "ne",
+        "ni",
+        "nu",
+        "pa",
+        "pe",
+        "pi",
+        "ra",
+        "ri",
+        "ro",
+        "sa",
+        "ti",
+        "tu",
+        "yu"
+      ],
+      "0": [
+        "ba",
+        "bu",
+        "da",
+        "ga",
+        "gi",
+        "ha",
+        "ka",
+        "ma",
+        "mu",
+        "po",
+        "su",
+        "wa",
+        "ya"
+      ],
+      "3": [
+        "be",
+        "bi",
+        "de",
+        "e",
+        "ge",
+        "ke",
+        "re",
+        "se",
+        "te",
+        "we",
+        "wi",
+        "wo"
+      ],
+      "2": [
+        "bo",
+        "do",
+        "go",
+        "ho",
+        "i",
+        "ko",
+        "mi",
+        "mo",
+        "no",
+        "o",
+        "so",
+        "yo"
+      ],
+      "1": [
+        "gu",
+        "ki",
+        "ku",
+        "pu",
+        "ru",
+        "si",
+        "ta",
+        "to",
+        "u"
+      ]
+    }
+  }
+}
