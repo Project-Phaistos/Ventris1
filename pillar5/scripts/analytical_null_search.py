@@ -979,6 +979,59 @@ def run_validation_gates(
     return results
 
 
+# ── Per-hypothesis aggregation ──────────────────────────────────────────
+
+
+def aggregate_by_stem_language(
+    search_results: list[dict],
+) -> list[dict]:
+    """Aggregate search results by (stem, language) pair.
+
+    For each (stem, language), selects the best reading (lowest raw p-value)
+    and applies Bonferroni correction for the number of readings tested.
+
+    This is the standard approach for nested hypotheses: the reading is a
+    nuisance parameter to optimize over, not a separate hypothesis.
+
+    Returns list of aggregated results, one per (stem, language) pair.
+    """
+    # Group by (stem_key, language)
+    groups: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for r in search_results:
+        stem_key = "-".join(r["stem_ids"])
+        groups[(stem_key, r["language"])].append(r)
+
+    aggregated = []
+    for (stem_key, lang), entries in groups.items():
+        # Sort by raw p-value ascending (best first)
+        entries.sort(key=lambda e: e["raw_p_value"])
+        best = entries[0]
+        n_readings = len(entries)
+
+        # Bonferroni correction for number of readings tested
+        corrected_p = min(1.0, best["raw_p_value"] * n_readings)
+
+        aggregated.append({
+            "stem_ids": best["stem_ids"],
+            "stem_key": stem_key,
+            "readings": best["readings"],
+            "best_reading_for_unknown": best["reading_for_unknown"],
+            "complete_ipa": best["complete_ipa"],
+            "complete_sca": best["complete_sca"],
+            "language": lang,
+            "matched_word": best["matched_word"],
+            "matched_ipa": best["matched_ipa"],
+            "matched_sca": best["matched_sca"],
+            "gloss": best["gloss"],
+            "ned_distance": best["ned_distance"],
+            "best_raw_p_value": best["raw_p_value"],
+            "n_readings_tested": n_readings,
+            "corrected_p_value": corrected_p,
+        })
+
+    return aggregated
+
+
 # ── Main pipeline ────────────────────────────────────────────────────────
 
 
@@ -1124,33 +1177,46 @@ def main():
     elapsed = time.time() - t0
     print(f"  All {len(search_results)} comparisons done ({elapsed:.0f}s)")
 
-    # ── Stage 4: BH-FDR correction ───────────────────────────────────
-    print("\nStage 4: BH-FDR correction...")
-    raw_pvalues = [r["raw_p_value"] for r in search_results]
-    qvalues = bh_fdr_correction(raw_pvalues, alpha=FDR_ALPHA)
+    # ── Stage 3b: Aggregate by (stem, language) ──────────────────────
+    # The reading is a nuisance parameter: take the best reading per
+    # (stem, language) pair and apply Bonferroni correction for the
+    # number of readings tested.
+    print("\nStage 3b: Aggregating by (stem, language) pair...")
+    aggregated = aggregate_by_stem_language(search_results)
+    print(f"  Raw comparisons: {len(search_results)}")
+    print(f"  Aggregated (stem, language) pairs: {len(aggregated)}")
 
-    for i, r in enumerate(search_results):
+    # ── Stage 4: BH-FDR correction (on aggregated pairs) ────────────
+    print("\nStage 4: BH-FDR correction (per-hypothesis aggregation)...")
+    agg_pvalues = [r["corrected_p_value"] for r in aggregated]
+    qvalues = bh_fdr_correction(agg_pvalues, alpha=FDR_ALPHA)
+
+    for i, r in enumerate(aggregated):
         r["q_value"] = round(qvalues[i], 6)
         r["significant"] = qvalues[i] < FDR_ALPHA
 
-    n_significant = sum(1 for r in search_results if r["significant"])
-    print(f"  Total comparisons: {len(search_results)}")
+    n_significant = sum(1 for r in aggregated if r["significant"])
+    print(f"  Aggregated hypotheses (m): {len(aggregated)}")
     print(f"  FDR-surviving matches (q < {FDR_ALPHA}): {n_significant}")
+    survivor_pct = 100.0 * n_significant / len(aggregated) if aggregated else 0
+    print(f"  Survivor rate: {survivor_pct:.1f}%")
 
     # Sort significant results by q-value
-    sig_results = [r for r in search_results if r["significant"]]
+    sig_results = [r for r in aggregated if r["significant"]]
     sig_results.sort(key=lambda r: r["q_value"])
 
     if sig_results:
         print(f"\n  Top FDR-surviving matches:")
         for r in sig_results[:20]:
             stem_label = "-".join(r["readings"])
-            unknowns = ", ".join(f"{k}={v}" for k, v in r["reading_for_unknown"].items())
+            unknowns = ", ".join(f"{k}={v}" for k, v in r["best_reading_for_unknown"].items())
+            n_rd = r["n_readings_tested"]
             print(
                 f"    {stem_label:30s} [{unknowns:12s}] "
                 f"-> {r['language']:6s} {r['matched_word']:15s} "
                 f"({r['gloss'][:20]:20s}) "
-                f"NED={r['ned_distance']:.3f} q={r['q_value']:.4f}"
+                f"NED={r['ned_distance']:.3f} q={r['q_value']:.4f} "
+                f"(best of {n_rd} readings)"
             )
     else:
         print("  No matches survived FDR correction.")
@@ -1159,7 +1225,17 @@ def main():
 
     # ── Stage 5: Self-consistency analysis ────────────────────────────
     print(f"\nStage 5: Self-consistency analysis...")
-    identifications = self_consistency_analysis(sig_results)
+    # Convert aggregated format to the format self_consistency_analysis expects
+    sig_for_consistency = []
+    for r in sig_results:
+        sig_for_consistency.append({
+            "stem_ids": r["stem_ids"],
+            "reading_for_unknown": r["best_reading_for_unknown"],
+            "language": r["language"],
+            "q_value": r["q_value"],
+            "matched_word": r["matched_word"],
+        })
+    identifications = self_consistency_analysis(sig_for_consistency)
 
     if identifications:
         for ident in identifications:
@@ -1177,6 +1253,8 @@ def main():
     _write_output(
         gate_results, sig_results, identifications, t0,
         total_comparisons=len(search_results),
+        n_aggregated=len(aggregated),
+        all_detail=search_results,
     )
 
     elapsed = time.time() - t0
@@ -1191,6 +1269,8 @@ def _write_output(
     identifications: list[dict],
     t0: float,
     total_comparisons: int = 0,
+    n_aggregated: int = 0,
+    all_detail: list[dict] | None = None,
 ):
     """Write results JSON to file."""
     # Clean gate results for JSON (remove details with potential non-serializable data)
@@ -1211,11 +1291,13 @@ def _write_output(
         "metadata": {
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "n_stems": 21,
-            "n_comparisons": total_comparisons,
+            "n_comparisons_raw": total_comparisons,
+            "n_aggregated_hypotheses": n_aggregated,
             "n_significant": len(sig_results),
             "n_languages": len(LANG_CODES),
             "null_method": f"monte_carlo_M{NULL_SAMPLES}",
             "fdr_alpha": FDR_ALPHA,
+            "aggregation_method": "best_reading_per_stem_language_with_bonferroni",
             "validation_gates": clean_gates,
             "runtime_seconds": round(time.time() - t0, 1),
         },
@@ -1239,6 +1321,10 @@ def _write_output(
             "inconclusive_signs": inconclusive,
         },
     }
+
+    # Include per-reading detail for transparency (all raw comparisons)
+    if all_detail is not None:
+        output["per_reading_detail"] = all_detail
 
     out_path = PROJECT / "results" / "analytical_null_search_output.json"
     with open(out_path, "w", encoding="utf-8") as f:

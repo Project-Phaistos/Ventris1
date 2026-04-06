@@ -24,6 +24,7 @@ from pillar5.scripts.analytical_null_search import (
     cap_bucketed_lexicon,
     load_lexicon,
     self_consistency_analysis,
+    aggregate_by_stem_language,
     run_validation_gates,
     _count_pool_size,
     SCA_ALPHABET,
@@ -231,6 +232,111 @@ class TestAnalyticalPvalue:
                 for N in [10, 100, 1000, 10000]:
                     p = analytical_pvalue(ned, L, N)
                     assert 0.0 <= p <= 1.0
+
+
+class TestAggregateByStomLanguage:
+    """Test per-hypothesis aggregation (best reading per stem-language pair)."""
+
+    def _make_result(self, stem_ids, reading_map, language, p_value):
+        """Helper to construct a search result dict."""
+        return {
+            "stem_ids": stem_ids,
+            "readings": stem_ids,  # simplified
+            "reading_for_unknown": reading_map,
+            "complete_ipa": "test",
+            "complete_sca": "TVST",
+            "language": language,
+            "matched_word": "word",
+            "matched_ipa": "ipa",
+            "matched_sca": "SCA",
+            "gloss": "gloss",
+            "ned_distance": 0.1,
+            "raw_p_value": p_value,
+        }
+
+    def test_single_reading_no_correction(self):
+        """With one reading, corrected p = raw p (Bonferroni * 1)."""
+        results = [
+            self._make_result(["AB07", "AB08"], {}, "hit", 0.01),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert len(agg) == 1
+        assert agg[0]["corrected_p_value"] == pytest.approx(0.01)
+        assert agg[0]["n_readings_tested"] == 1
+
+    def test_multiple_readings_bonferroni(self):
+        """Best p-value is multiplied by number of readings."""
+        results = [
+            self._make_result(["AB07", "AB08"], {"AB08": "ra"}, "hit", 0.05),
+            self._make_result(["AB07", "AB08"], {"AB08": "ka"}, "hit", 0.01),
+            self._make_result(["AB07", "AB08"], {"AB08": "ta"}, "hit", 0.10),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert len(agg) == 1
+        # Best p=0.01, n_readings=3 -> corrected = 0.03
+        assert agg[0]["corrected_p_value"] == pytest.approx(0.03)
+        assert agg[0]["n_readings_tested"] == 3
+        assert agg[0]["best_reading_for_unknown"] == {"AB08": "ka"}
+
+    def test_bonferroni_capped_at_one(self):
+        """Corrected p-value never exceeds 1.0."""
+        results = [
+            self._make_result(["AB07", "AB08"], {"AB08": "ra"}, "hit", 0.50),
+            self._make_result(["AB07", "AB08"], {"AB08": "ka"}, "hit", 0.60),
+            self._make_result(["AB07", "AB08"], {"AB08": "ta"}, "hit", 0.70),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert agg[0]["corrected_p_value"] == 1.0
+
+    def test_different_languages_separate_groups(self):
+        """Same stem against different languages produces separate entries."""
+        results = [
+            self._make_result(["AB07", "AB08"], {}, "hit", 0.01),
+            self._make_result(["AB07", "AB08"], {}, "grc", 0.02),
+            self._make_result(["AB07", "AB08"], {}, "lat", 0.03),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert len(agg) == 3
+
+    def test_different_stems_separate_groups(self):
+        """Different stems against same language produce separate entries."""
+        results = [
+            self._make_result(["AB07", "AB08"], {}, "hit", 0.01),
+            self._make_result(["AB10", "AB13"], {}, "hit", 0.02),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert len(agg) == 2
+
+    def test_aggregation_reduces_count(self):
+        """3 readings x 2 languages = 6 raw -> 2 aggregated."""
+        results = []
+        for lang in ["hit", "grc"]:
+            for reading in ["ra", "ka", "ta"]:
+                results.append(
+                    self._make_result(["AB07", "AB08"], {"AB08": reading}, lang, 0.05)
+                )
+        agg = aggregate_by_stem_language(results)
+        assert len(agg) == 2
+        for a in agg:
+            assert a["n_readings_tested"] == 3
+
+    def test_empty_input(self):
+        """Empty search results produce empty aggregation."""
+        assert aggregate_by_stem_language([]) == []
+
+    def test_best_reading_selected(self):
+        """The reading with the lowest raw p-value is selected."""
+        results = [
+            self._make_result(["AB07", "AB60"], {"AB60": "ra"}, "hit", 0.10),
+            self._make_result(["AB07", "AB60"], {"AB60": "ka"}, "hit", 0.001),
+            self._make_result(["AB07", "AB60"], {"AB60": "ta"}, "hit", 0.05),
+            self._make_result(["AB07", "AB60"], {"AB60": "pa"}, "hit", 0.20),
+        ]
+        agg = aggregate_by_stem_language(results)
+        assert agg[0]["best_reading_for_unknown"] == {"AB60": "ka"}
+        assert agg[0]["best_raw_p_value"] == 0.001
+        # Bonferroni: 0.001 * 4 = 0.004
+        assert agg[0]["corrected_p_value"] == pytest.approx(0.004)
 
 
 class TestNullDistribution:
