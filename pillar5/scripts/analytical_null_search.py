@@ -159,10 +159,16 @@ def load_corpus() -> dict:
     with open(PROJECT / "data" / "sigla_full_corpus.json", encoding="utf-8") as f:
         corpus = json.load(f)
     ab_to_reading: dict[str, str] = {}
+    ab_confidence: dict[str, str] = {}
+    tier_priority = {"tier1": 0, "tier2": 1, "tier3_undeciphered": 2}
     for reading, info in corpus["sign_inventory"].items():
         if isinstance(info, dict):
+            conf = info.get("confidence", "tier3_undeciphered")
             for ab in info.get("ab_codes", []):
-                ab_to_reading[ab] = reading
+                prev_conf = ab_confidence.get(ab, "tier3_undeciphered")
+                if tier_priority.get(conf, 2) <= tier_priority.get(prev_conf, 2):
+                    ab_to_reading[ab] = reading
+                    ab_confidence[ab] = conf
     return ab_to_reading
 
 
