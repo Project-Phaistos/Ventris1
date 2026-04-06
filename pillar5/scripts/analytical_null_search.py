@@ -16,13 +16,17 @@ Linear A is treated as a chimaera language (multiple influences).
 from __future__ import annotations
 
 import csv
+import hashlib
 import io
 import json
 import random
 import sys
 import time
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
+
+import numpy as np
 
 if __name__ == "__main__":
     sys.stdout = io.TextIOWrapper(
@@ -46,9 +50,10 @@ LANG_CODES = [
 ]
 
 MAX_LEXICON_ENTRIES = 3000
-NULL_SAMPLES = 1_000  # p-value resolution 0.001; sufficient for BH-FDR
+NULL_SAMPLES = 100_000  # p-value resolution ~1e-5; sufficient for BH-FDR with 378 hypotheses
 NULL_POOL_CAP = 500  # Cap per length bucket for null <-> search consistency
 FDR_ALPHA = 0.05
+NULL_CACHE_DIR = Path(__file__).resolve().parents[2] / "results" / "null_tables"
 
 VC_TO_VOWEL = {0: "a", 1: "e", 2: "i", 3: "o", 4: "u"}
 
@@ -398,6 +403,17 @@ def cap_bucketed_lexicon(
     return capped
 
 
+def _collect_pool(
+    lex_sca_by_len: dict[int, list[str]],
+    query_length: int,
+) -> list[str]:
+    """Collect all SCA strings in the comparison window [L-2, L+2]."""
+    pool: list[str] = []
+    for bucket_len in range(max(1, query_length - 2), query_length + 3):
+        pool.extend(lex_sca_by_len.get(bucket_len, []))
+    return pool
+
+
 def build_null_table(
     query_length: int,
     lex_sca_by_len: dict[int, list[str]],
@@ -413,11 +429,7 @@ def build_null_table(
     The lex_sca_by_len should be pre-capped (via cap_bucketed_lexicon) to
     match the search scope.
     """
-    # Pre-collect the comparison pool (flat list of strings within length window)
-    pool: list[str] = []
-    for bucket_len in range(max(1, query_length - 2), query_length + 3):
-        pool.extend(lex_sca_by_len.get(bucket_len, []))
-
+    pool = _collect_pool(lex_sca_by_len, query_length)
     if not pool:
         return [1.0] * n_samples
 
@@ -440,19 +452,209 @@ def build_null_table(
     return null_dists
 
 
+# ── Disk-cached null tables with parallel computation ──────────────────
+
+
+def _pool_hash(pool: list[str]) -> str:
+    """Compute a deterministic hash of the comparison pool for cache validity."""
+    h = hashlib.sha256()
+    for s in sorted(pool):
+        h.update(s.encode("ascii"))
+    return h.hexdigest()[:16]
+
+
+def _null_cache_path(lang: str, query_length: int, pool_hash: str) -> Path:
+    """Return the disk cache path for a null table."""
+    return NULL_CACHE_DIR / f"{lang}_L{query_length}_{pool_hash}.npz"
+
+
+def _load_cached_null_table(cache_path: Path) -> np.ndarray | None:
+    """Load a null table from disk cache. Returns None if not found."""
+    if not cache_path.exists():
+        return None
+    try:
+        data = np.load(cache_path)
+        return data["null_table"]
+    except Exception:
+        return None
+
+
+def _save_null_table(cache_path: Path, null_table: np.ndarray) -> None:
+    """Save a null table to disk cache."""
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(cache_path, null_table=null_table)
+
+
+def _build_null_table_worker(
+    query_length: int,
+    pool: list[str],
+    n_samples: int,
+    seed: int,
+) -> list[float]:
+    """Worker function for parallel null table computation.
+
+    Runs in a subprocess. Uses pure Python NED (no shared state needed).
+    """
+    rng = random.Random(seed)
+    sca_chars = list("HJKLMNPRSTVW")
+    null_dists = []
+
+    for _ in range(n_samples):
+        rand_sca = "".join(rng.choice(sca_chars) for _ in range(query_length))
+        best_ned = 1.0
+        for s in pool:
+            d = normalized_edit_distance(rand_sca, s)
+            if d < best_ned:
+                best_ned = d
+                if best_ned == 0.0:
+                    break
+        null_dists.append(best_ned)
+
+    null_dists.sort()
+    return null_dists
+
+
+def build_null_table_cached(
+    query_length: int,
+    lex_sca_by_len: dict[int, list[str]],
+    n_samples: int,
+    rng: random.Random,
+    lang: str = "",
+    use_cache: bool = True,
+) -> list[float]:
+    """Build null table with disk caching.
+
+    Checks for a cached table on disk. If found and valid (matching pool hash),
+    loads from cache. Otherwise computes fresh and saves to cache.
+    """
+    pool = _collect_pool(lex_sca_by_len, query_length)
+    if not pool:
+        return [1.0] * n_samples
+
+    ph = _pool_hash(pool)
+
+    if use_cache and lang:
+        cache_path = _null_cache_path(lang, query_length, ph)
+        cached = _load_cached_null_table(cache_path)
+        if cached is not None and len(cached) >= n_samples:
+            return cached[:n_samples].tolist()
+
+    # Compute fresh
+    seed = rng.randint(0, 2**31)
+    null_dists = _build_null_table_worker(query_length, pool, n_samples, seed)
+
+    # Save to cache
+    if use_cache and lang:
+        cache_path = _null_cache_path(lang, query_length, ph)
+        _save_null_table(cache_path, np.array(null_dists, dtype=np.float32))
+
+    return null_dists
+
+
+def build_all_null_tables_parallel(
+    query_lengths: set[int],
+    lex_capped: dict[str, dict[int, list[str]]],
+    n_samples: int,
+    rng: random.Random,
+    max_workers: int | None = None,
+    verbose: bool = True,
+) -> dict[tuple[int, str], list[float]]:
+    """Build all null tables with parallel processing and disk caching.
+
+    For each (query_length, language) pair:
+    1. Check disk cache (with pool hash validation)
+    2. If cached, load from disk
+    3. If not cached, submit to process pool
+
+    Returns dict mapping (length, lang) -> sorted null table.
+    """
+    import os
+    if max_workers is None:
+        max_workers = min(os.cpu_count() or 4, 12)
+
+    null_tables: dict[tuple[int, str], list[float]] = {}
+    tasks_to_submit: list[tuple[int, str, list[str], int]] = []
+    cache_hits = 0
+
+    # Phase 1: check cache for all (L, lang) pairs
+    for L in sorted(query_lengths):
+        for lc, capped_by_len in lex_capped.items():
+            pool = _collect_pool(capped_by_len, L)
+            if not pool:
+                null_tables[(L, lc)] = [1.0] * n_samples
+                continue
+
+            ph = _pool_hash(pool)
+            cache_path = _null_cache_path(lc, L, ph)
+            cached = _load_cached_null_table(cache_path)
+            if cached is not None and len(cached) >= n_samples:
+                null_tables[(L, lc)] = cached[:n_samples].tolist()
+                cache_hits += 1
+            else:
+                seed = rng.randint(0, 2**31)
+                tasks_to_submit.append((L, lc, pool, seed))
+
+    total_tasks = len(tasks_to_submit) + cache_hits
+    if verbose:
+        print(f"  Cache hits: {cache_hits}/{total_tasks}")
+        print(f"  Tables to compute: {len(tasks_to_submit)}")
+        if tasks_to_submit:
+            print(f"  Using {max_workers} workers for parallel computation")
+
+    if not tasks_to_submit:
+        return null_tables
+
+    # Phase 2: compute missing tables in parallel
+    t_start = time.time()
+    completed = 0
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        future_to_key = {}
+        for L, lc, pool, seed in tasks_to_submit:
+            future = executor.submit(
+                _build_null_table_worker, L, pool, n_samples, seed
+            )
+            future_to_key[future] = (L, lc, pool)
+
+        for future in as_completed(future_to_key):
+            L, lc, pool = future_to_key[future]
+            null_dists = future.result()
+            null_tables[(L, lc)] = null_dists
+
+            # Save to disk cache
+            ph = _pool_hash(pool)
+            cache_path = _null_cache_path(lc, L, ph)
+            _save_null_table(cache_path, np.array(null_dists, dtype=np.float32))
+
+            completed += 1
+            if verbose and completed % 10 == 0:
+                elapsed = time.time() - t_start
+                pct = 100 * completed / len(tasks_to_submit)
+                remaining = elapsed / completed * (len(tasks_to_submit) - completed)
+                print(
+                    f"    {completed}/{len(tasks_to_submit)} tables "
+                    f"({pct:.0f}%, {elapsed:.0f}s elapsed, ~{remaining:.0f}s remaining)"
+                )
+
+    elapsed = time.time() - t_start
+    if verbose:
+        print(f"  All {len(tasks_to_submit)} tables computed in {elapsed:.0f}s")
+
+    return null_tables
+
+
 def pvalue_from_null_table(real_ned: float, null_table: list[float]) -> float:
     """Compute p-value: fraction of null values <= real_ned.
 
     Uses bisect for O(log n) lookup on the sorted null table.
-    Applies a pseudocount floor of 1/(M+1) when count=0, following
-    standard permutation testing practice (Phipson & Smyth 2010).
+    Applies Phipson-Smyth pseudocount: (count + 1) / (M + 1) to prevent
+    exact-zero p-values (Phipson & Smyth 2010).
     """
     if not null_table:
         return 1.0
     from bisect import bisect_right
     M = len(null_table)
     count = bisect_right(null_table, real_ned + 1e-12)
-    # Pseudocount: (count + 1) / (M + 1) prevents exact-zero p-values
     return (count + 1) / (M + 1)
 
 
@@ -1187,12 +1389,17 @@ def _build_gate_null_tables(
     query_lengths: set[int],
     rng: random.Random,
     verbose: bool = False,
+    n_samples: int = 1_000,
 ) -> dict[int, list[float]]:
-    """Build MC null tables for each query length against a (capped) lexicon."""
+    """Build MC null tables for each query length against a (capped) lexicon.
+
+    Gates only test 10 hypotheses each, so M=1,000 is sufficient resolution.
+    The main pipeline uses M=100,000 via build_all_null_tables_parallel().
+    """
     capped = cap_bucketed_lexicon(lex_by_len, rng)
     null_tables: dict[int, list[float]] = {}
     for L in sorted(query_lengths):
-        null_tables[L] = build_null_table(L, capped, NULL_SAMPLES, rng)
+        null_tables[L] = build_null_table(L, capped, n_samples, rng)
         if verbose:
             median = null_tables[L][len(null_tables[L]) // 2]
             print(f"    L={L}: median null NED={median:.3f}")
@@ -1565,6 +1772,7 @@ def main(bias_correction: str = "freq_norm"):
     print(f"\nStage 3: Searching ({total_comparisons} comparisons)...")
     print(f"  Using Monte Carlo null tables (M={NULL_SAMPLES} samples per table)")
     print(f"  Pool cap per length bucket: {NULL_POOL_CAP}")
+    print(f"  Disk cache: {NULL_CACHE_DIR}")
 
     # Pre-compute null tables for all (query_length, language) pairs
     # Uses capped pools (same as search) to ensure null <-> search consistency
@@ -1573,12 +1781,11 @@ def main(bias_correction: str = "freq_norm"):
         query_lengths.add(len(hyp["complete_sca"]))
 
     print(f"  Building null tables for {len(query_lengths)} lengths x {len(lexicons)} languages...")
-    null_tables: dict[tuple[int, str], list[float]] = {}
-    for L in sorted(query_lengths):
-        for lc in lexicons:
-            null_tables[(L, lc)] = build_null_table(L, lex_capped[lc], NULL_SAMPLES, rng)
-        elapsed = time.time() - t0
-        print(f"    L={L}: all {len(lexicons)} languages done ({elapsed:.0f}s)")
+    null_tables = build_all_null_tables_parallel(
+        query_lengths, lex_capped, NULL_SAMPLES, rng, verbose=True,
+    )
+    elapsed = time.time() - t0
+    print(f"  Null tables ready ({elapsed:.0f}s)")
 
     # Run searches using the same capped pools
     print("  Running searches...")
