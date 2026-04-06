@@ -443,12 +443,11 @@ class TestGate2GreekLatin:
 
 
 class TestGate3FalsePositive:
-    """Gate 3: English-Akkadian false positive control.
+    """Gate 3: Synthetic SCA null calibration control.
 
-    With a Monte Carlo null and a 3000-entry Akkadian lexicon, some
-    English words genuinely produce close SCA matches (false cognates).
-    The threshold is <=5 FP to verify the null is not catastrophically
-    broken (a completely miscalibrated null would give 10/10 FP).
+    Searches 10 synthetic random SCA strings against Akkadian.  Since
+    the queries are drawn from the same distribution as the MC null,
+    a properly calibrated null should produce exactly 0 false positives.
     """
 
     @pytest.fixture(scope="class")
@@ -464,9 +463,12 @@ class TestGate3FalsePositive:
             f"false positives at FDR q < 0.05"
         )
 
-    def test_gate3_at_most_five_false_positives(self, gate_results):
+    def test_gate3_zero_false_positives(self, gate_results):
         g3 = gate_results["gate3_false_positive"]
-        assert g3["false_positives"] <= 5
+        assert g3["false_positives"] == 0, (
+            f"Gate 3: {g3['false_positives']} false positives "
+            f"(expected 0 for synthetic random SCA queries)"
+        )
 
 
 # ============================================================
