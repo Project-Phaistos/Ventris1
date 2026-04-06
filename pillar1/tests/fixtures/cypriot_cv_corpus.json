@@ -1,0 +1,2174 @@
+{
+  "source": "Cypriot Greek syllabary inscriptions",
+  "language": "Arcadocypriot Greek",
+  "script_type": "CV syllabary (Cypriot syllabary, Unicode U+10800-U+1083F)",
+  "sources": [
+    {
+      "name": "Idalion Tablet (ICS 217)",
+      "url": "https://ancientscriptsstudy.wordpress.com/home/syllabic-cypriot-idalion-tablet-ics-217/",
+      "description": "Bronze tablet from Idalion, Cyprus, ~480-470 BCE. Longest surviving Cypriot syllabary inscription.",
+      "reference": "Masson, O. (1983) Les inscriptions chypriotes syllabiques (ICS), no. 217"
+    },
+    {
+      "name": "Palaeolexicon Cypriot inscriptions",
+      "url": "http://www.palaeolexicon.com/Cypriot",
+      "description": "Additional published Cypriot syllabary inscriptions."
+    }
+  ],
+  "sign_inventory_source": "Unicode Standard, Cypriot Syllabary block U+10800-U+1083F",
+  "sign_inventory_url": "https://en.wiktionary.org/wiki/Appendix:Unicode/Cypriot_Syllabary",
+  "license": "Public domain (ancient inscriptions)",
+  "n_words": 269,
+  "n_sign_tokens": 1072,
+  "n_unique_signs": 51,
+  "words": [
+    {
+      "syllables": [
+        "o",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "po",
+        "to",
+        "li",
+        "ne",
+        "e",
+        "ta",
+        "li",
+        "o",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "te",
+        "wo",
+        "ro",
+        "ko",
+        "ne",
+        "ma",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se",
+        "ke",
+        "ti",
+        "e",
+        "we",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "pi",
+        "lo",
+        "ku",
+        "po",
+        "ro",
+        "ne",
+        "we",
+        "te",
+        "i",
+        "to",
+        "o",
+        "na",
+        "sa",
+        "ko"
+      ]
+    },
+    {
+      "syllables": [
+        "ra",
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "sa",
+        "ta",
+        "si",
+        "ku",
+        "po",
+        "ro",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se",
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ta",
+        "li",
+        "e",
+        "we",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "no",
+        "ko",
+        "ne",
+        "o",
+        "na",
+        "si",
+        "lo",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "no",
+        "na",
+        "si",
+        "ku",
+        "po"
+      ]
+    },
+    {
+      "syllables": [
+        "ro",
+        "ne",
+        "to",
+        "ni",
+        "ja",
+        "te",
+        "ra",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "ja",
+        "sa",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "to",
+        "ro",
+        "po",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ma",
+        "ka",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "ki"
+      ]
+    },
+    {
+      "syllables": [
+        "ma",
+        "me",
+        "no",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ne",
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "mi",
+        "si",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "sa",
+        "pa",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "u",
+        "we",
+        "re",
+        "ta",
+        "sa",
+        "tu"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ti",
+        "to",
+        "mi",
+        "si",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "a",
+        "ti"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "u",
+        "ke",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "we",
+        "na",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "wo",
+        "i",
+        "ko",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "pa",
+        "si",
+        "le",
+        "wo",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe",
+        "ta",
+        "i",
+        "po",
+        "to",
+        "li",
+        "wi"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ra",
+        "ku",
+        "ro"
+      ]
+    },
+    {
+      "syllables": [
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "tu",
+        "wa",
+        "no",
+        "i",
+        "nu"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ti",
+        "to"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ra",
+        "ku",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ta",
+        "la",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "ke",
+        "ne",
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "pu",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i",
+        "pa",
+        "si",
+        "le",
+        "wo",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i",
+        "to",
+        "i",
+        "ro",
+        "ni"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "la",
+        "pi",
+        "ri",
+        "ja",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ko",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ni",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "le",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ka",
+        "ra",
+        "u",
+        "o",
+        "me",
+        "no",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ka",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "la",
+        "wo"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "te",
+        "re",
+        "ki",
+        "ni",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "e",
+        "pi",
+        "o",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ke",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "no",
+        "ni",
+        "o",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "u",
+        "wa",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "te",
+        "le",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "si",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "lo",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "i",
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "pa",
+        "i",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "no",
+        "na",
+        "si",
+        "ku",
+        "po",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ko",
+        "ro",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ru",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "te",
+        "pa",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "e",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ru",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "pe",
+        "i",
+        "se",
+        "i",
+        "o",
+        "na",
+        "si",
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "i",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "na",
+        "ra",
+        "ku",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ra",
+        "ku",
+        "ro"
+      ]
+    },
+    {
+      "syllables": [
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "i",
+        "wo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ne",
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "na",
+        "i",
+        "lo",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "we",
+        "re",
+        "ta",
+        "sa",
+        "tu"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "we",
+        "na",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ti"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "u",
+        "ke",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "mi",
+        "si",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ra",
+        "ku",
+        "ro"
+      ]
+    },
+    {
+      "syllables": [
+        "pe"
+      ]
+    },
+    {
+      "syllables": [
+        "ti",
+        "e"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "ko",
+        "i",
+        "nu"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ti"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "a",
+        "ra",
+        "ku",
+        "ro"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "pu",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i",
+        "pa",
+        "si",
+        "le",
+        "wo",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i",
+        "ma",
+        "la",
+        "ni",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "pe",
+        "ti",
+        "ja",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ko",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ka",
+        "ra",
+        "u",
+        "zo",
+        "me",
+        "no",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "me",
+        "ni",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "la",
+        "wo"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "te",
+        "re"
+      ]
+    },
+    {
+      "syllables": [
+        "ki",
+        "ni",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "e",
+        "pi",
+        "o",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "po",
+        "e",
+        "ko",
+        "me",
+        "no",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "po",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ro",
+        "wo"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "tu",
+        "ru",
+        "mi",
+        "o",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "po"
+      ]
+    },
+    {
+      "syllables": [
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "ni",
+        "e",
+        "re",
+        "wi",
+        "ja",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ta",
+        "na",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ka",
+        "po",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "ni",
+        "si",
+        "mi",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ro",
+        "u",
+        "ra"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "to",
+        "ti",
+        "we",
+        "i",
+        "te",
+        "mi",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "a",
+        "ra",
+        "ma",
+        "ne",
+        "u",
+        "se",
+        "e",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "la",
+        "wo"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "po",
+        "e",
+        "ko",
+        "me",
+        "no",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "po",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "sa",
+        "ko",
+        "ra"
+      ]
+    },
+    {
+      "syllables": [
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "no",
+        "na",
+        "sa",
+        "ko",
+        "ra",
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "te",
+        "re",
+        "ki",
+        "ni",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "e",
+        "pi",
+        "o",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ke",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "no",
+        "ni",
+        "o",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "u"
+      ]
+    },
+    {
+      "syllables": [
+        "wa",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "te",
+        "li",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "o",
+        "ta"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "si",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "lo",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "i",
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o"
+      ]
+    },
+    {
+      "syllables": [
+        "na",
+        "si",
+        "lo",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe",
+        "ta",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "i",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "e",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "po",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ru",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "e",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ru",
+        "xe"
+      ]
+    },
+    {
+      "syllables": [
+        "pe",
+        "i",
+        "se",
+        "i",
+        "o",
+        "na",
+        "si",
+        "lo",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "to",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "i",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "na",
+        "ra",
+        "ku",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ra",
+        "ku",
+        "ro"
+      ]
+    },
+    {
+      "syllables": [
+        "ne",
+        "pe"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "ta",
+        "la",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "we",
+        "pi",
+        "ja"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "na",
+        "la",
+        "li",
+        "si",
+        "me",
+        "na"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "si",
+        "le",
+        "u",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "po",
+        "to",
+        "li",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "te",
+        "ti",
+        "ja",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "ta",
+        "ti",
+        "o",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "na",
+        "ta",
+        "na",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "ne",
+        "pe",
+        "re"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "li",
+        "o",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "su",
+        "no",
+        "ro",
+        "ko",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "me",
+        "lu",
+        "sa",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "we",
+        "re",
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "sa",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "u",
+        "wa",
+        "i",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "pi",
+        "si",
+        "si",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "we",
+        "re",
+        "ta",
+        "se",
+        "ta",
+        "sa",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "lu",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "no",
+        "si",
+        "ja",
+        "wo",
+        "i",
+        "ke",
+        "no",
+        "i",
+        "tu",
+        "ta",
+        "sa",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "sa",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "po",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "so",
+        "te"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "ku",
+        "po",
+        "ro",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "pa",
+        "i",
+        "te",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "pa",
+        "i",
+        "to",
+        "ne"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "i",
+        "pa"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "te",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ke",
+        "so",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "i",
+        "we",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "i",
+        "to",
+        "i",
+        "ro",
+        "ni"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "ta",
+        "li",
+        "e",
+        "wi"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "o",
+        "si"
+      ]
+    },
+    {
+      "syllables": [
+        "ti",
+        "mo",
+        "ku",
+        "po",
+        "ro",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "ti",
+        "mo",
+        "ke",
+        "re",
+        "te",
+        "o",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "pe",
+        "se",
+        "ta",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ki",
+        "li",
+        "ka",
+        "wi"
+      ]
+    },
+    {
+      "syllables": [
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "si",
+        "ke",
+        "ne",
+        "to",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "o",
+        "na",
+        "si",
+        "me",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "la",
+        "ma",
+        "ko"
+      ]
+    },
+    {
+      "syllables": [
+        "i",
+        "po",
+        "sa"
+      ]
+    },
+    {
+      "syllables": [
+        "ta",
+        "ma",
+        "ti",
+        "ri"
+      ]
+    },
+    {
+      "syllables": [
+        "ka",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "ko",
+        "ra",
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "e",
+        "lo",
+        "wo",
+        "i",
+        "ko",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "po",
+        "te",
+        "si",
+        "o",
+        "se"
+      ]
+    },
+    {
+      "syllables": [
+        "a",
+        "ne",
+        "te",
+        "ke"
+      ]
+    },
+    {
+      "syllables": [
+        "i"
+      ]
+    },
+    {
+      "syllables": [
+        "tu",
+        "ka",
+        "i"
+      ]
+    }
+  ]
+}
