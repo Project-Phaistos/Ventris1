@@ -456,6 +456,393 @@ def pvalue_from_null_table(real_ned: float, null_table: list[float]) -> float:
     return (count + 1) / (M + 1)
 
 
+# ── Bias correction: consonant-class frequency normalization ────────────
+
+
+def _reading_to_sca_class(reading: str) -> str:
+    """Get the SCA consonant class for a reading hypothesis.
+
+    "da" -> IPA "da" -> SCA first char "T".
+    "ra" -> SCA first char "R".
+    Pure vowels "a" -> "V".
+    """
+    if not reading:
+        return "V"
+    sca = ipa_to_sca(reading)
+    if not sca:
+        return "V"
+    return sca[0]
+
+
+def compute_class_background_rates(
+    capped_by_len: dict[int, list[str]],
+    query_length: int,
+    n_samples: int,
+    rng: random.Random,
+) -> dict[str, float]:
+    """Compute background match rates by initial SCA consonant class.
+
+    For each consonant class C, generates random SCA strings starting
+    with C and measures what fraction produce NED <= the 25th percentile
+    against this lexicon. Classes with higher rates match more easily.
+
+    Returns dict mapping SCA class letter -> background match rate
+    (inverse of mean NED: higher rate = easier matching = more bias).
+    """
+    pool: list[str] = []
+    for bucket_len in range(max(1, query_length - 2), query_length + 3):
+        pool.extend(capped_by_len.get(bucket_len, []))
+    if not pool:
+        return {}
+
+    sca_chars = SCA_ALPHABET
+    ned_func = normalized_edit_distance
+
+    # For each consonant class, compute mean best-NED of class-initial
+    # random SCA strings against this lexicon pool.
+    # Lower mean NED = easier matching = higher bias.
+    consonant_classes = [c for c in SCA_ALPHABET if c != "V"]
+    class_mean_ned: dict[str, float] = {}
+    samples_per_class = max(50, n_samples // len(consonant_classes))
+
+    for cls in consonant_classes:
+        neds = []
+        for _ in range(samples_per_class):
+            rest = "".join(rng.choice(sca_chars) for _ in range(query_length - 1))
+            rand_sca = cls + rest
+            best_ned = 1.0
+            for s in pool:
+                d = ned_func(rand_sca, s)
+                if d < best_ned:
+                    best_ned = d
+                    if best_ned == 0.0:
+                        break
+            neds.append(best_ned)
+        class_mean_ned[cls] = sum(neds) / len(neds) if neds else 1.0
+
+    # Convert to rates: rate = 1/mean_ned (inversely proportional)
+    # This ensures classes with lower mean NED get higher rates.
+    rates: dict[str, float] = {}
+    for cls in consonant_classes:
+        mn = class_mean_ned[cls]
+        rates[cls] = 1.0 / max(mn, 0.01)
+
+    rates["V"] = 1.0
+    return rates
+
+
+def build_class_background_rates_all(
+    lex_capped: dict[str, dict[int, list[str]]],
+    query_lengths: set[int],
+    n_samples: int,
+    rng: random.Random,
+    verbose: bool = True,
+) -> dict[tuple[int, str], dict[str, float]]:
+    """Build background match rates for all (query_length, language) pairs."""
+    rates: dict[tuple[int, str], dict[str, float]] = {}
+    for L in sorted(query_lengths):
+        for lc, capped in lex_capped.items():
+            rates[(L, lc)] = compute_class_background_rates(
+                capped, L, n_samples, rng,
+            )
+        if verbose:
+            print(f"    L={L}: class rates computed for all languages")
+    return rates
+
+
+def freq_norm_adjust_pvalue(
+    raw_pvalue: float,
+    reading_map: dict[str, str],
+    class_rates: dict[str, float],
+) -> float:
+    """Adjust p-value using consonant-class frequency normalization.
+
+    Multiplies p-value by relative_rate = rate(C) / mean_rate to
+    penalize consonant classes with higher background match rates.
+    """
+    if not reading_map or not class_rates:
+        return raw_pvalue
+
+    consonant_rates = {k: v for k, v in class_rates.items() if k != "V"}
+    if not consonant_rates:
+        return raw_pvalue
+    mean_rate = sum(consonant_rates.values()) / len(consonant_rates)
+    if mean_rate == 0:
+        return raw_pvalue
+
+    adjustment = 1.0
+    for _sign_id, reading in reading_map.items():
+        cls = _reading_to_sca_class(reading)
+        if cls in class_rates:
+            relative_rate = class_rates[cls] / mean_rate
+            adjustment *= relative_rate
+
+    if adjustment <= 0:
+        return raw_pvalue
+    return min(1.0, raw_pvalue * adjustment)
+
+
+# ── Bias correction: P1 grid prior weighting ───────────────────────────
+
+
+def load_jaccard_classification() -> dict:
+    """Load Jaccard classification output for grid prior construction."""
+    path = PROJECT / "results" / "jaccard_classification_output.json"
+    if not path.exists():
+        return {}
+    with open(path) as f:
+        return json.load(f)
+
+
+def build_grid_prior(
+    grid: dict[str, tuple[int, int, float]],
+    ab_to_reading: dict[str, str],
+    sign_to_ipa: dict[str, str],
+    jaccard: dict,
+) -> dict[str, dict[str, float]]:
+    """Build prior probability for each (sign_id, reading) from P1 grid.
+
+    Uses Jaccard consonant clusters to cross-reference unknown signs
+    with known LB signs and estimate consonant-class priors.
+
+    Returns dict mapping sign_id -> {SCA_class: prior_probability}.
+    """
+    consonant_clusters = jaccard.get("linear_a", {}).get("consonant", {}).get("clusters", {})
+
+    reading_to_cluster: dict[str, str] = {}
+    for cluster_id, signs in consonant_clusters.items():
+        for sign in signs:
+            reading_to_cluster[sign] = cluster_id
+
+    cluster_consonant_onsets: dict[str, list[str]] = defaultdict(list)
+    for reading, cluster_id in reading_to_cluster.items():
+        ipa = sign_to_ipa.get(reading)
+        if ipa:
+            clean = ipa.rstrip("0123456789")
+            if clean in ("a", "e", "i", "o", "u"):
+                cluster_consonant_onsets[cluster_id].append("")
+            elif clean.endswith(("a", "e", "i", "o", "u")):
+                cluster_consonant_onsets[cluster_id].append(clean[:-1])
+
+    priors: dict[str, dict[str, float]] = {}
+
+    for sign_id, (cc, vc, conf) in grid.items():
+        reading = ab_to_reading.get(sign_id, sign_id)
+        if reading in sign_to_ipa:
+            continue
+
+        sign_cluster = reading_to_cluster.get(sign_id)
+        if not sign_cluster:
+            continue
+
+        known_onsets = cluster_consonant_onsets.get(sign_cluster, [])
+        if not known_onsets:
+            continue
+
+        onset_sca_classes: dict[str, int] = defaultdict(int)
+        for onset in known_onsets:
+            if not onset:
+                onset_sca_classes["V"] += 1
+            else:
+                sca_cls = ipa_to_sca(onset)
+                if sca_cls:
+                    onset_sca_classes[sca_cls[0]] += 1
+
+        total_count = sum(onset_sca_classes.values())
+        if total_count == 0:
+            continue
+
+        n_classes = len(SCA_ALPHABET)
+        alpha = 1.0  # Dirichlet smoothing
+        class_priors: dict[str, float] = {}
+        for cls in SCA_ALPHABET:
+            count = onset_sca_classes.get(cls, 0)
+            class_priors[cls] = (count + alpha) / (total_count + n_classes * alpha)
+
+        priors[sign_id] = class_priors
+
+    return priors
+
+
+def grid_prior_adjust_pvalue(
+    raw_pvalue: float,
+    reading_map: dict[str, str],
+    grid_priors: dict[str, dict[str, float]],
+) -> float:
+    """Adjust p-value using P1 grid prior weighting.
+
+    Divides p-value by prior: higher prior -> lower adjusted p-value
+    (easier to survive FDR). Uses uniform/prior as multiplicative factor.
+    """
+    if not reading_map or not grid_priors:
+        return raw_pvalue
+
+    adjustment = 1.0
+    n_priors_used = 0
+
+    for sign_id, reading in reading_map.items():
+        if sign_id not in grid_priors:
+            continue
+        cls = _reading_to_sca_class(reading)
+        prior = grid_priors[sign_id].get(cls, 1.0 / len(SCA_ALPHABET))
+        uniform = 1.0 / len(SCA_ALPHABET)
+        adjustment *= uniform / prior
+        n_priors_used += 1
+
+    if n_priors_used == 0:
+        return raw_pvalue
+    return min(1.0, max(0.0, raw_pvalue * adjustment))
+
+
+# ── LB known-answer holdout test ───────────────────────────────────────
+
+
+LB_HOLDOUT_SIGNS = [
+    ("AB01", "da", "d"),
+    ("AB06", "na", "n"),
+    ("AB08", "a", ""),
+    ("AB27", "re", "r"),
+    ("AB37", "ti", "t"),
+    ("AB45", "de", "d"),
+    ("AB57", "ja", "j"),
+    ("AB59", "ta", "t"),
+    ("AB60", "ra", "r"),
+    ("AB67", "ki", "k"),
+    ("AB70", "ko", "k"),
+]
+
+
+def run_lb_holdout_test(
+    sign_to_ipa: dict[str, str],
+    ab_to_reading: dict[str, str],
+    grid: dict[str, tuple[int, int, float]],
+    cell_consonants: dict[int, set[str]],
+    lexicons: dict[str, list[dict]],
+    lex_capped: dict[str, dict[int, list[str]]],
+    null_tables: dict[tuple[int, str], list[float]],
+    class_rates: dict[tuple[int, str], dict[str, float]] | None = None,
+    grid_priors: dict[str, dict[str, float]] | None = None,
+    rng: random.Random | None = None,
+    verbose: bool = True,
+) -> dict[str, dict]:
+    """Run LB known-answer holdout test for bias correction comparison.
+
+    For each LB sign with a known reading:
+    1. Treat it as unknown
+    2. Generate candidate readings from its grid cell
+    3. Search all lexicons with each reading
+    4. Apply bias correction (if provided)
+    5. Check if the correct reading is recovered as best
+
+    Returns dict with results for each correction method.
+    """
+    if rng is None:
+        rng = random.Random(42)
+
+    results_by_method: dict[str, list[dict]] = {
+        "none": [],
+        "freq_norm": [],
+        "grid_prior": [],
+    }
+
+    for ab_code, known_reading, _cons_ipa in LB_HOLDOUT_SIGNS:
+        if ab_code not in grid:
+            continue
+
+        _cc, vc, _conf = grid[ab_code]
+        candidates = candidate_readings(vc, cell_consonants)
+        if not candidates or known_reading not in candidates:
+            continue
+
+        padding_sca = [ipa_to_sca("pa"), ipa_to_sca("ru")]
+
+        reading_pvals: dict[str, dict[str, float]] = defaultdict(dict)
+
+        for cand in candidates:
+            cand_sca = ipa_to_sca(cand)
+            if not cand_sca:
+                continue
+
+            query_sca = padding_sca[0] + cand_sca + padding_sca[1]
+            L = len(query_sca)
+
+            best_raw_p = 1.0
+            best_lang = ""
+
+            for lc in lexicons:
+                ned, _best_entry = search_capped_pool(
+                    query_sca, lex_capped[lc], lexicons[lc],
+                )
+                null_tab = null_tables.get((L, lc))
+                if null_tab:
+                    p_val = pvalue_from_null_table(ned, null_tab)
+                else:
+                    p_val = 1.0
+
+                if p_val < best_raw_p:
+                    best_raw_p = p_val
+                    best_lang = lc
+
+            reading_map = {ab_code: cand}
+
+            reading_pvals[cand]["none"] = best_raw_p
+
+            if class_rates and (L, best_lang) in class_rates:
+                fn_p = freq_norm_adjust_pvalue(
+                    best_raw_p, reading_map, class_rates[(L, best_lang)],
+                )
+            else:
+                fn_p = best_raw_p
+            reading_pvals[cand]["freq_norm"] = fn_p
+
+            if grid_priors:
+                gp_p = grid_prior_adjust_pvalue(
+                    best_raw_p, reading_map, grid_priors,
+                )
+            else:
+                gp_p = best_raw_p
+            reading_pvals[cand]["grid_prior"] = gp_p
+
+        for method in ["none", "freq_norm", "grid_prior"]:
+            best_cand = min(
+                candidates,
+                key=lambda c: reading_pvals.get(c, {}).get(method, 1.0),
+            )
+            correct = (best_cand == known_reading)
+            results_by_method[method].append({
+                "ab_code": ab_code,
+                "known_reading": known_reading,
+                "predicted_reading": best_cand,
+                "correct": correct,
+                "n_candidates": len(candidates),
+                "best_p_value": reading_pvals.get(best_cand, {}).get(method, 1.0),
+            })
+
+    summary = {}
+    for method in ["none", "freq_norm", "grid_prior"]:
+        entries = results_by_method[method]
+        n_correct = sum(1 for e in entries if e["correct"])
+        n_total = len(entries)
+        summary[method] = {
+            "n_correct": n_correct,
+            "n_total": n_total,
+            "accuracy": n_correct / n_total if n_total > 0 else 0.0,
+            "details": entries,
+        }
+        if verbose:
+            if n_total > 0:
+                print(f"  {method:12s}: {n_correct}/{n_total} correct "
+                      f"({100*n_correct/n_total:.1f}%)")
+            else:
+                print(f"  {method:12s}: no tests")
+            for e in entries:
+                marker = "OK" if e["correct"] else "MISS"
+                print(f"    {e['ab_code']:6s} known={e['known_reading']:3s} "
+                      f"pred={e['predicted_reading']:3s} [{marker}]")
+
+    return summary
+
+
 # ── BH-FDR correction ───────────────────────────────────────────────────
 
 
@@ -990,14 +1377,16 @@ def run_validation_gates(
 
 def aggregate_by_stem_language(
     search_results: list[dict],
+    bias_correction: str = "none",
+    class_rates_all: dict[tuple[int, str], dict[str, float]] | None = None,
+    grid_priors: dict[str, dict[str, float]] | None = None,
 ) -> list[dict]:
     """Aggregate search results by (stem, language) pair.
 
-    For each (stem, language), selects the best reading (lowest raw p-value)
-    and applies Bonferroni correction for the number of readings tested.
+    For each (stem, language), selects the best reading (lowest adjusted
+    p-value) and applies Bonferroni correction for the number of readings.
 
-    This is the standard approach for nested hypotheses: the reading is a
-    nuisance parameter to optimize over, not a separate hypothesis.
+    bias_correction: "none", "freq_norm", or "grid_prior"
 
     Returns list of aggregated results, one per (stem, language) pair.
     """
@@ -1009,13 +1398,29 @@ def aggregate_by_stem_language(
 
     aggregated = []
     for (stem_key, lang), entries in groups.items():
-        # Sort by raw p-value ascending (best first)
-        entries.sort(key=lambda e: e["raw_p_value"])
+        # Apply bias correction to each entry's p-value before ranking
+        for e in entries:
+            raw_p = e["raw_p_value"]
+            reading_map = e.get("reading_for_unknown", {})
+            q_sca = e.get("complete_sca", "")
+            L = len(q_sca)
+
+            if bias_correction == "freq_norm" and class_rates_all:
+                rates = class_rates_all.get((L, lang), {})
+                adj_p = freq_norm_adjust_pvalue(raw_p, reading_map, rates)
+            elif bias_correction == "grid_prior" and grid_priors:
+                adj_p = grid_prior_adjust_pvalue(raw_p, reading_map, grid_priors)
+            else:
+                adj_p = raw_p
+            e["_adjusted_p"] = adj_p
+
+        # Sort by adjusted p-value ascending (best first)
+        entries.sort(key=lambda e: e["_adjusted_p"])
         best = entries[0]
         n_readings = len(entries)
 
         # Bonferroni correction for number of readings tested
-        corrected_p = min(1.0, best["raw_p_value"] * n_readings)
+        corrected_p = min(1.0, best["_adjusted_p"] * n_readings)
 
         aggregated.append({
             "stem_ids": best["stem_ids"],
@@ -1033,6 +1438,7 @@ def aggregate_by_stem_language(
             "best_raw_p_value": best["raw_p_value"],
             "n_readings_tested": n_readings,
             "corrected_p_value": corrected_p,
+            "bias_correction": bias_correction,
         })
 
     return aggregated
@@ -1041,7 +1447,14 @@ def aggregate_by_stem_language(
 # ── Main pipeline ────────────────────────────────────────────────────────
 
 
-def main():
+def main(bias_correction: str = "freq_norm"):
+    """Run the full pipeline.
+
+    bias_correction: "none", "freq_norm", or "grid_prior"
+      - "none": no bias correction (original behavior)
+      - "freq_norm": consonant-class frequency normalization (Approach A)
+      - "grid_prior": P1 grid prior weighting (Approach B)
+    """
     rng = random.Random(42)
     t0 = time.time()
 
@@ -1050,6 +1463,7 @@ def main():
     print(f"PRD: PRD_ANALYTICAL_NULL_SEARCH.md")
     print(f"Null method: Monte Carlo random SCA, M={NULL_SAMPLES}")
     print(f"FDR alpha: {FDR_ALPHA}")
+    print(f"Bias correction: {bias_correction}")
     print()
 
     # ── Stage 0: Load & Validate ─────────────────────────────────────
@@ -1183,12 +1597,45 @@ def main():
     elapsed = time.time() - t0
     print(f"  All {len(search_results)} comparisons done ({elapsed:.0f}s)")
 
+    # ── Stage 3a: Compute bias correction data ─────────────────────
+    class_rates_all = None
+    grid_priors_data = None
+
+    if bias_correction == "freq_norm":
+        print("\nStage 3a: Computing consonant-class background rates...")
+        class_rates_all = build_class_background_rates_all(
+            lex_capped, query_lengths, NULL_SAMPLES, rng, verbose=True,
+        )
+        # Log a sample of rates for diagnostics
+        sample_key = next(iter(class_rates_all), None)
+        if sample_key:
+            sample = class_rates_all[sample_key]
+            t_rate = sample.get("T", 0)
+            k_rate = sample.get("K", 0)
+            r_rate = sample.get("R", 0)
+            print(f"  Sample rates (L={sample_key[0]}, {sample_key[1]}): "
+                  f"T={t_rate:.3f}, K={k_rate:.3f}, R={r_rate:.3f}")
+
+    elif bias_correction == "grid_prior":
+        print("\nStage 3a: Building grid prior from Jaccard classification...")
+        jaccard = load_jaccard_classification()
+        grid_priors_data = build_grid_prior(
+            grid, ab_to_reading, sign_to_ipa, jaccard,
+        )
+        print(f"  Grid priors built for {len(grid_priors_data)} unknown signs")
+
     # ── Stage 3b: Aggregate by (stem, language) ──────────────────────
     # The reading is a nuisance parameter: take the best reading per
     # (stem, language) pair and apply Bonferroni correction for the
     # number of readings tested.
-    print("\nStage 3b: Aggregating by (stem, language) pair...")
-    aggregated = aggregate_by_stem_language(search_results)
+    print(f"\nStage 3b: Aggregating by (stem, language) pair "
+          f"[bias_correction={bias_correction}]...")
+    aggregated = aggregate_by_stem_language(
+        search_results,
+        bias_correction=bias_correction,
+        class_rates_all=class_rates_all,
+        grid_priors=grid_priors_data,
+    )
     print(f"  Raw comparisons: {len(search_results)}")
     print(f"  Aggregated (stem, language) pairs: {len(aggregated)}")
 
@@ -1261,6 +1708,7 @@ def main():
         total_comparisons=len(search_results),
         n_aggregated=len(aggregated),
         all_detail=search_results,
+        bias_correction=bias_correction,
     )
 
     elapsed = time.time() - t0
@@ -1277,6 +1725,7 @@ def _write_output(
     total_comparisons: int = 0,
     n_aggregated: int = 0,
     all_detail: list[dict] | None = None,
+    bias_correction: str = "none",
 ):
     """Write results JSON to file."""
     # Clean gate results for JSON (remove details with potential non-serializable data)
@@ -1304,6 +1753,7 @@ def _write_output(
             "null_method": f"monte_carlo_M{NULL_SAMPLES}",
             "fdr_alpha": FDR_ALPHA,
             "aggregation_method": "best_reading_per_stem_language_with_bonferroni",
+            "bias_correction": bias_correction,
             "validation_gates": clean_gates,
             "runtime_seconds": round(time.time() - t0, 1),
         },
@@ -1338,5 +1788,140 @@ def _write_output(
     print(f"\n  Output written to {out_path}")
 
 
+def compare_approaches():
+    """Run both bias correction approaches and compare on LB holdout test.
+
+    This is a lightweight comparison that:
+    1. Loads data and builds null tables for holdout queries
+    2. Runs the LB holdout test with all 3 methods
+    3. Reports which method recovers the most correct readings
+    4. Counts reading distribution under each method
+
+    Uses the same data as the full pipeline but runs much faster
+    (only holdout signs, not all 21 stems).
+    """
+    rng = random.Random(42)
+    t0 = time.time()
+
+    print("Bias Correction Comparison: freq_norm vs grid_prior vs none")
+    print("=" * 78)
+
+    # Load data
+    print("Loading data...")
+    sign_to_ipa = load_sign_to_ipa()
+    ab_to_reading = load_corpus()
+    grid = load_p1_grid()
+    cell_consonants = build_cell_consonants(grid, ab_to_reading, sign_to_ipa)
+
+    # Load lexicons
+    print(f"Loading {len(LANG_CODES)} lexicons...")
+    lexicons: dict[str, list[dict]] = {}
+    lex_by_len: dict[str, dict[int, list[str]]] = {}
+    lex_capped: dict[str, dict[int, list[str]]] = {}
+    for lc in LANG_CODES:
+        lex = load_lexicon(lc)
+        if lex:
+            lexicons[lc] = lex
+            by_len = bucket_lexicon(lex)
+            lex_by_len[lc] = by_len
+            lex_capped[lc] = cap_bucketed_lexicon(by_len, rng)
+
+    # Determine query lengths needed for holdout test
+    padding_sca = [ipa_to_sca("pa"), ipa_to_sca("ru")]
+    holdout_lengths: set[int] = set()
+    for ab_code, known_reading, _ in LB_HOLDOUT_SIGNS:
+        if ab_code not in grid:
+            continue
+        _cc, vc, _conf = grid[ab_code]
+        cands = candidate_readings(vc, cell_consonants)
+        for c in cands:
+            csca = ipa_to_sca(c)
+            if csca:
+                L = len(padding_sca[0] + csca + padding_sca[1])
+                holdout_lengths.add(L)
+
+    # Build null tables for holdout lengths
+    print(f"Building null tables for {len(holdout_lengths)} lengths...")
+    null_tables: dict[tuple[int, str], list[float]] = {}
+    for L in sorted(holdout_lengths):
+        for lc in lexicons:
+            null_tables[(L, lc)] = build_null_table(
+                L, lex_capped[lc], NULL_SAMPLES, rng,
+            )
+
+    # Build freq_norm rates
+    print("Computing consonant-class background rates...")
+    class_rates_all = build_class_background_rates_all(
+        lex_capped, holdout_lengths, NULL_SAMPLES, rng, verbose=False,
+    )
+
+    # Build grid priors
+    print("Building grid priors from Jaccard classification...")
+    jaccard = load_jaccard_classification()
+    grid_priors = build_grid_prior(grid, ab_to_reading, sign_to_ipa, jaccard)
+
+    # Run LB holdout test
+    print(f"\n{'=' * 78}")
+    print("LB Known-Answer Holdout Test")
+    print("=" * 78)
+    holdout_results = run_lb_holdout_test(
+        sign_to_ipa, ab_to_reading, grid, cell_consonants,
+        lexicons, lex_capped, null_tables,
+        class_rates=class_rates_all,
+        grid_priors=grid_priors,
+        rng=rng,
+        verbose=True,
+    )
+
+    # Summarize comparison
+    print(f"\n{'=' * 78}")
+    print("COMPARISON SUMMARY")
+    print("=" * 78)
+
+    for method in ["none", "freq_norm", "grid_prior"]:
+        r = holdout_results[method]
+        print(f"  {method:12s}: {r['n_correct']}/{r['n_total']} correct "
+              f"({r['accuracy']*100:.1f}%)")
+
+    # Determine winner
+    accuracies = {m: holdout_results[m]["accuracy"] for m in holdout_results}
+    best_method = max(accuracies, key=accuracies.get)
+    print(f"\n  Winner: {best_method}")
+    if accuracies["freq_norm"] == accuracies["grid_prior"]:
+        print("  Tie between freq_norm and grid_prior -- preferring freq_norm "
+              "(more principled, no Jaccard dependency)")
+        best_method = "freq_norm"
+
+    # Count "da" readings in each method's holdout predictions
+    for method in ["none", "freq_norm", "grid_prior"]:
+        details = holdout_results[method]["details"]
+        da_count = sum(1 for d in details if d["predicted_reading"] == "da")
+        total = len(details)
+        print(f"  {method:12s}: {da_count}/{total} predictions are 'da' "
+              f"({100*da_count/total:.1f}%)" if total > 0 else "")
+
+    elapsed = time.time() - t0
+    print(f"\nComparison completed in {elapsed:.0f}s")
+
+    return holdout_results
+
+
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--bias-correction",
+        choices=["none", "freq_norm", "grid_prior"],
+        default="freq_norm",
+        help="Bias correction method (default: freq_norm)",
+    )
+    parser.add_argument(
+        "--compare",
+        action="store_true",
+        help="Run comparison of all three approaches (LB holdout test only)",
+    )
+    args = parser.parse_args()
+    if args.compare:
+        compare_approaches()
+    else:
+        main(bias_correction=args.bias_correction)

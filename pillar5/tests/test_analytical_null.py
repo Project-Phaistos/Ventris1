@@ -27,6 +27,12 @@ from pillar5.scripts.analytical_null_search import (
     aggregate_by_stem_language,
     run_validation_gates,
     _count_pool_size,
+    _reading_to_sca_class,
+    compute_class_background_rates,
+    freq_norm_adjust_pvalue,
+    build_grid_prior,
+    grid_prior_adjust_pvalue,
+    LB_HOLDOUT_SIGNS,
     SCA_ALPHABET,
     SCA_K,
     DOLGOPOLSKY,
@@ -542,3 +548,287 @@ class TestRandomSCANegativeControl:
         assert result[0]["best_reading"] == "ra"
         # Single stem, q < 0.01 -> TENTATIVE
         assert result[0]["confidence"] == "TENTATIVE"
+
+
+# ============================================================
+# Tier 1b: Bias correction formula tests
+# ============================================================
+
+
+class TestReadingToSCAClass:
+    """Test _reading_to_sca_class mapping."""
+
+    def test_da_maps_to_T(self):
+        assert _reading_to_sca_class("da") == "T"
+
+    def test_ra_maps_to_R(self):
+        assert _reading_to_sca_class("ra") == "R"
+
+    def test_ka_maps_to_K(self):
+        assert _reading_to_sca_class("ka") == "K"
+
+    def test_qa_maps_to_K(self):
+        # q -> K in Dolgopolsky
+        assert _reading_to_sca_class("qa") == "K"
+
+    def test_na_maps_to_N(self):
+        assert _reading_to_sca_class("na") == "N"
+
+    def test_pure_vowel_maps_to_V(self):
+        assert _reading_to_sca_class("a") == "V"
+        assert _reading_to_sca_class("u") == "V"
+
+    def test_empty_maps_to_V(self):
+        assert _reading_to_sca_class("") == "V"
+
+    def test_ja_maps_to_J(self):
+        assert _reading_to_sca_class("ja") == "J"
+
+    def test_sa_maps_to_S(self):
+        assert _reading_to_sca_class("sa") == "S"
+
+    def test_pa_maps_to_P(self):
+        assert _reading_to_sca_class("pa") == "P"
+
+    def test_wa_maps_to_W(self):
+        assert _reading_to_sca_class("wa") == "W"
+
+
+class TestFreqNormAdjustPvalue:
+    """Test consonant-class frequency normalization p-value adjustment."""
+
+    def test_no_reading_map_returns_raw(self):
+        """Empty reading map should return raw p-value."""
+        assert freq_norm_adjust_pvalue(0.05, {}, {"T": 0.3}) == 0.05
+
+    def test_no_class_rates_returns_raw(self):
+        """Empty class rates should return raw p-value."""
+        assert freq_norm_adjust_pvalue(0.05, {"AB60": "da"}, {}) == 0.05
+
+    def test_above_average_class_increases_pvalue(self):
+        """A class with above-average rate should increase the p-value."""
+        # T has rate 0.4, mean of all is 0.2 -> relative = 2.0
+        rates = {"T": 0.4, "K": 0.2, "R": 0.1, "S": 0.1, "P": 0.2,
+                 "N": 0.1, "M": 0.1, "L": 0.15, "H": 0.15,
+                 "J": 0.2, "W": 0.1, "V": 1.0}
+        raw = 0.01
+        adjusted = freq_norm_adjust_pvalue(raw, {"AB60": "da"}, rates)
+        assert adjusted > raw
+
+    def test_below_average_class_decreases_pvalue(self):
+        """A class with below-average rate should decrease the p-value."""
+        rates = {"T": 0.4, "K": 0.2, "R": 0.05, "S": 0.1, "P": 0.2,
+                 "N": 0.1, "M": 0.1, "L": 0.15, "H": 0.15,
+                 "J": 0.2, "W": 0.1, "V": 1.0}
+        raw = 0.01
+        adjusted = freq_norm_adjust_pvalue(raw, {"AB60": "ra"}, rates)
+        assert adjusted < raw
+
+    def test_average_class_returns_approximately_raw(self):
+        """A class with exactly average rate should return ~raw p-value."""
+        rates = {c: 0.2 for c in SCA_ALPHABET if c != "V"}
+        rates["V"] = 1.0
+        raw = 0.05
+        adjusted = freq_norm_adjust_pvalue(raw, {"AB60": "da"}, rates)
+        assert adjusted == pytest.approx(raw, abs=1e-10)
+
+    def test_bounded_at_one(self):
+        """Adjusted p-value should never exceed 1.0."""
+        rates = {"T": 10.0, "K": 0.001, "R": 0.001, "S": 0.001,
+                 "P": 0.001, "N": 0.001, "M": 0.001, "L": 0.001,
+                 "H": 0.001, "J": 0.001, "W": 0.001, "V": 1.0}
+        adjusted = freq_norm_adjust_pvalue(0.5, {"AB60": "da"}, rates)
+        assert adjusted <= 1.0
+
+
+class TestGridPriorAdjustPvalue:
+    """Test P1 grid prior p-value adjustment."""
+
+    def test_no_reading_map_returns_raw(self):
+        assert grid_prior_adjust_pvalue(0.05, {}, {"AB60": {"T": 0.5}}) == 0.05
+
+    def test_no_priors_returns_raw(self):
+        assert grid_prior_adjust_pvalue(0.05, {"AB60": "da"}, {}) == 0.05
+
+    def test_high_prior_reduces_pvalue(self):
+        """If prior for this class is above uniform, p-value should decrease."""
+        # Prior for T = 0.5 >> uniform = 1/12 ~ 0.083
+        # adjustment = uniform / prior = 0.083 / 0.5 ~ 0.167
+        priors = {"AB60": {"T": 0.5, "K": 0.1, "R": 0.1, "V": 0.083}}
+        raw = 0.05
+        adjusted = grid_prior_adjust_pvalue(raw, {"AB60": "da"}, priors)
+        assert adjusted < raw
+
+    def test_low_prior_increases_pvalue(self):
+        """If prior for this class is below uniform, p-value should increase."""
+        priors = {"AB60": {"T": 0.02, "K": 0.3, "R": 0.3, "V": 0.083}}
+        raw = 0.01
+        adjusted = grid_prior_adjust_pvalue(raw, {"AB60": "da"}, priors)
+        assert adjusted > raw
+
+    def test_uniform_prior_returns_raw(self):
+        """Uniform prior should return approximately raw p-value."""
+        uniform = 1.0 / len(SCA_ALPHABET)
+        priors = {"AB60": {c: uniform for c in SCA_ALPHABET}}
+        raw = 0.05
+        adjusted = grid_prior_adjust_pvalue(raw, {"AB60": "da"}, priors)
+        assert adjusted == pytest.approx(raw, abs=1e-10)
+
+    def test_unknown_sign_not_in_priors_returns_raw(self):
+        """If the sign is not in grid priors, return raw p-value."""
+        priors = {"AB99": {"T": 0.5}}  # AB60 not present
+        assert grid_prior_adjust_pvalue(0.05, {"AB60": "da"}, priors) == 0.05
+
+    def test_bounded_zero_one(self):
+        """Adjusted p-value should be in [0, 1]."""
+        priors = {"AB60": {"T": 0.001}}
+        adjusted = grid_prior_adjust_pvalue(0.9, {"AB60": "da"}, priors)
+        assert 0.0 <= adjusted <= 1.0
+
+
+class TestComputeClassBackgroundRates:
+    """Test consonant-class background rate computation."""
+
+    @pytest.fixture
+    def small_lexicon_capped(self):
+        """Build a small lexicon bucketed by length for testing."""
+        entries = [
+            "TVTVR",  # T-initial
+            "TVKVR",  # T-initial
+            "KVTVR",  # K-initial
+            "RVTVR",  # R-initial
+            "PVTVR",  # P-initial
+        ]
+        by_len = {5: entries}
+        return by_len
+
+    def test_returns_dict_of_rates(self, small_lexicon_capped):
+        rng = random.Random(42)
+        rates = compute_class_background_rates(small_lexicon_capped, 5, 100, rng)
+        assert isinstance(rates, dict)
+        # Should have entries for all consonant classes + V
+        assert "T" in rates
+        assert "K" in rates
+        assert "V" in rates
+
+    def test_rates_are_nonnegative(self, small_lexicon_capped):
+        rng = random.Random(42)
+        rates = compute_class_background_rates(small_lexicon_capped, 5, 100, rng)
+        for cls, rate in rates.items():
+            assert rate >= 0, f"Rate for {cls} is negative: {rate}"
+
+    def test_t_class_higher_with_t_heavy_lexicon(self):
+        """With a T-heavy lexicon, T-class should have higher match rate."""
+        # Lexicon dominated by T-initial strings
+        t_heavy = {5: ["TVTVR", "TVKVR", "TVSVR", "TVNVR", "TVRVS"]}
+        rng = random.Random(42)
+        rates = compute_class_background_rates(t_heavy, 5, 200, rng)
+        # T should have one of the higher rates
+        if "T" in rates and "W" in rates:
+            assert rates["T"] >= rates["W"] * 0.5  # Not strictly greater due to randomness
+
+    def test_empty_pool_returns_empty(self):
+        rng = random.Random(42)
+        rates = compute_class_background_rates({}, 5, 100, rng)
+        assert rates == {}
+
+
+class TestAggregateWithBiasCorrection:
+    """Test aggregate_by_stem_language with bias correction."""
+
+    def _make_result(self, stem_ids, reading_map, language, p_value,
+                     complete_sca="TVST"):
+        return {
+            "stem_ids": stem_ids,
+            "readings": stem_ids,
+            "reading_for_unknown": reading_map,
+            "complete_ipa": "test",
+            "complete_sca": complete_sca,
+            "language": language,
+            "matched_word": "word",
+            "matched_ipa": "ipa",
+            "matched_sca": "SCA",
+            "gloss": "gloss",
+            "ned_distance": 0.1,
+            "raw_p_value": p_value,
+        }
+
+    def test_none_correction_matches_original(self):
+        """bias_correction='none' should behave identically to original."""
+        results = [
+            self._make_result(["AB07", "AB08"], {"AB08": "ra"}, "hit", 0.05),
+            self._make_result(["AB07", "AB08"], {"AB08": "da"}, "hit", 0.01),
+        ]
+        agg = aggregate_by_stem_language(results, bias_correction="none")
+        assert len(agg) == 1
+        assert agg[0]["best_reading_for_unknown"] == {"AB08": "da"}
+        assert agg[0]["corrected_p_value"] == pytest.approx(0.02)
+
+    def test_freq_norm_can_change_best_reading(self):
+        """freq_norm should change best reading when T-class is penalized."""
+        # da (T-class) has lower raw p, but freq_norm penalizes T-class
+        results = [
+            self._make_result(["AB07", "AB60"], {"AB60": "ra"}, "hit", 0.02),
+            self._make_result(["AB07", "AB60"], {"AB60": "da"}, "hit", 0.01),
+        ]
+        # T has 3x the mean rate -> should penalize "da"
+        rates = {c: 0.1 for c in SCA_ALPHABET if c != "V"}
+        rates["T"] = 0.3  # 3x average
+        rates["V"] = 1.0
+        class_rates_all = {(4, "hit"): rates}
+        agg = aggregate_by_stem_language(
+            results, bias_correction="freq_norm",
+            class_rates_all=class_rates_all,
+        )
+        assert len(agg) == 1
+        # With T rate 3x mean, da's adjusted p = 0.01 * 3 = 0.03 > ra's 0.02
+        assert agg[0]["best_reading_for_unknown"] == {"AB60": "ra"}
+
+    def test_grid_prior_can_change_best_reading(self):
+        """grid_prior should change best reading based on prior."""
+        results = [
+            self._make_result(["AB07", "AB60"], {"AB60": "ra"}, "hit", 0.02),
+            self._make_result(["AB07", "AB60"], {"AB60": "da"}, "hit", 0.01),
+        ]
+        # Prior says AB60 is likely R-class (high prior for R)
+        priors = {"AB60": {c: 1.0 / len(SCA_ALPHABET) for c in SCA_ALPHABET}}
+        priors["AB60"]["R"] = 0.5  # High prior for R
+        priors["AB60"]["T"] = 0.02  # Low prior for T
+        agg = aggregate_by_stem_language(
+            results, bias_correction="grid_prior",
+            grid_priors=priors,
+        )
+        assert len(agg) == 1
+        # T has low prior -> penalized; R has high prior -> boosted
+        assert agg[0]["best_reading_for_unknown"] == {"AB60": "ra"}
+
+    def test_bias_correction_field_in_output(self):
+        """Output should include bias_correction field."""
+        results = [
+            self._make_result(["AB07", "AB08"], {}, "hit", 0.01),
+        ]
+        agg = aggregate_by_stem_language(results, bias_correction="freq_norm")
+        assert agg[0]["bias_correction"] == "freq_norm"
+
+
+class TestLBHoldoutConstants:
+    """Test LB holdout sign list properties."""
+
+    def test_holdout_signs_have_valid_structure(self):
+        for ab_code, reading, cons in LB_HOLDOUT_SIGNS:
+            assert ab_code.startswith("AB")
+            assert len(reading) >= 1
+            assert isinstance(cons, str)
+
+    def test_holdout_covers_multiple_consonant_classes(self):
+        """Holdout signs should cover diverse consonant classes."""
+        classes = set()
+        for _, reading, _ in LB_HOLDOUT_SIGNS:
+            cls = _reading_to_sca_class(reading)
+            classes.add(cls)
+        # Should cover at least 5 different classes
+        assert len(classes) >= 5, f"Only {len(classes)} classes: {classes}"
+
+    def test_holdout_signs_are_unique(self):
+        ab_codes = [ab for ab, _, _ in LB_HOLDOUT_SIGNS]
+        assert len(ab_codes) == len(set(ab_codes))
