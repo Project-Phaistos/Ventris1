@@ -35,6 +35,8 @@ from pillar5.scripts.analytical_null_search import (
     _reading_to_sca_class,
     compute_class_background_rates,
     freq_norm_adjust_pvalue,
+    pvalue_from_class_conditional_null,
+    _build_class_conditional_null_worker,
     build_grid_prior,
     grid_prior_adjust_pvalue,
     LB_HOLDOUT_SIGNS,
@@ -741,6 +743,166 @@ class TestComputeClassBackgroundRates:
         assert rates == {}
 
 
+class TestClassConditionalNullWorker:
+    """Test the class-conditional null table worker function."""
+
+    @pytest.fixture
+    def t_heavy_pool(self):
+        """A lexicon pool dominated by T-initial SCA strings."""
+        return ["TVTVR", "TVKVR", "TVSVR", "TVNVR", "TVRVS",
+                "TVTVM", "TVKVN", "TVSVL", "TVNVP"]
+
+    @pytest.fixture
+    def balanced_pool(self):
+        """A balanced lexicon pool with diverse initial consonants."""
+        return ["TVTVR", "KVKVR", "RVRVR", "SVSVR", "PVPVR",
+                "NVNVR", "MVMVR", "LVLVR", "HVHVR", "JVJVR",
+                "WVWVR"]
+
+    def test_returns_sorted_list(self, balanced_pool):
+        result = _build_class_conditional_null_worker(
+            query_length=5, pool=balanced_pool,
+            n_samples=100, seed=42, fixed_class="T", unknown_position=0,
+        )
+        assert isinstance(result, list)
+        assert len(result) == 100
+        # Verify sorted
+        assert result == sorted(result)
+
+    def test_first_char_fixed(self, balanced_pool):
+        """T-class null should differ from W-class null on a T-heavy lexicon."""
+        t_null = _build_class_conditional_null_worker(
+            query_length=5, pool=["TVTVR", "TVKVR", "TVSVR"] * 10,
+            n_samples=200, seed=42, fixed_class="T", unknown_position=0,
+        )
+        w_null = _build_class_conditional_null_worker(
+            query_length=5, pool=["TVTVR", "TVKVR", "TVSVR"] * 10,
+            n_samples=200, seed=42, fixed_class="W", unknown_position=0,
+        )
+        # T-class should have lower median NED on a T-heavy lexicon
+        t_median = t_null[len(t_null) // 2]
+        w_median = w_null[len(w_null) // 2]
+        assert t_median < w_median, (
+            f"T-class median ({t_median:.3f}) should be lower than "
+            f"W-class median ({w_median:.3f}) on T-heavy lexicon"
+        )
+
+    def test_t_class_produces_lower_ned_on_t_heavy_lexicon(self, t_heavy_pool):
+        """On a T-heavy lexicon, T-class null should have lower NEDs."""
+        t_null = _build_class_conditional_null_worker(
+            query_length=5, pool=t_heavy_pool,
+            n_samples=300, seed=42, fixed_class="T", unknown_position=0,
+        )
+        w_null = _build_class_conditional_null_worker(
+            query_length=5, pool=t_heavy_pool,
+            n_samples=300, seed=42, fixed_class="W", unknown_position=0,
+        )
+        t_mean = sum(t_null) / len(t_null)
+        w_mean = sum(w_null) / len(w_null)
+        assert t_mean < w_mean, (
+            f"T mean NED ({t_mean:.3f}) should < W mean NED ({w_mean:.3f})"
+        )
+
+    def test_different_positions(self, balanced_pool):
+        """Fixing position 0 vs position 2 should give different distributions."""
+        pos0 = _build_class_conditional_null_worker(
+            query_length=5, pool=balanced_pool,
+            n_samples=200, seed=42, fixed_class="T", unknown_position=0,
+        )
+        pos2 = _build_class_conditional_null_worker(
+            query_length=5, pool=balanced_pool,
+            n_samples=200, seed=42, fixed_class="T", unknown_position=2,
+        )
+        # Distributions should differ (not identical)
+        assert pos0 != pos2
+
+
+class TestPvalueFromClassConditionalNull:
+    """Test the class-conditional p-value computation."""
+
+    def test_no_reading_map_uses_unconditional(self):
+        """With no unknowns, should use unconditional null."""
+        unconditional = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        cc_tables = {}
+        p = pvalue_from_class_conditional_null(
+            0.3, {}, cc_tables, query_length=5, lang="hit",
+            unconditional_table=unconditional,
+        )
+        expected = pvalue_from_null_table(0.3, unconditional)
+        assert p == pytest.approx(expected)
+
+    def test_uses_class_conditional_table(self):
+        """With unknowns, should use class-conditional table."""
+        # T-class table: easy matches (low NEDs)
+        t_table = [0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.5, 0.6]
+        # W-class table: hard matches (high NEDs)
+        w_table = [0.3, 0.4, 0.5, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 1.0]
+        unconditional = [0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+        cc_tables = {
+            (5, "hit", "T"): t_table,
+            (5, "hit", "W"): w_table,
+        }
+
+        # For da (T-class), NED=0.2 should give a HIGHER p-value
+        # because T-class null has more low-NED entries
+        p_da = pvalue_from_class_conditional_null(
+            0.2, {"AB60": "da"}, cc_tables, 5, "hit",
+            unconditional_table=unconditional,
+        )
+        # For wa (W-class), NED=0.2 should give a LOWER p-value
+        # because W-class null has fewer low-NED entries
+        p_wa = pvalue_from_class_conditional_null(
+            0.2, {"AB60": "wa"}, cc_tables, 5, "hit",
+            unconditional_table=unconditional,
+        )
+        assert p_da > p_wa, (
+            f"T-class p ({p_da:.4f}) should > W-class p ({p_wa:.4f}) "
+            f"at same NED -- T matches more easily so same NED is less surprising"
+        )
+
+    def test_fallback_to_unconditional_when_no_cc_table(self):
+        """If class-conditional table is missing, fall back to unconditional."""
+        unconditional = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+        cc_tables = {}  # No class-conditional tables
+        p = pvalue_from_class_conditional_null(
+            0.3, {"AB60": "da"}, cc_tables, 5, "hit",
+            unconditional_table=unconditional,
+        )
+        expected = pvalue_from_null_table(0.3, unconditional)
+        assert p == pytest.approx(expected)
+
+    def test_no_tables_at_all_returns_one(self):
+        """If no tables available at all, return 1.0."""
+        p = pvalue_from_class_conditional_null(
+            0.3, {"AB60": "da"}, {}, 5, "hit",
+        )
+        assert p == 1.0
+
+    def test_debiases_da_reading(self):
+        """Core debiasing test: da should get higher p-value than ra
+        at the same NED when T-class has easier matches."""
+        # T-class: many low-NED entries (easy matching)
+        t_table = sorted([0.05 * i for i in range(20)])  # 0.0 to 0.95
+        # R-class: fewer low-NED entries (harder matching)
+        r_table = sorted([0.1 + 0.04 * i for i in range(20)])  # 0.1 to 0.86
+
+        cc_tables = {
+            (5, "hit", "T"): t_table,
+            (5, "hit", "R"): r_table,
+        }
+
+        ned = 0.15
+        p_da = pvalue_from_class_conditional_null(
+            ned, {"AB60": "da"}, cc_tables, 5, "hit",
+        )
+        p_ra = pvalue_from_class_conditional_null(
+            ned, {"AB60": "ra"}, cc_tables, 5, "hit",
+        )
+        # da should be penalized (higher p) because T-class matches easily
+        assert p_da > p_ra
+
+
 class TestAggregateWithBiasCorrection:
     """Test aggregate_by_stem_language with bias correction."""
 
@@ -772,9 +934,37 @@ class TestAggregateWithBiasCorrection:
         assert agg[0]["best_reading_for_unknown"] == {"AB08": "da"}
         assert agg[0]["corrected_p_value"] == pytest.approx(0.02)
 
-    def test_freq_norm_can_change_best_reading(self):
-        """freq_norm should change best reading when T-class is penalized."""
-        # da (T-class) has lower raw p, but freq_norm penalizes T-class
+    def test_freq_norm_with_cc_tables_can_change_best_reading(self):
+        """freq_norm with class-conditional null tables should debias."""
+        # da (T-class) has lower raw p, but T-class null shows it's easy
+        results = [
+            self._make_result(["AB07", "AB60"], {"AB60": "ra"}, "hit", 0.02),
+            self._make_result(["AB07", "AB60"], {"AB60": "da"}, "hit", 0.01),
+        ]
+        # Build cc_null_tables where T-class has easier matches
+        # so T-class p-value at NED=0.1 is high (many null entries <= 0.1)
+        t_table = [0.0, 0.05, 0.08, 0.1, 0.1, 0.12, 0.15, 0.2, 0.3, 0.5]
+        # R-class has harder matches, so R p-value at NED=0.1 is low
+        r_table = [0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+        cc_tables = {
+            (4, "hit", "T"): t_table,
+            (4, "hit", "R"): r_table,
+        }
+        unconditional = [0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+        null_tables = {(4, "hit"): unconditional}
+
+        agg = aggregate_by_stem_language(
+            results, bias_correction="freq_norm",
+            cc_null_tables=cc_tables,
+            null_tables=null_tables,
+        )
+        assert len(agg) == 1
+        # T-class has many null entries at NED<=0.1, so da's cc p-value
+        # is large. R-class has few, so ra's cc p-value is small.
+        assert agg[0]["best_reading_for_unknown"] == {"AB60": "ra"}
+
+    def test_freq_norm_deprecated_fallback(self):
+        """freq_norm should fall back to deprecated division if no cc_tables."""
         results = [
             self._make_result(["AB07", "AB60"], {"AB60": "ra"}, "hit", 0.02),
             self._make_result(["AB07", "AB60"], {"AB60": "da"}, "hit", 0.01),

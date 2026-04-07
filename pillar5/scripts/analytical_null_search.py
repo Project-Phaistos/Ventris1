@@ -514,6 +514,44 @@ def _build_null_table_worker(
     return null_dists
 
 
+def _build_class_conditional_null_worker(
+    query_length: int,
+    pool: list[str],
+    n_samples: int,
+    seed: int,
+    fixed_class: str,
+    unknown_position: int,
+) -> list[float]:
+    """Worker for class-conditional null table computation.
+
+    Generates random SCA strings where the character at unknown_position
+    is fixed to fixed_class (the consonant class being tested). All other
+    positions are drawn uniformly from the 12-class alphabet.
+
+    This produces the null distribution P(NED <= d | consonant = C),
+    which directly debiases frequent consonant classes.
+    """
+    rng = random.Random(seed)
+    sca_chars = list("HJKLMNPRSTVW")
+    null_dists = []
+
+    for _ in range(n_samples):
+        chars = [rng.choice(sca_chars) for _ in range(query_length)]
+        chars[unknown_position] = fixed_class
+        rand_sca = "".join(chars)
+        best_ned = 1.0
+        for s in pool:
+            d = normalized_edit_distance(rand_sca, s)
+            if d < best_ned:
+                best_ned = d
+                if best_ned == 0.0:
+                    break
+        null_dists.append(best_ned)
+
+    null_dists.sort()
+    return null_dists
+
+
 def build_null_table_cached(
     query_length: int,
     lex_sca_by_len: dict[int, list[str]],
@@ -643,6 +681,151 @@ def build_all_null_tables_parallel(
     return null_tables
 
 
+# ── Class-conditional null tables ──────────────────────────────────────
+
+
+def _cc_null_cache_path(
+    lang: str, query_length: int, sca_class: str,
+    unknown_pos: int, pool_hash: str,
+) -> Path:
+    """Return the disk cache path for a class-conditional null table."""
+    return (
+        NULL_CACHE_DIR
+        / f"{lang}_L{query_length}_cls{sca_class}_pos{unknown_pos}_{pool_hash}.npz"
+    )
+
+
+# Minimum comparison pool size for class-conditional null tables.
+# Below this threshold, fall back to the unconditional null.
+_CC_MIN_POOL_SIZE = 20
+
+
+def build_class_conditional_null_tables(
+    query_lengths: set[int],
+    lex_capped: dict[str, dict[int, list[str]]],
+    n_samples: int,
+    rng: random.Random,
+    unknown_position: int = 0,
+    max_workers: int | None = None,
+    use_cache: bool = True,
+    verbose: bool = True,
+) -> dict[tuple[int, str, str], list[float]]:
+    """Build class-conditional null tables for all (length, lang, class) triples.
+
+    For each consonant class C, generates random SCA strings where the
+    character at unknown_position is fixed to C, and finds the best NED
+    match against the lexicon pool.  This produces the null CDF conditioned
+    on consonant class: P(NED <= d | null, consonant_class = C).
+
+    Using this CDF directly as the p-value eliminates the "da" bias
+    without any post-hoc division by background rate.
+
+    Samples per class: n_samples // 12 (capped at min 200) to keep total
+    computation comparable to the unconditional null.
+
+    Returns dict mapping (length, lang, sca_class) -> sorted null table.
+    """
+    import os
+    if max_workers is None:
+        max_workers = min(os.cpu_count() or 4, 12)
+
+    consonant_classes = [c for c in SCA_ALPHABET if c != "V"]
+    # Include V for pure-vowel readings
+    all_classes = list(SCA_ALPHABET)
+    samples_per_class = max(200, n_samples // len(all_classes))
+
+    cc_tables: dict[tuple[int, str, str], list[float]] = {}
+    tasks: list[tuple[int, str, str, list[str], int]] = []
+    cache_hits = 0
+
+    for L in sorted(query_lengths):
+        if unknown_position >= L:
+            continue
+        for lc, capped_by_len in lex_capped.items():
+            pool = _collect_pool(capped_by_len, L)
+            if not pool:
+                for cls in all_classes:
+                    cc_tables[(L, lc, cls)] = [1.0] * samples_per_class
+                continue
+
+            # Check pool size -- if too small, mark for fallback
+            if len(pool) < _CC_MIN_POOL_SIZE:
+                for cls in all_classes:
+                    cc_tables[(L, lc, cls)] = [1.0] * samples_per_class
+                continue
+
+            ph = _pool_hash(pool)
+
+            for cls in all_classes:
+                # Check cache
+                if use_cache:
+                    cp = _cc_null_cache_path(lc, L, cls, unknown_position, ph)
+                    cached = _load_cached_null_table(cp)
+                    if cached is not None and len(cached) >= samples_per_class:
+                        cc_tables[(L, lc, cls)] = cached[:samples_per_class].tolist()
+                        cache_hits += 1
+                        continue
+
+                seed = rng.randint(0, 2**31)
+                tasks.append((L, lc, cls, pool, seed))
+
+    total = len(tasks) + cache_hits
+    if verbose:
+        print(f"  Class-conditional null tables:")
+        print(f"    Total needed: {total}")
+        print(f"    Cache hits: {cache_hits}")
+        print(f"    To compute: {len(tasks)}")
+        print(f"    Samples per class: {samples_per_class}")
+        if tasks:
+            print(f"    Using {max_workers} workers")
+
+    if not tasks:
+        return cc_tables
+
+    t_start = time.time()
+    completed = 0
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        future_to_key = {}
+        for L, lc, cls, pool, seed in tasks:
+            future = executor.submit(
+                _build_class_conditional_null_worker,
+                L, pool, samples_per_class, seed, cls, unknown_position,
+            )
+            future_to_key[future] = (L, lc, cls, pool)
+
+        for future in as_completed(future_to_key):
+            L, lc, cls, pool = future_to_key[future]
+            null_dists = future.result()
+            cc_tables[(L, lc, cls)] = null_dists
+
+            # Save to cache
+            if use_cache:
+                ph = _pool_hash(pool)
+                cp = _cc_null_cache_path(lc, L, cls, unknown_position, ph)
+                _save_null_table(cp, np.array(null_dists, dtype=np.float32))
+
+            completed += 1
+            if verbose and completed % 50 == 0:
+                elapsed = time.time() - t_start
+                pct = 100 * completed / len(tasks)
+                remaining = (
+                    elapsed / completed * (len(tasks) - completed)
+                    if completed > 0 else 0
+                )
+                print(
+                    f"    {completed}/{len(tasks)} tables "
+                    f"({pct:.0f}%, {elapsed:.0f}s elapsed, "
+                    f"~{remaining:.0f}s remaining)"
+                )
+
+    elapsed = time.time() - t_start
+    if verbose:
+        print(f"  All {len(tasks)} class-conditional tables computed in {elapsed:.0f}s")
+
+    return cc_tables
+
+
 def pvalue_from_null_table(real_ned: float, null_table: list[float]) -> float:
     """Compute p-value: fraction of null values <= real_ned.
 
@@ -682,14 +865,11 @@ def compute_class_background_rates(
     n_samples: int,
     rng: random.Random,
 ) -> dict[str, float]:
-    """Compute background match rates by initial SCA consonant class.
+    """DEPRECATED: Simple division approach -- kept for backward compat.
 
-    For each consonant class C, generates random SCA strings starting
-    with C and measures what fraction produce NED <= the 25th percentile
-    against this lexicon. Classes with higher rates match more easily.
-
-    Returns dict mapping SCA class letter -> background match rate
-    (inverse of mean NED: higher rate = easier matching = more bias).
+    Use class-conditional null tables via build_class_conditional_null_tables()
+    instead.  This function computes an approximate background rate per
+    consonant class, but dividing by it double-counts the null correction.
     """
     pool: list[str] = []
     for bucket_len in range(max(1, query_length - 2), query_length + 3):
@@ -700,9 +880,6 @@ def compute_class_background_rates(
     sca_chars = SCA_ALPHABET
     ned_func = normalized_edit_distance
 
-    # For each consonant class, compute mean best-NED of class-initial
-    # random SCA strings against this lexicon pool.
-    # Lower mean NED = easier matching = higher bias.
     consonant_classes = [c for c in SCA_ALPHABET if c != "V"]
     class_mean_ned: dict[str, float] = {}
     samples_per_class = max(50, n_samples // len(consonant_classes))
@@ -722,8 +899,6 @@ def compute_class_background_rates(
             neds.append(best_ned)
         class_mean_ned[cls] = sum(neds) / len(neds) if neds else 1.0
 
-    # Convert to rates: rate = 1/mean_ned (inversely proportional)
-    # This ensures classes with lower mean NED get higher rates.
     rates: dict[str, float] = {}
     for cls in consonant_classes:
         mn = class_mean_ned[cls]
@@ -740,7 +915,7 @@ def build_class_background_rates_all(
     rng: random.Random,
     verbose: bool = True,
 ) -> dict[tuple[int, str], dict[str, float]]:
-    """Build background match rates for all (query_length, language) pairs."""
+    """DEPRECATED: Use build_class_conditional_null_tables() instead."""
     rates: dict[tuple[int, str], dict[str, float]] = {}
     for L in sorted(query_lengths):
         for lc, capped in lex_capped.items():
@@ -757,10 +932,10 @@ def freq_norm_adjust_pvalue(
     reading_map: dict[str, str],
     class_rates: dict[str, float],
 ) -> float:
-    """Adjust p-value using consonant-class frequency normalization.
+    """DEPRECATED: Simple division approach -- double-counts null correction.
 
-    Multiplies p-value by relative_rate = rate(C) / mean_rate to
-    penalize consonant classes with higher background match rates.
+    Kept for backward compatibility.  The correct approach is
+    class-conditional null tables via pvalue_from_class_conditional_null().
     """
     if not reading_map or not class_rates:
         return raw_pvalue
@@ -782,6 +957,50 @@ def freq_norm_adjust_pvalue(
     if adjustment <= 0:
         return raw_pvalue
     return min(1.0, raw_pvalue * adjustment)
+
+
+def pvalue_from_class_conditional_null(
+    real_ned: float,
+    reading_map: dict[str, str],
+    cc_tables: dict[tuple[int, str, str], list[float]],
+    query_length: int,
+    lang: str,
+    unconditional_table: list[float] | None = None,
+) -> float:
+    """Compute p-value using class-conditional null table.
+
+    For each unknown sign's reading, determines its SCA consonant class
+    and looks up the class-conditional null CDF.  Returns the p-value
+    from that conditional CDF.
+
+    If the reading has no unknowns, or no class-conditional table exists,
+    falls back to the unconditional null table.
+
+    This is the CORRECT freq_norm implementation: no division by
+    background rate is needed because the null itself is already
+    conditioned on the consonant class.
+    """
+    if not reading_map:
+        # No unknowns -- use unconditional null
+        if unconditional_table:
+            return pvalue_from_null_table(real_ned, unconditional_table)
+        return 1.0
+
+    # For simplicity, use the consonant class of the FIRST unknown.
+    # (Most stems have only one unknown sign.)
+    first_reading = next(iter(reading_map.values()))
+    cls = _reading_to_sca_class(first_reading)
+
+    cc_key = (query_length, lang, cls)
+    cc_table = cc_tables.get(cc_key)
+
+    if cc_table:
+        return pvalue_from_null_table(real_ned, cc_table)
+
+    # Fallback to unconditional
+    if unconditional_table:
+        return pvalue_from_null_table(real_ned, unconditional_table)
+    return 1.0
 
 
 # ── Bias correction: P1 grid prior weighting ───────────────────────────
@@ -924,6 +1143,7 @@ def run_lb_holdout_test(
     null_tables: dict[tuple[int, str], list[float]],
     class_rates: dict[tuple[int, str], dict[str, float]] | None = None,
     grid_priors: dict[str, dict[str, float]] | None = None,
+    cc_null_tables: dict[tuple[int, str, str], list[float]] | None = None,
     rng: random.Random | None = None,
     verbose: bool = True,
 ) -> dict[str, dict]:
@@ -935,6 +1155,9 @@ def run_lb_holdout_test(
     3. Search all lexicons with each reading
     4. Apply bias correction (if provided)
     5. Check if the correct reading is recovered as best
+
+    When cc_null_tables is provided, freq_norm uses the class-conditional
+    null CDF (correct approach) instead of dividing by background rate.
 
     Returns dict with results for each correction method.
     """
@@ -968,8 +1191,10 @@ def run_lb_holdout_test(
             query_sca = padding_sca[0] + cand_sca + padding_sca[1]
             L = len(query_sca)
 
+            # Track best NED and best p-value per language for this candidate
             best_raw_p = 1.0
             best_lang = ""
+            best_ned = 1.0
 
             for lc in lexicons:
                 ned, _best_entry = search_capped_pool(
@@ -984,12 +1209,20 @@ def run_lb_holdout_test(
                 if p_val < best_raw_p:
                     best_raw_p = p_val
                     best_lang = lc
+                    best_ned = ned
 
             reading_map = {ab_code: cand}
 
             reading_pvals[cand]["none"] = best_raw_p
 
-            if class_rates and (L, best_lang) in class_rates:
+            # freq_norm: class-conditional null (correct) or deprecated fallback
+            if cc_null_tables:
+                uncond = null_tables.get((L, best_lang))
+                fn_p = pvalue_from_class_conditional_null(
+                    best_ned, reading_map, cc_null_tables, L, best_lang,
+                    unconditional_table=uncond,
+                )
+            elif class_rates and (L, best_lang) in class_rates:
                 fn_p = freq_norm_adjust_pvalue(
                     best_raw_p, reading_map, class_rates[(L, best_lang)],
                 )
@@ -1607,6 +1840,8 @@ def aggregate_by_stem_language(
     bias_correction: str = "none",
     class_rates_all: dict[tuple[int, str], dict[str, float]] | None = None,
     grid_priors: dict[str, dict[str, float]] | None = None,
+    cc_null_tables: dict[tuple[int, str, str], list[float]] | None = None,
+    null_tables: dict[tuple[int, str], list[float]] | None = None,
 ) -> list[dict]:
     """Aggregate search results by (stem, language) pair.
 
@@ -1614,6 +1849,12 @@ def aggregate_by_stem_language(
     p-value) and applies Bonferroni correction for the number of readings.
 
     bias_correction: "none", "freq_norm", or "grid_prior"
+
+    When bias_correction="freq_norm":
+      - If cc_null_tables is provided, uses class-conditional null tables
+        (CORRECT approach: p-value from CDF conditioned on consonant class).
+      - If cc_null_tables is None but class_rates_all is provided, falls
+        back to deprecated simple-division approach.
 
     Returns list of aggregated results, one per (stem, language) pair.
     """
@@ -1631,8 +1872,17 @@ def aggregate_by_stem_language(
             reading_map = e.get("reading_for_unknown", {})
             q_sca = e.get("complete_sca", "")
             L = len(q_sca)
+            ned = e.get("ned_distance", 1.0)
 
-            if bias_correction == "freq_norm" and class_rates_all:
+            if bias_correction == "freq_norm" and cc_null_tables:
+                # CORRECT: class-conditional null tables
+                uncond = null_tables.get((L, lang)) if null_tables else None
+                adj_p = pvalue_from_class_conditional_null(
+                    ned, reading_map, cc_null_tables, L, lang,
+                    unconditional_table=uncond,
+                )
+            elif bias_correction == "freq_norm" and class_rates_all:
+                # DEPRECATED fallback: simple division
                 rates = class_rates_all.get((L, lang), {})
                 adj_p = freq_norm_adjust_pvalue(raw_p, reading_map, rates)
             elif bias_correction == "grid_prior" and grid_priors:
@@ -1827,21 +2077,38 @@ def main(bias_correction: str = "freq_norm"):
     # ── Stage 3a: Compute bias correction data ─────────────────────
     class_rates_all = None
     grid_priors_data = None
+    cc_null_tables = None
 
     if bias_correction == "freq_norm":
-        print("\nStage 3a: Computing consonant-class background rates...")
-        class_rates_all = build_class_background_rates_all(
-            lex_capped, query_lengths, NULL_SAMPLES, rng, verbose=True,
+        print("\nStage 3a: Building class-conditional null tables...")
+        # Use position 0 as the default unknown position for the null.
+        # The unknown sign is typically at position 0 or 1 in the SCA string;
+        # position 0 is a conservative choice (consonant class at start
+        # affects NED most strongly).
+        cc_null_tables = build_class_conditional_null_tables(
+            query_lengths, lex_capped, NULL_SAMPLES, rng,
+            unknown_position=0, verbose=True,
         )
-        # Log a sample of rates for diagnostics
-        sample_key = next(iter(class_rates_all), None)
-        if sample_key:
-            sample = class_rates_all[sample_key]
-            t_rate = sample.get("T", 0)
-            k_rate = sample.get("K", 0)
-            r_rate = sample.get("R", 0)
-            print(f"  Sample rates (L={sample_key[0]}, {sample_key[1]}): "
-                  f"T={t_rate:.3f}, K={k_rate:.3f}, R={r_rate:.3f}")
+        # Diagnostic: compare unconditional vs class-conditional CDFs
+        if cc_null_tables:
+            sample_L = next(iter(query_lengths))
+            sample_lang = next(iter(lex_capped))
+            t_table = cc_null_tables.get((sample_L, sample_lang, "T"))
+            w_table = cc_null_tables.get((sample_L, sample_lang, "W"))
+            u_table = null_tables.get((sample_L, sample_lang))
+            if t_table and w_table and u_table:
+                # Median NED for each
+                t_med = t_table[len(t_table) // 2] if t_table else -1
+                w_med = w_table[len(w_table) // 2] if w_table else -1
+                u_med = u_table[len(u_table) // 2] if u_table else -1
+                print(f"  Diagnostic (L={sample_L}, {sample_lang}):")
+                print(f"    Unconditional median NED: {u_med:.4f}")
+                print(f"    T-class median NED:       {t_med:.4f}")
+                print(f"    W-class median NED:       {w_med:.4f}")
+                if t_med > 0 and w_med > 0:
+                    ratio = w_med / t_med
+                    print(f"    W/T ratio: {ratio:.2f}x "
+                          f"(>1 means T matches more easily)")
 
     elif bias_correction == "grid_prior":
         print("\nStage 3a: Building grid prior from Jaccard classification...")
@@ -1862,6 +2129,8 @@ def main(bias_correction: str = "freq_norm"):
         bias_correction=bias_correction,
         class_rates_all=class_rates_all,
         grid_priors=grid_priors_data,
+        cc_null_tables=cc_null_tables,
+        null_tables=null_tables,
     )
     print(f"  Raw comparisons: {len(search_results)}")
     print(f"  Aggregated (stem, language) pairs: {len(aggregated)}")
@@ -2076,10 +2345,11 @@ def compare_approaches():
                 L, lex_capped[lc], NULL_SAMPLES, rng,
             )
 
-    # Build freq_norm rates
-    print("Computing consonant-class background rates...")
-    class_rates_all = build_class_background_rates_all(
-        lex_capped, holdout_lengths, NULL_SAMPLES, rng, verbose=False,
+    # Build class-conditional null tables (correct freq_norm)
+    print("Building class-conditional null tables...")
+    cc_null_tables = build_class_conditional_null_tables(
+        holdout_lengths, lex_capped, NULL_SAMPLES, rng,
+        unknown_position=0, verbose=False,
     )
 
     # Build grid priors
@@ -2094,8 +2364,8 @@ def compare_approaches():
     holdout_results = run_lb_holdout_test(
         sign_to_ipa, ab_to_reading, grid, cell_consonants,
         lexicons, lex_capped, null_tables,
-        class_rates=class_rates_all,
         grid_priors=grid_priors,
+        cc_null_tables=cc_null_tables,
         rng=rng,
         verbose=True,
     )
